@@ -8,12 +8,12 @@ const fetchDesks = async ({
   queryKey: QueryKey;
 }): Promise<Desk[]> => {
   const selectedFloor = queryKey[1] as string;
+  const file = `/data/${selectedFloor}.json`;
   try {
-    const response = await axios.get("/data/desks.json");
+    const response = await axios.get(file);
     if (response.status !== 200) {
       throw new Error("Error fetching floors data");
     }
-    console.log("Desks data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching floors data:", error);

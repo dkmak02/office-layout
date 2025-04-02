@@ -2,7 +2,7 @@
     {
         "name": "desk102",
         "deskId": 1,
-        "group": [],
+        "group": ["DSN"],
         "hotdesk": true,
         "reservations": [
             {
@@ -18,7 +18,7 @@
                 "userName": "Jane Smith"
             }
         ],
-        "color": "#e0e0e0",
+        "color": "#9B30FF",
         "width": "5.0991268",
         "height": "6.0399466",
         "x": "100.73279",

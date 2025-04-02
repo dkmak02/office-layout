@@ -71,8 +71,19 @@ const MainPage = () => {
   const handleConferenceRoomHover = () => {};
 
   const handleDeskClick = () => {};
-  const handleDeskHover = () => {};
-
+  const handleDeskHover = (
+    event: React.MouseEvent<SVGRectElement>,
+    desk: Desk
+  ) => {
+    const position = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+    const deskId = desk.deskId;
+    const deskName = desk.name;
+    //do dodania
+    const currentReservation = desk.currentReservation;
+  };
   const handleLeave = () => {};
   const handleFloorChange = (floor: string) => {
     setSelectedFloor(floor);

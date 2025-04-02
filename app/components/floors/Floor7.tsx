@@ -1,5 +1,6 @@
 "use client";
 import { FloorComponentProps } from "@/app/models/componentsModels";
+import { Desk } from "@/app/models/deskModel";
 
 const SvgComponent: React.FC<FloorComponentProps> = ({
   desks,
@@ -1183,7 +1184,7 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         id="separator17-2-5-3-6"
         className="separator"
       />
-      {desks.map((desk) => {
+      {desks.map((desk: Desk) => {
         return (
           <rect
             key={desk.deskId}
@@ -1195,7 +1196,9 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
             className="desk"
             style={{ transform: `rotate(${desk.transform}deg)` }}
             onClick={() => handleDeskClick(desk.deskId)}
-            onMouseOver={handleDeskHover}
+            onMouseOver={(event) => {
+              handleDeskHover(event, desk);
+            }}
             onMouseOut={handleLeave}
             fill={desk.color}
           >

@@ -98,7 +98,7 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
         borderRadius: borderRadiusLG,
         margin: "16px 0",
         marginLeft: 16,
-        maxHeight: "calc(100vh - 48px)",
+        maxHeight: "calc(100vh - 150px)",
         overflowY: "auto",
         padding: 8,
       }}

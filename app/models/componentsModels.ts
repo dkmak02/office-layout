@@ -18,8 +18,11 @@ export interface ProjectSiderProps {
 export interface FloorComponentProps {
   desks: Desk[];
   handleConferenceRoomHover: () => void;
-  handleDeskClick: (deskId:number) => void;
-  handleDeskHover: () => void;
+  handleDeskClick: (deskId: number) => void;
+  handleDeskHover: (
+    event: React.MouseEvent<SVGRectElement>,
+    desk: Desk
+  ) => void;
   handleLeave: () => void;
 }
 
