@@ -18,7 +18,7 @@
 
 .desk-id-display {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(158, 155, 155, 0.7);
   color: white;
   padding: 5px 10px;
   border-radius: 5px;
@@ -28,7 +28,7 @@
 }
 .desk {
   display: inline;
-  stroke: #222;
+  stroke: #a5a1a169;
   stroke-width: 0.3;
   stroke-linecap: round;
   stroke-linejoin: round;

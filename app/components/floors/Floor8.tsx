@@ -1,16 +1,13 @@
 "use client";
-interface SvgComponentProps {
-  handleConferenceRoomHover: () => void;
-  handleLeave: () => void;
-  handleDeskHover: () => void;
-  handleDeskClick: () => void;
-}
-const SvgComponent = ({
+import { FloorComponentProps } from "@/app/models/componentsModels";
+
+const SvgComponent: React.FC<FloorComponentProps> = ({
+  desks,
   handleConferenceRoomHover,
-  handleLeave,
-  handleDeskHover,
   handleDeskClick,
-}: SvgComponentProps) => {
+  handleDeskHover,
+  handleLeave,
+}) => {
   return (
     <svg
       viewBox="0 0 300 123"
@@ -174,7 +171,7 @@ const SvgComponent = ({
       >
         <title>Management</title>
       </path>
-      <rect
+      {/* <rect
         width="5.0991268"
         height="6.0399466"
         x="100.73279"
@@ -707,7 +704,7 @@ const SvgComponent = ({
         onClick={handleDeskClick}
         onMouseOver={handleDeskHover}
         onMouseOut={handleLeave}
-      />
+      /> */}
       <path
         d="m 100.73278,1.6686828 10e-6,20.5143082"
         id="separator22"

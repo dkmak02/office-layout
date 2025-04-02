@@ -1,23 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const fetchFloors = async () => {
+const fetchEmployees = async () => {
   try {
-    const response = await axios.get("/data/floors.json");
+    const response = await axios.get("/data/employees.json");
     if (response.status !== 200) {
       throw new Error("Error fetching floors data");
     }
-    return response.data.floors;
+    return response.data.employees;
   } catch (error) {
     console.error("Error fetching floors data:", error);
     throw error;
   }
 };
 
-const useFloors = () => {
+const useEmployees = () => {
   return useQuery({
-    queryKey: ["floors"],
-    queryFn: fetchFloors,
+    queryKey: ["employees"],
+    queryFn: fetchEmployees,
   });
 };
-export default useFloors;
+export default useEmployees;

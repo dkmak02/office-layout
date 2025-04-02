@@ -1,0 +1,25 @@
+{
+    "projects": [
+        {
+            "code": "APS",
+            "name": "APS",
+            "color": "red",
+            "taken": 12,
+            "total": 20
+        },
+        {
+          "code": "Hexcel",
+          "name": "Hescel",
+          "color": "blue",
+          "taken": 12,
+          "total": 20
+        },
+        {
+          "code": "ASD C",
+          "name": "DSAect C",
+          "color": "green",
+          "taken": 12,
+          "total": 20
+        }
+    ]
+}
