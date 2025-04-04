@@ -13,7 +13,7 @@ const DeskPopup = (
   const windowHeight = window.innerHeight;
 
   let adjustedX = x;
-  let adjustedY = y - 25;
+  let adjustedY = y - 50;
 
   if (x + popupWidth / 2 > windowWidth - screenPadding) {
     adjustedX = windowWidth - popupWidth / 2 - screenPadding;

@@ -1,14 +1,18 @@
 export interface Reservation {
+  reservationId: number;
   startTime: string;
   endTime: string;
   userId: number;
   userName: string;
 }
-
+export interface Group {
+  code: string;
+  projectName: string;
+}
 export interface Desk {
   name: string;
   deskId: number;
-  group: string[];
+  group: Group[];
   hotdesk: boolean;
   reservations: Reservation[];
   currentReservation?: Reservation;
@@ -17,9 +21,10 @@ export interface Desk {
   height: string;
   x: string;
   y: string;
-  transform?: string;
+  rotation?: string;
 }
 export interface DeskPopupData {
+  deskId: number;
   deskName: string;
   personAssigned?: string;
   projectAssigned?: string;

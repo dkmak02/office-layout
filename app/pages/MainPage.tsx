@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import tinycolor from "tinycolor2";
 import dynamic from "next/dynamic";
 import Selecto from "react-selecto";
-import DeskForm from "../components/DeskForm";
+import DeskReservationForm from "../components/DeskReservationForm";
 import DeskPopup from "../components/DeskPopup";
 import useDesks from "../util/queries/GetDesks";
 import { FloorComponentsMap } from "../models/componentsModels";
@@ -33,26 +33,29 @@ import { Desk, DeskPopupData } from "../models/deskModel";
 import { Project } from "../models/projectModel";
 const { Header, Content } = Layout;
 const floorComponents: any = {
-  floor7: dynamic(() => import("../components/floors/Floor7"), { ssr: false }),
-  floor8: dynamic(() => import("../components/floors/Floor8"), { ssr: false }),
+  floor7: require("../components/floors/Floor7"),
+  floor8: require("../components/floors/Floor8"),
 };
 const MainPage = () => {
   const [selectedFloor, setSelectedFloor] = useState("Floor 7");
   const { data: desksData } = useDesks(selectedFloor);
+  const { data: projects } = useProjects();
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const { data: allEmployees } = useEmployees();
   const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
   const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
-  const [popupPosition, setPopupPosition] = useState<{ x: number; y: number } | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [popupPosition, setPopupPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [showReservationForm, setShowReservationForm] = useState(false);
+  const [selectedDesk, setSelectedDesk] = useState<Desk | null>(null);
   useEffect(() => {
     const loadFloorComponent = async () => {
       if (!selectedFloor || !desksData) return;
-
       const floorKey = selectedFloor.toLowerCase().replace(/\s+/g, "");
-
       if (!floorComponents[floorKey]) {
         console.warn(`No component found for floor: ${selectedFloor}`);
         setSvgComponent(null);
@@ -60,7 +63,7 @@ const MainPage = () => {
       }
 
       try {
-        const component = await floorComponents[floorKey]();
+        const component = await floorComponents[floorKey];
         setSvgComponent(() => component.default);
       } catch (error) {
         console.error("Error loading the floor component:", error);
@@ -72,9 +75,10 @@ const MainPage = () => {
     loadFloorComponent();
   }, [selectedFloor, desksData]);
 
-  const handleConferenceRoomHover = () => {};
-
-  const handleDeskClick = () => {};
+  const handleDeskClick = (desk: Desk) => {
+    setSelectedDesk(desk);
+    setShowReservationForm(true);
+  };
   const handleDeskHover = (
     event: React.MouseEvent<SVGRectElement>,
     desk: Desk
@@ -91,13 +95,13 @@ const MainPage = () => {
       : undefined;
     const projectAssigned = "Hotdesk";
     setPopupData({
+      deskId,
       deskName,
       personAssigned,
       projectAssigned,
     });
     setPopupPosition(position);
     setShowDeskPopup(true);
-
   };
   const handleLeave = () => {
     setShowDeskPopup(false);
@@ -121,74 +125,86 @@ const MainPage = () => {
       .toString();
   };
 
+  function handleDeskReservationSubmit(employee: any, project: any): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <>
-    <Layout>
-      <Header style={{ display: "flex", alignItems: "center" }}>
-        <div className="demo-logo" />
-        <NavbarMenu handleFloorChange={handleFloorChange} />
-      </Header>
       <Layout>
-        <ProjectSider
-          handleSelectedProjectChange={handleSelectedProjectChange}
-          selectedProject={selectedProject}
-          darkenColor={darkenColor}
-        />
-        <Layout style={{ padding: "0 24px 24px" }}>
-          <Select
-            mode="multiple"
-            showSearch
-            placeholder="Wyszukaj osobę"
-            optionFilterProp="label"
-            // onChange={onChange}
-            options={allEmployees?.map((emp: any) => ({
-              value: emp.id,
-              label: emp.name + " " + emp.surname,
-            }))}
-            style={{
-              marginTop: 16,
-              maxWidth: "50%",
-            }}
-            optionRender={(option) => <Space>{option.data.label}</Space>}
+        <Header style={{ display: "flex", alignItems: "center" }}>
+          <div className="demo-logo" />
+          <NavbarMenu handleFloorChange={handleFloorChange} />
+        </Header>
+        <Layout>
+          <ProjectSider
+            handleSelectedProjectChange={handleSelectedProjectChange}
+            selectedProject={selectedProject}
+            darkenColor={darkenColor}
           />
-          <Breadcrumb
-            items={[{ title: selectedFloor }]}
-            style={{ margin: "16px 0" }}
-          />
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              height: "100%",
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            <div>
-              {SvgComponent ? (
-                <SvgComponent
-                  desks={desksData || []}
-                  handleConferenceRoomHover={handleConferenceRoomHover}
-                  handleDeskClick={handleDeskClick}
-                  handleDeskHover={handleDeskHover}
-                  handleLeave={handleLeave}
-                />
-              ) : (
-                <div>Loading...</div>
-              )}
-            </div>
-          </Content>
+          <Layout style={{ padding: "0 24px 24px" }}>
+            <Select
+              mode="multiple"
+              showSearch
+              placeholder="Wyszukaj osobę"
+              optionFilterProp="label"
+              // onChange={onChange}
+              options={allEmployees?.map((emp: any) => ({
+                value: emp.id,
+                label: emp.name + " " + emp.surname,
+              }))}
+              style={{
+                marginTop: 16,
+                maxWidth: "50%",
+              }}
+              optionRender={(option) => <Space>{option.data.label}</Space>}
+            />
+            <Breadcrumb
+              items={[{ title: selectedFloor }]}
+              style={{ margin: "16px 0" }}
+            />
+            <Content
+              style={{
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+                height: "100%",
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              <div>
+                {SvgComponent && desksData && (
+                  <SvgComponent
+                    desks={desksData}
+                    handleDeskClick={handleDeskClick}
+                    handleDeskHover={handleDeskHover}
+                    handleLeave={handleLeave}
+                  />
+                )}
+              </div>
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
-    {/* {showDeskPopup && popupData && (
-      <DeskPopup
-        deskData={popupData}
-        position={popupPosition || { x: 0, y: 0 }}
-        isConferenceRoom={false}
-      />
-    )} */}
+      {showDeskPopup && popupData && (
+        <DeskPopup
+          deskData={popupData}
+          position={popupPosition || { x: 0, y: 0 }}
+          isConferenceRoom={false}
+        />
+      )}
+      {showReservationForm && selectedDesk && (
+        <DeskReservationForm
+          desk={selectedDesk}
+          onSubmit={handleDeskReservationSubmit}
+          onCancel={() => setShowReservationForm(false)}
+          onUnreserve={() => setShowReservationForm(false)}
+          onSubmitHotdesk={handleDeskReservationSubmit}
+          employees={allEmployees || []}
+          projects={projects || []}
+        />
+      )}
     </>
   );
 };

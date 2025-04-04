@@ -4,7 +4,6 @@ import { Desk } from "@/app/models/deskModel";
 
 const SvgComponent: React.FC<FloorComponentProps> = ({
   desks,
-  handleConferenceRoomHover,
   handleDeskClick,
   handleDeskHover,
   handleLeave,
@@ -49,7 +48,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="M 250.08024,1.6686828 V 35.946619 l 11.75769,8.888706 34.71921,-43.1666422 z"
         id="room14"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Creativity Room</title>
@@ -58,7 +56,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 68.419326,26.922394 v 7.697237 h 13.301225 l -0.0911,-7.697237 z"
         id="room13"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Babia Góra</title>
@@ -67,7 +64,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="M 52.066102,27.422393 H 62.224231 V 40.085888 H 52.066102 Z"
         id="room12"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Roztocze</title>
@@ -76,7 +72,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="M 41.907975,27.422393 V 40.085888 H 52.066102 V 27.422393 Z"
         id="room11"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Ojców</title>
@@ -85,7 +80,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 41.907975,48.103067 v 14.849999 l 20.316256,4.555215 V 48.103067 Z"
         id="room10"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Project Room</title>
@@ -94,7 +88,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 113.82433,102.40614 3.66978,-16.941232 15.70102,3.401129 -3.66978,16.941233 z"
         id="room09"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Gorce</title>
@@ -103,7 +96,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 133.19513,88.866037 15.7388,3.409312 -3.66978,16.941231 -15.7388,-3.40931 z"
         id="room08"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Kampinos</title>
@@ -112,7 +104,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 161.11709,71.959519 v 14.879267 l -23.5794,-5.218059 V 71.520192 Z"
         id="room07"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Tatry</title>
@@ -121,7 +112,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 217.61233,68.221272 h -6.57089 V 40.778154 h 15.39649 v 16.491638 z"
         id="room06"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Jura</title>
@@ -130,7 +120,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 180.6994,39.812576 v -8.182128 h 20.80781 v 8.182128 z"
         id="room05"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Góry Stołowe</title>
@@ -139,7 +128,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 158.95749,31.501606 v 8.31097 h 10.40391 v -8.31097 z"
         id="room04"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Bieszczady</title>
@@ -148,7 +136,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="m 148.55359,31.501606 v 8.31097 h 10.4039 v -8.31097 z"
         id="room03"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Sudety</title>
@@ -157,7 +144,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="M 124.81288,1.6686828 V 22.958282 h 15.85215 V 1.6686828 Z"
         id="room02"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Pieniny</title>
@@ -166,7 +152,6 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         d="M 108.77853,1.6686828 V 22.958282 h 16.03435 V 1.6686828 Z"
         id="room01"
         className="room"
-        onMouseOver={handleConferenceRoomHover}
         onMouseOut={handleLeave}
       >
         <title>Wolin</title>
@@ -1184,6 +1169,7 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         id="separator17-2-5-3-6"
         className="separator"
       />
+
       {desks.map((desk: Desk) => {
         return (
           <rect
@@ -1192,18 +1178,15 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
             height={desk.height}
             x={desk.x}
             y={desk.y}
-            id={desk.name}
             className="desk"
-            style={{ transform: `rotate(${desk.transform}deg)` }}
-            onClick={() => handleDeskClick(desk.deskId)}
+            style={{ transform: `rotate(${desk.rotation}deg)` }}
+            onClick={() => handleDeskClick(desk)}
             onMouseOver={(event) => {
               handleDeskHover(event, desk);
             }}
             onMouseOut={handleLeave}
             fill={desk.color}
-          >
-            <title>{`Desk ${desk.deskId}`}</title>{" "}
-          </rect>
+          ></rect>
         );
       })}
     </svg>

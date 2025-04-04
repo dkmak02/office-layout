@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-//import "./../styles/DeskForm.css";
 import {
   message,
   DatePicker,
@@ -14,42 +13,31 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { ClockCircleOutlined } from "@ant-design/icons";
-interface DeskFormProps {
-    deskData: {
-        itemName: string;
-        personAssigned: number | null;
-        projectAssigned: string | null;
-        reservations: any[];
-        projectCode: string | null;
-        employeeID: number | null;
-    };
-    onSubmit: (employee: any, project: any) => void;
-    onCancel: () => void;
-    onUnreserve: (reservationId: number, isTodayDeleted: boolean) => void;
-    employees: any[];
-    projects: any[];
-    onSubmitHotdesk: (employee: any, project: any, dates: any[]) => void;
-    }
-
-const DeskForm = (
-    {
-  deskData,
+import { Desk } from "../models/deskModel";
+import { Employee } from "../models/employeeModel";
+import { Project } from "../models/projectModel";
+import { DeskFormProps } from "../models/componentsModels";
+const DeskReservationForm = ({
+  desk,
   onSubmit,
   onCancel,
   onUnreserve,
   employees,
   projects,
   onSubmitHotdesk,
-}:DeskFormProps
-  ) => {
+}: DeskFormProps) => {
   const {
-    itemName,
-    personAssigned,
-    projectAssigned,
+    name:deskName,
     reservations,
-    projectCode,
-    employeeID,
-  } = deskData;
+  } = desk;
+  const projectCode = desk.hotdesk ? "Hotdesk" : desk.group[0].code;
+  const projectAssigned = desk.hotdesk ? "Hotdesk" : desk.group[0].projectName;
+  const personAssigned = desk.currentReservation
+    ? desk.currentReservation.userName
+    : null;
+  const employeeId = desk.currentReservation
+    ? desk.currentReservation.userId
+    : null;
   const [selectedDates, setSelectedDates] = useState<any>(null);
   const [selectedPerson, setSeletedPerson] = useState<any>(personAssigned);
   const [selectedProject, setSelectedProject] = useState<any>(projectAssigned);
@@ -58,13 +46,13 @@ const DeskForm = (
   const [todayDeleted, setTodayDeleted] = useState<any>(false);
   const isProgrammaticUpdate = useRef(false);
   useEffect(() => {
-    setSeletedPerson(employeeID);
+    setSeletedPerson(employeeId);
     setSelectedProject(projectCode);
   }, []);
-  const doesRangeIncludeCustomDate = (start:any, end:any) => {
+  const doesRangeIncludeCustomDate = (start: any, end: any) => {
     const range = [];
     let current = start.clone();
-    const customDates:any = [];
+    const customDates: any = [];
     for (let reservation of newReservation) {
       let startDate = dayjs(reservation.startDate);
       const endDate = dayjs(reservation.endDate);
@@ -80,7 +68,7 @@ const DeskForm = (
 
     return range.some((date) => customDates.includes(date));
   };
-  const isReservedDate = (current:any) => {
+  const isReservedDate = (current: any) => {
     for (let reservation of newReservation) {
       const startDate = dayjs(reservation.startDate);
       const endDate = dayjs(reservation.endDate);
@@ -132,7 +120,7 @@ const DeskForm = (
       setSelectedDates([start, end]);
     }
   };
-  const onChangePerson = (value:any) => {
+  const onChangePerson = (value: any) => {
     setSeletedPerson(value);
   };
   const onChangeProject = (value: any) => {
@@ -148,55 +136,38 @@ const DeskForm = (
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!selectedPerson && !selectedProject) {
-      message.error("Wybierz osobę i projekt");
+      message.error("Please select an employee and a project.");
       return;
     }
     const employee = employees.find(
-      (person) => Number(person.Id) === selectedPerson
+      (person) => person.id === selectedPerson
     );
     const project = projects.find(
-      (project) => project.group === selectedProject
+      (project) => project.code === selectedProject
     );
+    if (!employee) {
+      message.error("Selected employee is invalid.");
+      return;
+    }
+    if (!project) {
+      message.error("Selected project is invalid.");
+      return;
+    }
     if (selectedProject !== "Hotdesk") {
+      
       onSubmit(employee, project);
     } else if (validateHotDesk()) {
+      if (!employee) {
+        message.error("Selected employee is invalid.");
+        return;
+      }
       onSubmitHotdesk(employee, project, selectedDates);
     }
   };
   const validateRoles = () => {
     if (employees.length > 1) return true;
-    if (employees[0].id === employeeID) return true;
+    if (employees[0].id === employeeId) return true;
     return false;
-  };
-  const handleUnreserve = () => {
-    const reservations = deskData.reservations.filter(
-      (reservation) => reservation.employeeId === employeeID
-    );
-    const currentDay = dayjs().startOf("day");
-    const currentReservation = reservations.find((reservation) => {
-      const startDate = dayjs(reservation.startDate);
-      const endDate = reservation.endDate ? dayjs(reservation.endDate) : null;
-
-      const isOngoingWithNoEnd =
-        (startDate.isSame(currentDay, "day") ||
-          startDate.isBefore(currentDay, "day")) &&
-        !endDate;
-      const isWithinRange =
-        (startDate.isSame(currentDay, "day") ||
-          startDate.isBefore(currentDay, "day")) &&
-        endDate &&
-        (endDate.isSame(currentDay, "day") ||
-          endDate.isAfter(currentDay, "day"));
-      const isStartingToday =
-        startDate.isSame(currentDay, "day") &&
-        (!endDate ||
-          endDate.isSame(currentDay, "day") ||
-          endDate.isAfter(currentDay, "day"));
-
-      return isOngoingWithNoEnd || isWithinRange || isStartingToday;
-    });
-
-    onUnreserve(currentReservation.reservationId, true);
   };
   const handleCardUnreserv = (reservationId: any) => {
     onUnreserve(reservationId, false);
@@ -233,8 +204,8 @@ const DeskForm = (
     return (
       <Card
         key={reservation.reservationId}
-        title={`Rezerwacja: ${itemName}`}
-        bordered={true}
+        title={`Rezerwacja: ${deskName}`}
+        variant="outlined"
         style={{ marginTop: 16 }}
       >
         <Timeline
@@ -282,7 +253,7 @@ const DeskForm = (
               width: "100%",
             }}
           >
-            <span>{itemName}</span>
+            <span>{deskName}</span>
             {projectCode === "Hotdesk" && (
               <Button
                 color="primary"
@@ -308,12 +279,12 @@ const DeskForm = (
               showSearch
               placeholder="Wybierz osobę"
               optionFilterProp="label"
-              defaultValue={employeeID}
+              defaultValue={employeeId}
               value={selectedPerson}
               onChange={onChangePerson}
               options={employees.map((person) => ({
-                label: person.Name,
-                value: Number(person.Id),
+                label: person.name + " " + person.surname,
+                value: person.id,
               }))}
             />
           </div>
@@ -327,7 +298,7 @@ const DeskForm = (
               onChange={onChangeProject}
               options={projects.map((project) => ({
                 label: project.name,
-                value: project.group,
+                value: project.code,
               }))}
               style={{ width: "100%" }}
             />
@@ -353,7 +324,7 @@ const DeskForm = (
               <Button
                 color="red"
                 variant="outlined"
-                onClick={handleUnreserve}
+                // onClick={handleUnreserve}
                 style={{ color: "orange", borderColor: "orange" }}
               >
                 Usuń rezerwację
@@ -387,4 +358,4 @@ const DeskForm = (
   );
 };
 
-export default DeskForm;
+export default DeskReservationForm;
