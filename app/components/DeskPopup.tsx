@@ -1,18 +1,10 @@
 import React from "react";
-interface DeskPopupProps {
-  deskData: {
-    itemName: string;
-    personAssigned?: string;
-    projectAssigned?: string;
-  }|null;
-  position: { x: number; y: number }|null;
-  isConferenceRoom?: boolean;
-}
+import { DeskPopupProps } from "../models/deskModel";
 const DeskPopup = (
   { deskData, position, isConferenceRoom }:DeskPopupProps
 ) => {
-  const { x, y } = position || { x: 0, y: 0 };
-  const { itemName, personAssigned, projectAssigned } = deskData || { itemName: "", personAssigned: undefined, projectAssigned: undefined };
+  const { x, y } = position;
+  const { deskName, personAssigned, projectAssigned } = deskData;
 
   const popupWidth = 250;
   const popupHeight = 100;
@@ -44,7 +36,7 @@ const DeskPopup = (
       style={{ top: `${adjustedY}px`, left: `${adjustedX}px` }}
     >
       <h2 className="m-0 mb-2 text-lg font-semibold text-gray-800">
-        {itemName}
+        {deskName}
       </h2>
 
       {!isConferenceRoom && (

@@ -11,10 +11,21 @@ export interface Desk {
   group: string[];
   hotdesk: boolean;
   reservations: Reservation[];
+  currentReservation?: Reservation;
   color: string;
   width: string;
   height: string;
   x: string;
   y: string;
   transform?: string;
+}
+export interface DeskPopupData {
+  deskName: string;
+  personAssigned?: string;
+  projectAssigned?: string;
+}
+export interface DeskPopupProps {
+  deskData: DeskPopupData;
+  position: { x: number; y: number };
+  isConferenceRoom?: boolean;
 }

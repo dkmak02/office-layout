@@ -18,6 +18,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#9B30FF",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -43,6 +49,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -68,6 +80,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -93,6 +111,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -118,6 +142,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -143,6 +173,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -168,6 +204,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -193,6 +235,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -218,6 +266,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -243,6 +297,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -268,6 +328,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -293,6 +359,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -318,6 +390,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -343,6 +421,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -368,6 +452,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -393,6 +483,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -418,6 +514,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -443,6 +545,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -468,6 +576,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -493,6 +607,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -518,6 +638,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -543,6 +669,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -568,6 +700,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -593,6 +731,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -618,6 +762,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -643,6 +793,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -668,6 +824,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -693,6 +855,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -718,6 +886,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -743,6 +917,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -768,6 +948,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -794,6 +980,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -820,6 +1012,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -846,6 +1044,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -872,6 +1076,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -898,6 +1108,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -924,6 +1140,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -950,6 +1172,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -976,6 +1204,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1002,6 +1236,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1028,6 +1268,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1054,6 +1300,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1080,6 +1332,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1106,6 +1364,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1132,6 +1396,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1158,6 +1428,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1184,6 +1460,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1210,6 +1492,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1236,6 +1524,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1262,6 +1556,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1288,6 +1588,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1314,6 +1620,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1340,6 +1652,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1366,6 +1684,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1392,6 +1716,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1418,6 +1748,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1444,6 +1780,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1470,6 +1812,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1496,6 +1844,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1522,6 +1876,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1548,6 +1908,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1574,6 +1940,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1600,6 +1972,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1626,6 +2004,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1652,6 +2036,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1678,6 +2068,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1704,6 +2100,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1730,6 +2132,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1756,6 +2164,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1782,6 +2196,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1808,6 +2228,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1834,6 +2260,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1860,6 +2292,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1886,6 +2324,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1912,6 +2356,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1938,6 +2388,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1964,6 +2420,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -1990,6 +2452,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2016,6 +2484,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2042,6 +2516,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2068,6 +2548,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2094,6 +2580,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2120,6 +2612,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2146,6 +2644,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2172,6 +2676,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2198,6 +2708,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2224,6 +2740,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2250,6 +2772,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2276,6 +2804,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2302,6 +2836,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2328,6 +2868,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2354,6 +2900,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2380,6 +2932,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2406,6 +2964,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2432,6 +2996,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2458,6 +3028,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2484,6 +3060,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2510,6 +3092,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2536,6 +3124,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2562,6 +3156,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2588,6 +3188,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2614,6 +3220,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2640,6 +3252,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2665,6 +3283,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2690,6 +3314,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2715,6 +3345,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2740,6 +3376,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2765,6 +3407,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2790,6 +3438,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2815,6 +3469,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2840,6 +3500,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2865,6 +3531,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2890,6 +3562,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2915,6 +3593,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2940,6 +3624,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2965,6 +3655,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -2990,6 +3686,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3015,6 +3717,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3040,6 +3748,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3065,6 +3779,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3090,6 +3810,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3115,6 +3841,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3140,6 +3872,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3165,6 +3903,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3190,6 +3934,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3215,6 +3965,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3240,6 +3996,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3265,6 +4027,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3290,6 +4058,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3315,6 +4089,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3340,6 +4120,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3365,6 +4151,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3390,6 +4182,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3415,6 +4213,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3440,6 +4244,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3465,6 +4275,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3490,6 +4306,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3515,6 +4337,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3540,6 +4368,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3565,6 +4399,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3590,6 +4430,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3615,6 +4461,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3640,6 +4492,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",
@@ -3665,6 +4523,12 @@
                 "userName": "Jane Smith"
             }
         ],
+        "currentReservation": {
+            "startTime": "2023-10-01T09:00:00",
+            "endTime": "2023-10-01T17:00:00",
+            "userId": 1,
+            "userName": "John Doe"
+        },
         "color": "#e0e0e0",
         "width": "5.0991268",
         "height": "6.0399466",

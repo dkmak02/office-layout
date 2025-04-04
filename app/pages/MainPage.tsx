@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import tinycolor from "tinycolor2";
+import dynamic from "next/dynamic";
 import Selecto from "react-selecto";
 import DeskForm from "../components/DeskForm";
 import DeskPopup from "../components/DeskPopup";
@@ -28,12 +29,12 @@ import ProjectSider from "../components/sidebar-components/ProjectSider";
 import useEmployees from "../util/queries/GetEmployees";
 import { FloorComponentProps } from "../models/componentsModels";
 import useProjects from "../util/queries/GetProjects";
-import { Desk } from "../models/deskModel";
+import { Desk, DeskPopupData } from "../models/deskModel";
 import { Project } from "../models/projectModel";
 const { Header, Content } = Layout;
-const floorComponents: FloorComponentsMap = {
-  floor7: () => require("../components/floors/Floor7"),
-  floor8: () => require("../components/floors/Floor8"),
+const floorComponents: any = {
+  floor7: dynamic(() => import("../components/floors/Floor7"), { ssr: false }),
+  floor8: dynamic(() => import("../components/floors/Floor8"), { ssr: false }),
 };
 const MainPage = () => {
   const [selectedFloor, setSelectedFloor] = useState("Floor 7");
@@ -42,7 +43,10 @@ const MainPage = () => {
     useState<React.FC<FloorComponentProps> | null>(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const { data: allEmployees } = useEmployees();
-
+  const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
+  const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
+  const [popupPosition, setPopupPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     const loadFloorComponent = async () => {
       if (!selectedFloor || !desksData) return;
@@ -81,10 +85,23 @@ const MainPage = () => {
     };
     const deskId = desk.deskId;
     const deskName = desk.name;
-    //do dodania
     const currentReservation = desk.currentReservation;
+    const personAssigned = currentReservation
+      ? currentReservation.userName
+      : undefined;
+    const projectAssigned = "Hotdesk";
+    setPopupData({
+      deskName,
+      personAssigned,
+      projectAssigned,
+    });
+    setPopupPosition(position);
+    setShowDeskPopup(true);
+
   };
-  const handleLeave = () => {};
+  const handleLeave = () => {
+    setShowDeskPopup(false);
+  };
   const handleFloorChange = (floor: string) => {
     setSelectedFloor(floor);
   };
@@ -105,6 +122,7 @@ const MainPage = () => {
   };
 
   return (
+    <>
     <Layout>
       <Header style={{ display: "flex", alignItems: "center" }}>
         <div className="demo-logo" />
@@ -164,6 +182,14 @@ const MainPage = () => {
         </Layout>
       </Layout>
     </Layout>
+    {/* {showDeskPopup && popupData && (
+      <DeskPopup
+        deskData={popupData}
+        position={popupPosition || { x: 0, y: 0 }}
+        isConferenceRoom={false}
+      />
+    )} */}
+    </>
   );
 };
 
