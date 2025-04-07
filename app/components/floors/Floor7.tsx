@@ -1174,6 +1174,8 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
         return (
           <rect
             key={desk.deskId}
+            id={desk.deskId.toString()}
+            name={desk.name}
             width={desk.width}
             height={desk.height}
             x={desk.x}
@@ -1185,7 +1187,7 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
               handleDeskHover(event, desk);
             }}
             onMouseOut={handleLeave}
-            fill={desk.color}
+            fill={desk.color || "#e0e0e0"}
           ></rect>
         );
       })}

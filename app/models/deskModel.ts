@@ -1,21 +1,22 @@
+import { Project } from "./projectModel";
+
 export interface Reservation {
-  reservationId: number;
+  reservationID: number;
   startTime: string;
   endTime: string;
   userId: number;
   userName: string;
 }
-export interface Group {
-  code: string;
-  projectName: string;
-}
 export interface Desk {
   name: string;
   deskId: number;
-  group: Group[];
+  project: {
+    projectName: string;
+    code: string;
+  };
   hotdesk: boolean;
   reservations: Reservation[];
-  currentReservation?: Reservation;
+  currentReservationID: number | null;
   color: string;
   width: string;
   height: string;

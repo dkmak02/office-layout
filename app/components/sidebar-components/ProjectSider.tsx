@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Layout, List, Card, theme } from "antd";
 const { Sider } = Layout;
-import useProjects from "@/app/util/queries/GetProjects";
+import useProjects from "@/app/util/api/ProjectApi";
 import { ProjectSiderProps } from "@/app/models/componentsModels";
 import { Project, SelectedProject } from "@/app/models/projectModel";
 
 const ProjectSider: React.FC<ProjectSiderProps> = ({
+  selectedFloor,
   selectedProject,
   handleSelectedProjectChange,
   darkenColor,
@@ -14,7 +15,7 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const { data: projects, isLoading } = useProjects();
+  const { data: projects, isLoading } = useProjects(selectedFloor);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -33,7 +34,7 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
 
     const isSelected = selectedProject === project.code;
     const backgroundColor = isHovered
-      ? darkenColor(project.color, 0.1)
+      ? darkenColor(project.color || "#e0e0e0", 0.1)
       : isSelected
       ? project.color
       : project.color;

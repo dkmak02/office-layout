@@ -1,12 +1,13 @@
 "use client";
+import "@ant-design/v5-patch-for-react-19";
 import React, { useEffect, useState } from "react";
 import tinycolor from "tinycolor2";
 import dynamic from "next/dynamic";
 import Selecto from "react-selecto";
 import DeskReservationForm from "../components/DeskReservationForm";
 import DeskPopup from "../components/DeskPopup";
-import useDesks from "../util/queries/GetDesks";
-import { FloorComponentsMap } from "../models/componentsModels";
+import useDesks from "../util/api/DesksApi";
+import MultipleFormAssigment from "../components/MultipleFormAssigment";
 import dayjs from "dayjs";
 import {
   Breadcrumb,
@@ -26,11 +27,12 @@ import {
 import NavbarMenu from "../components/nav-bar-components/Menu";
 import "./../styles/MainPage.css";
 import ProjectSider from "../components/sidebar-components/ProjectSider";
-import useEmployees from "../util/queries/GetEmployees";
+import useEmployees from "../util/api/GetEmployees";
 import { FloorComponentProps } from "../models/componentsModels";
-import useProjects from "../util/queries/GetProjects";
+import useProjects from "../util/api/ProjectApi";
 import { Desk, DeskPopupData } from "../models/deskModel";
 import { Project } from "../models/projectModel";
+import { Employee } from "../models/employeeModel";
 const { Header, Content } = Layout;
 const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
@@ -38,14 +40,17 @@ const floorComponents: any = {
 };
 const MainPage = () => {
   const [selectedFloor, setSelectedFloor] = useState("Floor 7");
+  const { data: projects } = useProjects(selectedFloor);
   const { data: desksData } = useDesks(selectedFloor);
-  const { data: projects } = useProjects();
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const { data: allEmployees } = useEmployees();
   const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
   const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
+  const [selectedElements, setSelectedElements] = useState<Desk[]>([]);
+  const [showMultipleFormModal, setShowMultipleFormModal] =
+    useState<boolean>(false);
   const [popupPosition, setPopupPosition] = useState<{
     x: number;
     y: number;
@@ -89,11 +94,13 @@ const MainPage = () => {
     };
     const deskId = desk.deskId;
     const deskName = desk.name;
-    const currentReservation = desk.currentReservation;
+    const currentReservation = desk.reservations.find(
+      (reservation) => reservation.reservationID === desk.currentReservationID
+    );
     const personAssigned = currentReservation
       ? currentReservation.userName
       : undefined;
-    const projectAssigned = "Hotdesk";
+    const projectAssigned = desk.hotdesk ? "Hotdesk" : desk.project.projectName;
     setPopupData({
       deskId,
       deskName,
@@ -124,11 +131,30 @@ const MainPage = () => {
       .darken(percent * 100)
       .toString();
   };
+  const handleDeskReservationSubmit = () => {
+    setShowDeskPopup(false);
+    setSelectedDesk(null);
+    setShowReservationForm(false);
+  };
+  const multipleProjectChange = (value: any) => {
+    setSelectedProject(value);
+  };
+  const handleMultipleDeskProjectChange = async () => {};
+  const handleMultipleProjectChange = async () => {
+    if (!selectedElements.length || !selectedProject) {
+      message.error("Wybierz biurka i projekt");
+      return;
+    }
 
-  function handleDeskReservationSubmit(employee: any, project: any): void {
-    throw new Error("Function not implemented.");
-  }
+    try {
+      await handleMultipleDeskProjectChange();
+    } catch (error) {
+      console.error("Error:", error);
+    }
 
+    setSelectedProject(null);
+    setShowMultipleFormModal(false);
+  };
   return (
     <>
       <Layout>
@@ -138,6 +164,7 @@ const MainPage = () => {
         </Header>
         <Layout>
           <ProjectSider
+            selectedFloor={selectedFloor}
             handleSelectedProjectChange={handleSelectedProjectChange}
             selectedProject={selectedProject}
             darkenColor={darkenColor}
@@ -172,8 +199,36 @@ const MainPage = () => {
                 background: colorBgContainer,
                 borderRadius: borderRadiusLG,
               }}
+              className="selectable-container"
             >
               <div>
+                <Selecto
+                  dragContainer={".selectable-container"}
+                  selectableTargets={[".desk"]}
+                  hitRate={100}
+                  ratio={0}
+                  selectByClick={false}
+                  onSelect={(e) => {
+                    const added = e.added.map((el) => ({
+                      id:
+                        (desksData ?? []).find(
+                          (d) => d.deskId === Number(el.id)
+                        )?.deskId || null,
+                      name:
+                        (desksData ?? []).find(
+                          (d) => d.deskId === Number(el.id)
+                        )?.name || null,
+                    }));
+                    const removed = e.removed.map((el) => Number(el.id));
+                    setSelectedElements((prev: any) => [
+                      ...prev.filter((el: any) => !removed.includes(el.id)),
+                      ...added,
+                    ]);
+                  }}
+                  onSelectEnd={() => {
+                    setShowMultipleFormModal(selectedElements.length > 0);
+                  }}
+                />
                 {SvgComponent && desksData && (
                   <SvgComponent
                     desks={desksData}
@@ -197,13 +252,14 @@ const MainPage = () => {
       {showReservationForm && selectedDesk && (
         <DeskReservationForm
           desk={selectedDesk}
+          selectedFloor={selectedFloor}
           onSubmit={handleDeskReservationSubmit}
           onCancel={() => setShowReservationForm(false)}
-          onUnreserve={() => setShowReservationForm(false)}
-          onSubmitHotdesk={handleDeskReservationSubmit}
           employees={allEmployees || []}
-          projects={projects || []}
         />
+      )}
+      {showMultipleFormModal && (
+        <MultipleFormAssigment selectedDesks={selectedElements} />
       )}
     </>
   );

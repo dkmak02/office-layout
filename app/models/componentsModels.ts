@@ -12,6 +12,7 @@ export interface NavbarMenuProps {
 }
 
 export interface ProjectSiderProps {
+  selectedFloor: string;
   selectedProject: string | null;
   handleSelectedProjectChange: (project: any) => void;
   darkenColor: (color: string, amount: number) => string;
@@ -27,19 +28,10 @@ export interface FloorComponentProps {
 }
 export interface DeskFormProps {
   desk: Desk;
-  onSubmit: (employee: Employee, project: Project) => void;
+  selectedFloor: string;
+  onSubmit: () => void;
   onCancel: () => void;
-  onUnreserve: (reservationId: number, isTodayDeleted: boolean) => void;
   employees: Employee[];
-  projects: Project[];
-  onSubmitHotdesk: (
-    employee: Employee,
-    project: Project,
-    dates: {
-      startDate: string;
-      endDate: string;
-    }
-  ) => void;
 }
 export type FloorComponent = React.FC<FloorComponentProps>;
 
