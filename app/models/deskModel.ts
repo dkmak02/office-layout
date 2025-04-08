@@ -1,5 +1,3 @@
-import { Project } from "./projectModel";
-
 export interface Reservation {
   reservationID: number;
   startTime: string;
@@ -23,6 +21,7 @@ export interface Desk {
   x: string;
   y: string;
   rotation?: string;
+  opacity: number;
 }
 export interface DeskPopupData {
   deskId: number;
@@ -34,4 +33,8 @@ export interface DeskPopupProps {
   deskData: DeskPopupData;
   position: { x: number; y: number };
   isConferenceRoom?: boolean;
+}
+export interface MultipleDeskReservation {
+  id: number;
+  name: string;
 }

@@ -1182,6 +1182,7 @@ const SvgComponent: React.FC<FloorComponentProps> = ({
             y={desk.y}
             className="desk"
             style={{ transform: `rotate(${desk.rotation}deg)` }}
+            opacity={desk.opacity}
             onClick={() => handleDeskClick(desk)}
             onMouseOver={(event) => {
               handleDeskHover(event, desk);

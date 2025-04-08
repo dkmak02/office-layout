@@ -1,5 +1,4 @@
 import { Desk } from "./deskModel";
-import { Project } from "./projectModel";
 import { Employee } from "./employeeModel";
 export interface SvgComponentProps {
   desks: any[];
@@ -13,8 +12,6 @@ export interface NavbarMenuProps {
 
 export interface ProjectSiderProps {
   selectedFloor: string;
-  selectedProject: string | null;
-  handleSelectedProjectChange: (project: any) => void;
   darkenColor: (color: string, amount: number) => string;
 }
 export interface FloorComponentProps {
@@ -32,6 +29,12 @@ export interface DeskFormProps {
   onSubmit: () => void;
   onCancel: () => void;
   employees: Employee[];
+}
+export interface MulipleFormAssigmentProps {
+  selectedDesks: any[];
+  selectedFloor: string;
+  showMultipleFormModal: boolean;
+  setShowMultipleFormModal: (value: boolean) => void;
 }
 export type FloorComponent = React.FC<FloorComponentProps>;
 

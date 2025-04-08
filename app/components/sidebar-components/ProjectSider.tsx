@@ -3,18 +3,20 @@ import { Layout, List, Card, theme } from "antd";
 const { Sider } = Layout;
 import useProjects from "@/app/util/api/ProjectApi";
 import { ProjectSiderProps } from "@/app/models/componentsModels";
-import { Project, SelectedProject } from "@/app/models/projectModel";
-
+import { Project } from "@/app/models/projectModel";
+import { useFillter } from "@/app/util/providers/SelectedProjectsEmployeesContext";
+import { useQueryClient } from "@tanstack/react-query";
+import { Desk } from "@/app/models/deskModel";
+import { findDesks } from "@/app/util/FillterDesks";
 const ProjectSider: React.FC<ProjectSiderProps> = ({
   selectedFloor,
-  selectedProject,
-  handleSelectedProjectChange,
   darkenColor,
 }) => {
+  const queryClient = useQueryClient();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
+  const { selectedEmployees, setChoosenProject, choosenProject } = useFillter();
   const { data: projects, isLoading } = useProjects(selectedFloor);
 
   if (isLoading) {
@@ -24,15 +26,26 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
   if (!projects) {
     return <div>No projects available</div>;
   }
-
-  const generateProjectCard = (
-    project: Project,
-    selectedProject: SelectedProject,
-    handleSelectedProjectChange: (project: Project) => void
-  ) => {
+  const handleSelectedProjectChange = (projectCode: string) => {
+    const newSelectedProject =
+      projectCode === choosenProject ? "" : projectCode;
+    setChoosenProject(newSelectedProject);
+    const currentDesks = queryClient.getQueryData<Desk[]>([
+      "floors",
+      selectedFloor,
+    ]);
+    setChoosenProject(newSelectedProject);
+    const filteredDesks = findDesks(
+      selectedEmployees,
+      newSelectedProject,
+      currentDesks || []
+    );
+    queryClient.setQueryData(["floors", selectedFloor], filteredDesks);
+  };
+  const generateProjectCard = (project: Project) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
-    const isSelected = selectedProject === project.code;
+    const isSelected = choosenProject === project.code;
     const backgroundColor = isHovered
       ? darkenColor(project.color || "#e0e0e0", 0.1)
       : isSelected
@@ -70,7 +83,7 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
       <Card
         key={project.code}
         style={cardStyles}
-        onClick={() => handleSelectedProjectChange(project)}
+        onClick={() => handleSelectedProjectChange(project.code)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         styles={{ body: bodyStyles }}
@@ -106,13 +119,7 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
     >
       <List
         dataSource={projects}
-        renderItem={(item: Project) =>
-          generateProjectCard(
-            item,
-            selectedProject,
-            handleSelectedProjectChange
-          )
-        }
+        renderItem={(item: Project) => generateProjectCard(item)}
       />
     </Sider>
   );

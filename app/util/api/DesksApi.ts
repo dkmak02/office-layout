@@ -19,7 +19,10 @@ const fetchDesks = async ({
   if (response.status !== 200) {
     throw new Error("Error fetching desks");
   }
-  return response.data.desks as Desk[];
+  return (response.data.desks as Desk[]).map((desk) => ({
+    ...desk,
+    opacity: 1,
+  }));
 };
 
 const unreserveDesk = async (reservationId: number) => {

@@ -1,54 +1,40 @@
 "use client";
 import "@ant-design/v5-patch-for-react-19";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import tinycolor from "tinycolor2";
-import dynamic from "next/dynamic";
 import Selecto from "react-selecto";
 import DeskReservationForm from "../components/DeskReservationForm";
 import DeskPopup from "../components/DeskPopup";
 import useDesks from "../util/api/DesksApi";
 import MultipleFormAssigment from "../components/MultipleFormAssigment";
-import dayjs from "dayjs";
-import {
-  Breadcrumb,
-  Layout,
-  Menu,
-  message,
-  theme,
-  Card,
-  Select,
-  Space,
-  Modal,
-  Button,
-  Timeline,
-  List,
-  Typography,
-} from "antd";
+import { Breadcrumb, Layout, message, theme, Select, Space } from "antd";
 import NavbarMenu from "../components/nav-bar-components/Menu";
 import "./../styles/MainPage.css";
 import ProjectSider from "../components/sidebar-components/ProjectSider";
 import useEmployees from "../util/api/GetEmployees";
 import { FloorComponentProps } from "../models/componentsModels";
-import useProjects from "../util/api/ProjectApi";
+import { useFillter } from "../util/providers/SelectedProjectsEmployeesContext";
 import { Desk, DeskPopupData } from "../models/deskModel";
-import { Project } from "../models/projectModel";
-import { Employee } from "../models/employeeModel";
+import { findDesks } from "../util/FillterDesks";
 const { Header, Content } = Layout;
 const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
   floor8: require("../components/floors/Floor8"),
 };
+const MAX_DATE = new Date(8640000000000000);
+
 const MainPage = () => {
+  const queryClient = useQueryClient();
   const [selectedFloor, setSelectedFloor] = useState("Floor 7");
-  const { data: projects } = useProjects(selectedFloor);
   const { data: desksData } = useDesks(selectedFloor);
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
-  const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const { data: allEmployees } = useEmployees();
   const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
   const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
   const [selectedElements, setSelectedElements] = useState<Desk[]>([]);
+  const { setSelectedEmployees, choosenProject } = useFillter();
   const [showMultipleFormModal, setShowMultipleFormModal] =
     useState<boolean>(false);
   const [popupPosition, setPopupPosition] = useState<{
@@ -119,13 +105,6 @@ const MainPage = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const handleSelectedProjectChange = (project: Project) => {
-    if (selectedProject && selectedProject === project.code) {
-      setSelectedProject(null);
-    } else {
-      setSelectedProject(project.code);
-    }
-  };
   const darkenColor = (color: string, percent: number): string => {
     return tinycolor(color)
       .darken(percent * 100)
@@ -136,25 +115,22 @@ const MainPage = () => {
     setSelectedDesk(null);
     setShowReservationForm(false);
   };
-  const multipleProjectChange = (value: any) => {
-    setSelectedProject(value);
+  const isCurrentDateInRange = (startTime: string, endTime: string) => {
+    const currentDate = new Date();
+    const startDate = new Date(startTime);
+    const endDate = endTime ? new Date(endTime) : MAX_DATE;
+    return currentDate >= startDate && currentDate <= endDate;
   };
-  const handleMultipleDeskProjectChange = async () => {};
-  const handleMultipleProjectChange = async () => {
-    if (!selectedElements.length || !selectedProject) {
-      message.error("Wybierz biurka i projekt");
-      return;
-    }
-
-    try {
-      await handleMultipleDeskProjectChange();
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    setSelectedProject(null);
-    setShowMultipleFormModal(false);
+  const handleEmployeeSelected = (employeeIds: number[]) => {
+    setSelectedEmployees(employeeIds);
+    const filteredDesks = findDesks(
+      employeeIds,
+      choosenProject,
+      desksData || []
+    );
+    queryClient.setQueryData(["floors", selectedFloor], filteredDesks);
   };
+
   return (
     <>
       <Layout>
@@ -165,8 +141,6 @@ const MainPage = () => {
         <Layout>
           <ProjectSider
             selectedFloor={selectedFloor}
-            handleSelectedProjectChange={handleSelectedProjectChange}
-            selectedProject={selectedProject}
             darkenColor={darkenColor}
           />
           <Layout style={{ padding: "0 24px 24px" }}>
@@ -175,7 +149,7 @@ const MainPage = () => {
               showSearch
               placeholder="Wyszukaj osobę"
               optionFilterProp="label"
-              // onChange={onChange}
+              onChange={handleEmployeeSelected}
               options={allEmployees?.map((emp: any) => ({
                 value: emp.id,
                 label: emp.name + " " + emp.surname,
@@ -259,10 +233,17 @@ const MainPage = () => {
         />
       )}
       {showMultipleFormModal && (
-        <MultipleFormAssigment selectedDesks={selectedElements} />
+        <MultipleFormAssigment
+          selectedDesks={selectedElements}
+          selectedFloor={selectedFloor}
+          showMultipleFormModal={showMultipleFormModal}
+          setShowMultipleFormModal={setShowMultipleFormModal}
+        />
       )}
     </>
   );
 };
 
 export default MainPage;
+
+
