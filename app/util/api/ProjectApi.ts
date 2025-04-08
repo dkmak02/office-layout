@@ -43,16 +43,31 @@ const changeProject = async ({
   deskId: number;
   projectId: number;
 }) => {
-  const response = await axios.patch(`${API_URL}/project`, {
-    deskId,
-    projectID: projectId, 
-  });
+  try {
+    const response = await axios.patch(
+      `${API_URL}/project`,
+      {
+        deskId,
+        projectID: projectId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      }
+    );
 
-  if (response.status !== 200) {
-    throw new Error("Failed to update project");
+    if (response.status !== 200) {
+      throw new Error("Failed to update project");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error changing project:", error);
+    throw error;
   }
-
-  return response.data;
 };
 
 const useProjects = (selectedFloor: string) => {

@@ -28,13 +28,17 @@ const fetchDesks = async ({
 const unreserveDesk = async (reservationId: number) => {
   const response = await axios.delete(`${API_URL}/reservations`, {
     data: { reservationID: reservationId },
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    withCredentials: true,
   });
   if (response.status !== 200) {
     throw new Error("Error unreserving desk");
   }
   return response.data;
 };
-
 
 const changePerson = async ({
   userId,
@@ -43,11 +47,26 @@ const changePerson = async ({
   userId: number;
   deskId: number;
 }) => {
-  const response = await axios.post(`${API_URL}/reservations`, {
-      deskId,
-      employeeId: userId,
-  });
-  return response.data;
+  try {
+    const response = await axios.post(
+      `${API_URL}/reservations`,
+      {
+        deskId,
+        employeeId: userId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error changing person:", error);
+    throw error;
+  }
 };
 const changeDeskType = async ({
   deskId,
@@ -56,15 +75,30 @@ const changeDeskType = async ({
   deskId: number;
   deskType: string;
 }) => {
-  const response = await axios.patch(`${API_URL}/desk/type`, {
-    deskID:deskId,
-    deskType,
-  });
-  if (response.status !== 200) {
-    throw new Error("Error changing desk type");
+  try {
+    const response = await axios.patch(
+      `${API_URL}/desk/type`,
+      {
+        deskID: deskId,
+        deskType: deskType,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+    if (response.status !== 200) {
+      throw new Error("Error changing desk type");
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Error changing desk type:", error);
+    throw error;
   }
-  return response.data;
-}
+};
 const hotdeskReservation = async ({
   deskId,
   employeeId,
@@ -76,15 +110,24 @@ const hotdeskReservation = async ({
   startDate: any;
   endDate: any;
 }) => {
-  const response = await axios.post(`${API_URL}/hotdesk-reservations`, {
-    deskId,
-    employeeId,
-    startDate,
-    endDate
-  });
+  const response = await axios.post(
+    `${API_URL}/hotdesk-reservations`,
+    {
+      deskId,
+      employeeId,
+      startDate,
+      endDate,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      withCredentials: true,
+    }
+  );
   if (response.status !== 201) {
     throw new Error("Error reserving hotdesk");
-
   }
   return response.data;
 };
