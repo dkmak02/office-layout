@@ -18,9 +18,12 @@ const fetchProjects = async ({
 
   try {
     const [projectsResponse, hotdesksResponse] = await Promise.all([
-      axios.get<Project[]>(`${API_URL}/projects`),
+      axios.get<Project[]>(`${API_URL}/projects`, {
+        withCredentials: true,
+      }),
       axios.get<Project>(`${API_URL}/desks/info`, {
         params: { floor: selectedFloor },
+        withCredentials: true,
       }),
     ]);
 

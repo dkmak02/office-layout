@@ -15,7 +15,12 @@ const fetchDesks = async ({
   queryKey: QueryKey;
 }): Promise<Desk[]> => {
   const selectedFloor = queryKey[1] as string;
-  const response = await axios.get(`${API_URL}/desks?floor=${selectedFloor}`);
+  const response = await axios.get(
+    `${API_URL}/desks?floor=${selectedFloor}&pointInTime=2024-12-12`,
+    {
+      withCredentials: true,
+    }
+  );
   if (response.status !== 200) {
     throw new Error("Error fetching desks");
   }

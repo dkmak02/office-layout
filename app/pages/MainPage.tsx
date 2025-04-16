@@ -8,7 +8,16 @@ import DeskReservationForm from "../components/DeskReservationForm";
 import DeskPopup from "../components/DeskPopup";
 import useDesks from "../util/api/DesksApi";
 import MultipleFormAssigment from "../components/MultipleFormAssigment";
-import { Breadcrumb, Layout, message, theme, Select, Space } from "antd";
+import {
+  Breadcrumb,
+  Layout,
+  message,
+  theme,
+  Select,
+  Button,
+  Space,
+  Modal,
+} from "antd";
 import NavbarMenu from "../components/nav-bar-components/Menu";
 import "./../styles/MainPage.css";
 import ProjectSider from "../components/sidebar-components/ProjectSider";
@@ -17,6 +26,7 @@ import { FloorComponentProps } from "../models/componentsModels";
 import { useFillter } from "../util/providers/SelectedProjectsEmployeesContext";
 import { Desk, DeskPopupData } from "../models/deskModel";
 import { findDesks } from "../util/FillterDesks";
+import useUser from "../util/api/UserApi";
 const { Header, Content } = Layout;
 const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
@@ -28,6 +38,7 @@ const MainPage = () => {
   const queryClient = useQueryClient();
   const [selectedFloor, setSelectedFloor] = useState("Floor 7");
   const { data: desksData } = useDesks(selectedFloor);
+  const { data: userData } = useUser();
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
   const { data: allEmployees } = useEmployees();
@@ -36,6 +47,8 @@ const MainPage = () => {
   const [selectedElements, setSelectedElements] = useState<Desk[]>([]);
   const { setSelectedEmployees, choosenProject } = useFillter();
   const [showMultipleFormModal, setShowMultipleFormModal] =
+    useState<boolean>(false);
+  const [showUsersReservation, setShowUsersReservation] =
     useState<boolean>(false);
   const [popupPosition, setPopupPosition] = useState<{
     x: number;
@@ -135,8 +148,14 @@ const MainPage = () => {
     <>
       <Layout>
         <Header style={{ display: "flex", alignItems: "center" }}>
-          <div className="demo-logo" />
           <NavbarMenu handleFloorChange={handleFloorChange} />
+          <Button
+            type="primary"
+            onClick={() => setShowUsersReservation(true)}
+            style={{ borderRadius: 0, height: "100%" }}
+          >
+            {userData?.name} {userData?.surname}
+          </Button>
         </Header>
         <Layout>
           <ProjectSider
@@ -239,6 +258,24 @@ const MainPage = () => {
           showMultipleFormModal={showMultipleFormModal}
           setShowMultipleFormModal={setShowMultipleFormModal}
         />
+      )}
+      {showUsersReservation && (
+        <Modal
+          title="Rezerwacje"
+          open={showUsersReservation}
+          onCancel={() => setShowUsersReservation(false)}
+          okButtonProps={{ style: { display: "none" } }}
+          cancelButtonProps={{ style: { display: "none" } }}
+        >
+          {/* <List
+            dataSource={userData?.reservations}
+            renderItem={(item) => genterateCard(item)}
+            style={{
+              maxHeight: 600,
+              overflowY: "auto",
+            }}
+          /> */}
+        </Modal>
       )}
     </>
   );
