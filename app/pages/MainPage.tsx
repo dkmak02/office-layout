@@ -81,7 +81,7 @@ const MainPage = () => {
       );
       setDesks(coloredDesks);
     }
-  }, [desksData]);
+  }, [desksData, selectedEmployees, choosenProject]);
   useEffect(() => {
     const loadFloorComponent = async () => {
       if (!selectedFloor || !desks) return;
@@ -156,11 +156,11 @@ const MainPage = () => {
   };
   const handleEmployeeSelected = (employeeIds: number[]) => {
     setSelectedEmployees(employeeIds);
-    const filteredDesks = findDesks(employeeIds, choosenProject, desks);
-    queryClient.setQueryData(
-      ["floors", selectedFloor, selectedDate],
-      filteredDesks
-    );
+    // const filteredDesks = findDesks(employeeIds, choosenProject, desks);
+    // queryClient.setQueryData(
+    //   ["floors", selectedFloor, selectedDate],
+    //   filteredDesks
+    // );
   };
   const handleCardUnreserv = async (reservationId: number) => {
     try {

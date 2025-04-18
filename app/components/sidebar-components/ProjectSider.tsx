@@ -30,22 +30,21 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
   const handleSelectedProjectChange = (projectCode: string) => {
     const newSelectedProject =
       projectCode === choosenProject ? "" : projectCode;
+    // const currentDesks = queryClient.getQueryData<Desk[]>([
+    //   "floors",
+    //   selectedFloor,
+    //   selectedDate,
+    // ]);
     setChoosenProject(newSelectedProject);
-    const currentDesks = queryClient.getQueryData<Desk[]>([
-      "floors",
-      selectedFloor,
-      selectedDate,
-    ]);
-    setChoosenProject(newSelectedProject);
-    const filteredDesks = findDesks(
-      selectedEmployees,
-      newSelectedProject,
-      currentDesks || []
-    );
-    queryClient.setQueryData(
-      ["floors", selectedFloor, selectedDate],
-      filteredDesks
-    );
+    // const filteredDesks = findDesks(
+    //   selectedEmployees,
+    //   newSelectedProject,
+    //   currentDesks || []
+    // );
+    // queryClient.setQueryData(
+    //   ["floors", selectedFloor, selectedDate],
+    //   filteredDesks
+    // );
   };
   const generateProjectCard = (project: Project) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
