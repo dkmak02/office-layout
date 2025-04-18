@@ -6,6 +6,7 @@ import useDesks from "../util/api/DesksApi";
 import { MulipleFormAssigmentProps } from "@/app/models/componentsModels";
 import { MultipleDeskReservation } from "../models/deskModel";
 import { Project } from "../models/projectModel";
+import { useDataContext } from "../util/providers/AppDataContext";
 const MultipleFormAssigment = ({
   selectedDesks,
   showMultipleFormModal,
@@ -15,7 +16,9 @@ const MultipleFormAssigment = ({
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { data: projects, changeProjectAsync } = useProjects(selectedFloor);
-  const { changeDeskTypeAsync } = useDesks(selectedFloor);
+  const { selectedDate } = useDataContext();
+  console.log(selectedFloor, selectedDate);
+  const { changeDeskTypeAsync } = useDesks(selectedFloor, selectedDate);
   const multipleProjectChange = (value: string) => {
     setSelectedProject(value);
   };
@@ -25,19 +28,28 @@ const MultipleFormAssigment = ({
   ) => {
     const projectId = projects?.find((p: Project) => p.code === project)?.id;
     const deskType = projectId ? "Project" : "Hotdesk";
-    for (let deskId of desks) {
-      changeDeskTypeAsync({
-        deskId: deskId.id,
-        deskType: deskType,
-      }).then(() => {
-        if (projectId) {
-          return changeProjectAsync({
+    console.log(desks, project);
+    await Promise.allSettled(
+      desks.map(async (deskId) => {
+        try {
+          await changeDeskTypeAsync({
             deskId: deskId.id,
-            projectId: projectId,
+            deskType: deskType,
           });
+
+          if (projectId) {
+            await changeProjectAsync({
+              deskId: deskId.id,
+              projectId: projectId,
+            });
+          }
+        } catch (error) {
+          message.error(
+            `Nie można przypisać projektu do biurka ${deskId.name} (biurko ma rezerwację).`
+          );
         }
-      });
-    }
+      })
+    );
   };
   const handleMultipleProjectChange = async () => {
     if (!selectedDesks.length || !selectedProject) {
@@ -47,18 +59,16 @@ const MultipleFormAssigment = ({
     setIsLoading(true);
     try {
       await handleMultipleDeskProjectChange(selectedDesks, selectedProject);
-      setIsLoading(false);
     } catch (error) {
+      console.error("Error updating desks:", error);
+    } finally {
       setIsLoading(false);
-      console.error("Error:", error);
     }
 
     setSelectedProject(null);
     setShowMultipleFormModal(false);
   };
-  if (isLoading) {
-    <Spin indicator={<LoadingOutlined spin />} size="large" />;
-  }
+
   return (
     <Modal
       title={
@@ -74,48 +84,56 @@ const MultipleFormAssigment = ({
       okButtonProps={{ style: { display: "none" } }}
       cancelButtonProps={{ style: { display: "none" } }}
     >
-      <List
-        dataSource={selectedDesks}
-        renderItem={(item) => (
-          <List.Item>
-            <Typography.Text>{item.name}</Typography.Text>
-          </List.Item>
-        )}
-        style={{
-          maxHeight: 300,
-          overflowY: "auto",
-        }}
-      />
-      <Select
-        showSearch
-        placeholder="Wybierz projekt"
-        value={selectedProject}
-        optionFilterProp="label"
-        onChange={multipleProjectChange}
-        options={(projects || []).map((project) => ({
-          label: project.name,
-          value: project.code,
-        }))}
-        style={{ width: "100%", marginTop: 16 }}
-      />
-      <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
-        <Button
-          color="primary"
-          variant="outlined"
-          onClick={handleMultipleProjectChange}
-        >
-          Zatwierdź
-        </Button>
-        <Button
-          danger
-          onClick={() => {
-            setShowMultipleFormModal(false);
-            setSelectedProject(null);
+      <Spin
+        spinning={isLoading}
+        indicator={<LoadingOutlined spin />}
+        style={{ width: "100%" }}
+      >
+        <List
+          dataSource={selectedDesks}
+          renderItem={(item) => (
+            <List.Item>
+              <Typography.Text>{item.name}</Typography.Text>
+            </List.Item>
+          )}
+          style={{
+            maxHeight: 300,
+            overflowY: "auto",
           }}
-        >
-          Anuluj
-        </Button>
-      </div>
+        />
+        <Select
+          showSearch
+          placeholder="Wybierz projekt"
+          value={selectedProject}
+          optionFilterProp="label"
+          onChange={multipleProjectChange}
+          options={(projects || []).map((project) => ({
+            label: project.name,
+            value: project.code,
+          }))}
+          style={{ width: "100%", marginTop: 16 }}
+        />
+        <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={handleMultipleProjectChange}
+            disabled={isLoading}
+          >
+            Zatwierdź
+          </Button>
+          <Button
+            danger
+            onClick={() => {
+              setShowMultipleFormModal(false);
+              setSelectedProject(null);
+            }}
+            disabled={isLoading}
+          >
+            Anuluj
+          </Button>
+        </div>
+      </Spin>
     </Modal>
   );
 };

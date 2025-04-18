@@ -17,27 +17,42 @@ import {
   Button,
   Space,
   Modal,
+  List,
+  Card,
+  Timeline,
 } from "antd";
 import NavbarMenu from "../components/nav-bar-components/Menu";
 import "./../styles/MainPage.css";
 import ProjectSider from "../components/sidebar-components/ProjectSider";
 import useEmployees from "../util/api/GetEmployees";
 import { FloorComponentProps } from "../models/componentsModels";
-import { useFillter } from "../util/providers/SelectedProjectsEmployeesContext";
-import { Desk, DeskPopupData } from "../models/deskModel";
+import { useDataContext } from "../util/providers/AppDataContext";
+import { Desk, DeskPopupData, Reservation } from "../models/deskModel";
 import { findDesks } from "../util/FillterDesks";
 import useUser from "../util/api/UserApi";
+import dayjs from "dayjs";
+import { ClockCircleOutlined } from "@ant-design/icons";
+import { useHandleDeleteReservation } from "../util/handlers/deleteReservation";
+import DaySwitcher from "../components/DaySwitcher";
 const { Header, Content } = Layout;
 const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
   floor8: require("../components/floors/Floor8"),
 };
-const MAX_DATE = new Date(8640000000000000);
 
 const MainPage = () => {
   const queryClient = useQueryClient();
-  const [selectedFloor, setSelectedFloor] = useState("Floor 7");
-  const { data: desksData } = useDesks(selectedFloor);
+  const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
+  const {
+    setSelectedEmployees,
+    choosenProject,
+    selectedFloor,
+    setSelectedFloor,
+    setCurrentReservations,
+    currentReservations,
+    selectedDate,
+  } = useDataContext();
+  const { data: desksData } = useDesks(selectedFloor, selectedDate);
   const { data: userData } = useUser();
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
@@ -45,7 +60,6 @@ const MainPage = () => {
   const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
   const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
   const [selectedElements, setSelectedElements] = useState<Desk[]>([]);
-  const { setSelectedEmployees, choosenProject } = useFillter();
   const [showMultipleFormModal, setShowMultipleFormModal] =
     useState<boolean>(false);
   const [showUsersReservation, setShowUsersReservation] =
@@ -128,12 +142,6 @@ const MainPage = () => {
     setSelectedDesk(null);
     setShowReservationForm(false);
   };
-  const isCurrentDateInRange = (startTime: string, endTime: string) => {
-    const currentDate = new Date();
-    const startDate = new Date(startTime);
-    const endDate = endTime ? new Date(endTime) : MAX_DATE;
-    return currentDate >= startDate && currentDate <= endDate;
-  };
   const handleEmployeeSelected = (employeeIds: number[]) => {
     setSelectedEmployees(employeeIds);
     const filteredDesks = findDesks(
@@ -141,9 +149,63 @@ const MainPage = () => {
       choosenProject,
       desksData || []
     );
-    queryClient.setQueryData(["floors", selectedFloor], filteredDesks);
+    console.log(selectedDate);
+    queryClient.setQueryData(
+      ["floors", selectedFloor, selectedDate],
+      filteredDesks
+    );
   };
-
+  const handleCardUnreserv = async (reservationId: number) => {
+    try {
+      await handleDeleteReservationCurrentUser(reservationId);
+      message.success("Reservation unreserved successfully.");
+    } catch (error) {
+      console.error("Unreserve failed:", error);
+      message.error("Failed to unreserve the desk.");
+    }
+  };
+  const handleUserNameClick = () => {
+    setShowUsersReservation(true);
+    setCurrentReservations(userData?.reservations || []);
+  };
+  const genterateCard = (reservation: Reservation) => {
+    const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
+    const endDate =
+      reservation.endTime === null
+        ? "Brak daty zakończenia"
+        : dayjs(reservation.endTime).format("YYYY-MM-DD");
+    console.log(reservation);
+    return (
+      <Card
+        key={reservation.reservationID}
+        title={`Rezerwacja: ${reservation.deskNo}`}
+        variant="outlined"
+        style={{ marginTop: 16 }}
+      >
+        <Timeline
+          style={{ padding: 0, margin: 0 }}
+          items={[
+            {
+              children: reservation.userName,
+            },
+            {
+              dot: <ClockCircleOutlined className="timeline-clock-icon" />,
+              color: "red",
+              children: startDate + " / " + endDate,
+              style: { padding: 0, margin: 0 },
+            },
+          ]}
+        />
+        <Button
+          danger
+          onClick={() => handleCardUnreserv(reservation.reservationID)}
+          style={{ margin: 0 }}
+        >
+          Usuń rezerwację
+        </Button>
+      </Card>
+    );
+  };
   return (
     <>
       <Layout>
@@ -151,7 +213,7 @@ const MainPage = () => {
           <NavbarMenu handleFloorChange={handleFloorChange} />
           <Button
             type="primary"
-            onClick={() => setShowUsersReservation(true)}
+            onClick={handleUserNameClick}
             style={{ borderRadius: 0, height: "100%" }}
           >
             {userData?.name} {userData?.surname}
@@ -163,22 +225,29 @@ const MainPage = () => {
             darkenColor={darkenColor}
           />
           <Layout style={{ padding: "0 24px 24px" }}>
-            <Select
-              mode="multiple"
-              showSearch
-              placeholder="Wyszukaj osobę"
-              optionFilterProp="label"
-              onChange={handleEmployeeSelected}
-              options={allEmployees?.map((emp: any) => ({
-                value: emp.id,
-                label: emp.name + " " + emp.surname,
-              }))}
-              style={{
-                marginTop: 16,
-                maxWidth: "50%",
-              }}
-              optionRender={(option) => <Space>{option.data.label}</Space>}
-            />
+            <div className="flex justify-between items-center gap-4 mt-4 mb-2">
+              <Select
+                mode="multiple"
+                showSearch
+                placeholder="Wyszukaj osobę"
+                optionFilterProp="label"
+                onChange={handleEmployeeSelected}
+                options={allEmployees?.map((emp: any) => ({
+                  value: emp.id,
+                  label: emp.name + " " + emp.surname,
+                }))}
+                style={{
+                  minWidth: 250,
+                  flex: 1,
+                  maxWidth: "50%",
+                }}
+                optionRender={(option) => <Space>{option.data.label}</Space>}
+              />
+
+              <div>
+                <DaySwitcher />
+              </div>
+            </div>
             <Breadcrumb
               items={[{ title: selectedFloor }]}
               style={{ margin: "16px 0" }}
@@ -195,33 +264,36 @@ const MainPage = () => {
               className="selectable-container"
             >
               <div>
-                <Selecto
-                  dragContainer={".selectable-container"}
-                  selectableTargets={[".desk"]}
-                  hitRate={100}
-                  ratio={0}
-                  selectByClick={false}
-                  onSelect={(e) => {
-                    const added = e.added.map((el) => ({
-                      id:
-                        (desksData ?? []).find(
-                          (d) => d.deskId === Number(el.id)
-                        )?.deskId || null,
-                      name:
-                        (desksData ?? []).find(
-                          (d) => d.deskId === Number(el.id)
-                        )?.name || null,
-                    }));
-                    const removed = e.removed.map((el) => Number(el.id));
-                    setSelectedElements((prev: any) => [
-                      ...prev.filter((el: any) => !removed.includes(el.id)),
-                      ...added,
-                    ]);
-                  }}
-                  onSelectEnd={() => {
-                    setShowMultipleFormModal(selectedElements.length > 0);
-                  }}
-                />
+                {userData?.isAdmin && (
+                  <Selecto
+                    dragContainer={".selectable-container"}
+                    selectableTargets={[".desk"]}
+                    hitRate={100}
+                    ratio={0}
+                    selectByClick={false}
+                    onSelect={(e) => {
+                      const added = e.added.map((el) => ({
+                        id:
+                          (desksData ?? []).find(
+                            (d) => d.deskId === Number(el.id)
+                          )?.deskId || null,
+                        name:
+                          (desksData ?? []).find(
+                            (d) => d.deskId === Number(el.id)
+                          )?.name || null,
+                      }));
+                      const removed = e.removed.map((el) => Number(el.id));
+                      setSelectedElements((prev: any) => [
+                        ...prev.filter((el: any) => !removed.includes(el.id)),
+                        ...added,
+                      ]);
+                    }}
+                    onSelectEnd={() => {
+                      setShowMultipleFormModal(selectedElements.length > 0);
+                    }}
+                  />
+                )}
+
                 {SvgComponent && desksData && (
                   <SvgComponent
                     desks={desksData}
@@ -261,20 +333,20 @@ const MainPage = () => {
       )}
       {showUsersReservation && (
         <Modal
-          title="Rezerwacje"
+          title="Moje rezerwacje"
           open={showUsersReservation}
           onCancel={() => setShowUsersReservation(false)}
           okButtonProps={{ style: { display: "none" } }}
           cancelButtonProps={{ style: { display: "none" } }}
         >
-          {/* <List
-            dataSource={userData?.reservations}
-            renderItem={(item) => genterateCard(item)}
+          <List
+            dataSource={currentReservations}
+            renderItem={(item: Reservation) => genterateCard(item)}
             style={{
               maxHeight: 600,
               overflowY: "auto",
             }}
-          /> */}
+          />
         </Modal>
       )}
     </>

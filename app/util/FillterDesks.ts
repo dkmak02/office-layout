@@ -45,31 +45,29 @@ export function findProjectDesksByEmployees(
 }
 export function findDesks(employeeIds: number[], projectCode:string, desks: Desk[]): Desk[] {
     if (employeeIds.length === 0 && projectCode === "") {
-        return desks.map((desk) => ({ ...desk, opacity: 1 }));
-    } 
-    if(employeeIds.length > 0 && projectCode !== "") {
-        const filteredDesks = findProjectDesksByCodeAndEmployees(
-            desks,
-            projectCode,
-            employeeIds
+      return desks.map((desk) => ({ ...desk, opacity: 1 }));
+    }
+    if (employeeIds.length > 0 && projectCode !== "") {
+      const filteredDesks = findProjectDesksByCodeAndEmployees(
+        desks,
+        projectCode,
+        employeeIds
+      );
+      return desks.map((desk) => {
+        const isFiltered = filteredDesks.some(
+          (filteredDesk) => filteredDesk.deskId === desk.deskId
         );
-        console.log("filteredDesks", filteredDesks);
-        return desks.map((desk) => {
-            const isFiltered = filteredDesks.some(
-                (filteredDesk) => filteredDesk.deskId === desk.deskId
-            );
-            return { ...desk, opacity: isFiltered ? 1 : 0.5 };
-        }
-        );
+        return { ...desk, opacity: isFiltered ? 1 : 0.5 };
+      });
     }
     if (employeeIds.length > 0) {
-        const employeeDesks = findProjectDesksByEmployees(desks, employeeIds);
-        return desks.map((desk) => {
-            const isFiltered = employeeDesks.some(
-                (filteredDesk) => filteredDesk.deskId === desk.deskId
-            );
-            return { ...desk, opacity: isFiltered ? 1 : 0.5 };
-        });
+      const employeeDesks = findProjectDesksByEmployees(desks, employeeIds);
+      return desks.map((desk) => {
+        const isFiltered = employeeDesks.some(
+          (filteredDesk) => filteredDesk.deskId === desk.deskId
+        );
+        return { ...desk, opacity: isFiltered ? 1 : 0.5 };
+      });
     }
     if (projectCode !== "") {
         const projectDesks = findProjectDesksByCode(desks, projectCode);

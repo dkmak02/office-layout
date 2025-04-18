@@ -15,8 +15,9 @@ const fetchDesks = async ({
   queryKey: QueryKey;
 }): Promise<Desk[]> => {
   const selectedFloor = queryKey[1] as string;
+  const date = queryKey[2] as string;
   const response = await axios.get(
-    `${API_URL}/desks?floor=${selectedFloor}&pointInTime=2024-12-12`,
+    `${API_URL}/desks?floor=${selectedFloor}&pointInTime=${date}`,
     {
       withCredentials: true,
     }
@@ -131,17 +132,68 @@ const hotdeskReservation = async ({
       withCredentials: true,
     }
   );
+  if (response.status === 409) {
+    throw new Error(response.data.message);
+  }
   if (response.status !== 201) {
     throw new Error("Error reserving hotdesk");
   }
   return response.data;
 };
-
-const useDesks = (selectedFloor: string) => {
+const hotdeskReservationCurrentUser = async ({
+  deskId,
+  employeeId,
+  startDate,
+  endDate,
+}: {
+  deskId: number;
+  employeeId: number;
+  startDate: any;
+  endDate: any;
+}) => {
+  const response = await axios.post(
+    `${API_URL}/current-user/hotdesk-reservations`,
+    {
+      deskId,
+      employeeId,
+      startDate,
+      endDate,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      withCredentials: true,
+    }
+  );
+  if (response.status === 409) {
+    throw new Error(response.data.message);
+  }
+  if (response.status !== 201) {
+    throw new Error("Error reserving hotdesk");
+  }
+  return response.data;
+};
+const unreserveDeskCurrentUser = async (reservationId: number) => {
+  const response = await axios.delete(`${API_URL}/current-user/reservations`, {
+    data: { reservationID: reservationId },
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    withCredentials: true,
+  });
+  if (response.status !== 200) {
+    throw new Error("Error unreserving desk");
+  }
+  return response.data;
+};
+const useDesks = (selectedFloor: string, date: string) => {
   const queryClient = useQueryClient();
 
   const desksQuery = useQuery({
-    queryKey: ["floors", selectedFloor],
+    queryKey: ["floors", selectedFloor, date],
     queryFn: fetchDesks,
   });
 
@@ -151,11 +203,14 @@ const useDesks = (selectedFloor: string) => {
       queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] }),
   });
 
-
   const personMutation = useMutation({
     mutationFn: changePerson,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
   });
   const deskTypeMutation = useMutation({
     mutationFn: changeDeskType,
@@ -164,8 +219,30 @@ const useDesks = (selectedFloor: string) => {
   });
   const hotdeskMutation = useMutation({
     mutationFn: hotdeskReservation,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+  const hotdeskMutationCurrentUser = useMutation({
+    mutationFn: hotdeskReservationCurrentUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+  const unreserveMutationCurrentUser = useMutation({
+    mutationFn: unreserveDeskCurrentUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
   });
   return {
     ...desksQuery,
@@ -176,7 +253,7 @@ const useDesks = (selectedFloor: string) => {
     changePerson: personMutation.mutate,
     changePersonAsync: personMutation.mutateAsync,
     isChangingPerson: personMutation.isPending,
-    
+
     changeDeskType: deskTypeMutation.mutate,
     changeDeskTypeAsync: deskTypeMutation.mutateAsync,
     isChangingDeskType: deskTypeMutation.isPending,
@@ -184,6 +261,14 @@ const useDesks = (selectedFloor: string) => {
     hotdeskReservation: hotdeskMutation.mutate,
     hotdeskReservationAsync: hotdeskMutation.mutateAsync,
     isHotdesking: hotdeskMutation.isPending,
+
+    unreserveDeskCurrentUser: unreserveMutationCurrentUser.mutate,
+    unreserveDeskCurrentUserAsync: unreserveMutationCurrentUser.mutateAsync,
+    isUnreservingCurrentUser: unreserveMutationCurrentUser.isPending,
+
+    hotdeskReservationCurrentUser: hotdeskMutationCurrentUser.mutate,
+    hotdeskReservationCurrentUserAsync: hotdeskMutationCurrentUser.mutateAsync,
+    isHotdeskingCurrentUser: hotdeskMutationCurrentUser.isPending,
   };
 };
 

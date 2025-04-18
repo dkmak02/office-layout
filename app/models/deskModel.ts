@@ -3,7 +3,8 @@ export interface Reservation {
   startTime: string;
   endTime: string;
   userId: number;
-  userName: string;
+  userName?: string;
+  deskNo?: string;
 }
 export interface Desk {
   name: string;

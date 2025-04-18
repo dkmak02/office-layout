@@ -4,7 +4,7 @@ const { Sider } = Layout;
 import useProjects from "@/app/util/api/ProjectApi";
 import { ProjectSiderProps } from "@/app/models/componentsModels";
 import { Project } from "@/app/models/projectModel";
-import { useFillter } from "@/app/util/providers/SelectedProjectsEmployeesContext";
+import { useDataContext } from "@/app/util/providers/AppDataContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { Desk } from "@/app/models/deskModel";
 import { findDesks } from "@/app/util/FillterDesks";
@@ -16,7 +16,8 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const { selectedEmployees, setChoosenProject, choosenProject } = useFillter();
+  const { selectedEmployees, setChoosenProject, choosenProject, selectedDate } =
+    useDataContext();
   const { data: projects, isLoading } = useProjects(selectedFloor);
 
   if (isLoading) {
@@ -40,7 +41,10 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
       newSelectedProject,
       currentDesks || []
     );
-    queryClient.setQueryData(["floors", selectedFloor], filteredDesks);
+    queryClient.setQueryData(
+      ["floors", selectedFloor, selectedDate],
+      filteredDesks
+    );
   };
   const generateProjectCard = (project: Project) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);

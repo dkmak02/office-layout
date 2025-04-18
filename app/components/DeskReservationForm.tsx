@@ -21,6 +21,9 @@ import useDesks from "../util/api/DesksApi";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { Reservation } from "../models/deskModel";
+import { useHandleDeleteReservation } from "../util/handlers/deleteReservation";
+import { useDataContext } from "../util/providers/AppDataContext";
+import useUser from "../util/api/UserApi";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const DeskReservationForm = ({
@@ -31,13 +34,18 @@ const DeskReservationForm = ({
   employees,
 }: DeskFormProps) => {
   const { name: deskName, reservations } = desk;
+  const { data: userData } = useUser();
+  const { setCurrentReservations, currentReservations, selectedDate } =
+    useDataContext();
+  const { handleDeleteReservation, handleDeleteReservationCurrentUser } =
+    useHandleDeleteReservation();
   const { data: projects, changeProjectAsync } = useProjects(selectedFloor);
   const {
     changePersonAsync,
     changeDeskTypeAsync,
-    unreserveDeskAsync,
     hotdeskReservationAsync,
-  } = useDesks(selectedFloor);
+    hotdeskReservationCurrentUserAsync,
+  } = useDesks(selectedFloor, selectedDate);
   const projectCode = desk.hotdesk ? "Hotdesk" : desk.project.code;
   const projectAssigned = desk.hotdesk ? "Hotdesk" : desk.project.projectName;
   const currentReservation = desk.reservations.find(
@@ -45,17 +53,25 @@ const DeskReservationForm = ({
   );
   const personAssigned = currentReservation
     ? currentReservation.userName
+    : projectCode === "Hotdesk"
+    ? userData?.name + " " + userData?.surname
     : null;
-  const employeeId = currentReservation ? currentReservation.userId : null;
+  const employeeId =
+    !userData?.isAdmin && projectCode === "Hotdesk"
+      ? userData?.id
+      : currentReservation
+      ? currentReservation.userId
+      : null;
   const [selectedDates, setSelectedDates] = useState<any>(null);
   const [selectedPerson, setSeletedPerson] = useState<any>(personAssigned);
-  const [selectedProject, setSelectedProject] = useState<any>(projectAssigned);
-  const [showReservationModal, setShowReservationModal] = useState<any>(false);
-  const [newReservation, setNewReservation] =
-    useState<Reservation[]>(reservations);
-  const [todayDeleted, setTodayDeleted] = useState<any>(false);
+  const [selectedProject, setSelectedProject] =
+    useState<string>(projectAssigned);
+  const [showReservationModal, setShowReservationModal] =
+    useState<boolean>(false);
+  const [todayDeleted, setTodayDeleted] = useState<boolean>(false);
   const isProgrammaticUpdate = useRef(false);
   useEffect(() => {
+    setCurrentReservations(reservations);
     setSeletedPerson(employeeId);
     setSelectedProject(projectCode);
   }, []);
@@ -63,7 +79,7 @@ const DeskReservationForm = ({
     const range = [];
     let current = start.clone();
     const customDates: any = [];
-    for (let reservation of newReservation) {
+    for (let reservation of currentReservations) {
       let startDate = dayjs(reservation.startTime);
       const endDate = dayjs(reservation.endTime);
       while (startDate.isBefore(endDate) || startDate.isSame(endDate)) {
@@ -79,7 +95,7 @@ const DeskReservationForm = ({
     return range.some((date) => customDates.includes(date));
   };
   const isReservedDate = (current: any) => {
-    for (let reservation of newReservation) {
+    for (let reservation of currentReservations) {
       const startDate = dayjs(reservation.startTime);
       const endDate = dayjs(reservation.endTime);
 
@@ -137,7 +153,7 @@ const DeskReservationForm = ({
     setSelectedProject(value);
   };
   const validateHotDesk = () => {
-    if (selectedProject === "Hotdesk" && !selectedDates && selectedPerson) {
+    if (selectedProject === "Hotdesk" && (!selectedDates || !selectedPerson)) {
       message.error("Please select a date range for the hotdesk.");
       return false;
     }
@@ -168,10 +184,18 @@ const DeskReservationForm = ({
     if (employee.id === employeeId) {
       return;
     }
-    await changePersonAsync({
-      deskId,
-      userId: employee.id,
-    });
+    try {
+      await changePersonAsync({
+        deskId,
+        userId: employee.id,
+      });
+    } catch (error) {
+      console.error("Error creating hotdesk reservation:", error);
+      message.error("User already has reservation for this time period!");
+      return;
+    }
+
+    message.success("Reservation created successfully.");
     onSubmit();
   };
   const submitHotdeskReservation = async (
@@ -194,13 +218,29 @@ const DeskReservationForm = ({
     const end = dayjs(endDateTime)
       .tz("Europe/Warsaw")
       .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+    try {
+      if (userData?.isAdmin) {
+        await hotdeskReservationAsync({
+          deskId,
+          employeeId: employee.id,
+          startDate: start,
+          endDate: end,
+        });
+      } else {
+        await hotdeskReservationCurrentUserAsync({
+          deskId,
+          employeeId: employee.id,
+          startDate: start,
+          endDate: end,
+        });
+      }
+    } catch (error) {
+      console.error("Error creating hotdesk reservation:", error);
+      message.error("User already has reservation for this time period!");
+      return;
+    }
 
-    await hotdeskReservationAsync({
-      deskId,
-      employeeId: employee.id,
-      startDate: start,
-      endDate: end,
-    });
+    message.success("Reservation created successfully.");
     onSubmit();
   };
   const handleSubmit = (e: any) => {
@@ -217,6 +257,10 @@ const DeskReservationForm = ({
       message.error("Selected project is invalid.");
       return;
     }
+    if (project.code === "Hotdesk" && (!employee || !selectedDates)) {
+      message.error("Please select an employee and a dates for the hotdesk.");
+      return;
+    }
     submitProjectChange(project, projectCode);
     if (!employee) {
       onSubmit();
@@ -229,13 +273,15 @@ const DeskReservationForm = ({
         selectedDates[0],
         selectedDates[1]
       );
-    } else {
+    } else if (project.code !== "Hotdesk") {
       sumbmitEmployeeChange(employee, desk.deskId);
     }
   };
-  const validateRoles = () => {
-    if (employees.length > 1) return true;
-    if (employees[0].id === employeeId) return true;
+  const validateRoles = (reservation: Reservation) => {
+    if (userData?.isAdmin) return true;
+    if (userData?.id === reservation?.userId && projectCode === "Hotdesk") {
+      return true;
+    }
     return false;
   };
 
@@ -244,13 +290,11 @@ const DeskReservationForm = ({
   };
   const handleCardUnreserv = async (reservationId: number) => {
     try {
-      await unreserveDeskAsync(reservationId);
-      setNewReservation(
-        newReservation.filter(
-          (reservation: Reservation) =>
-            reservation.reservationID !== reservationId
-        )
-      );
+      if (userData?.isAdmin) {
+        await handleDeleteReservation(reservationId);
+      } else {
+        await handleDeleteReservationCurrentUser(reservationId);
+      }
       if (reservationId === desk.currentReservationID) {
         setSeletedPerson(null);
         setSelectedDates(null);
@@ -262,11 +306,17 @@ const DeskReservationForm = ({
       message.error("Failed to unreserve the desk.");
     }
   };
-
+  const allowOwnReservation = () => {
+    if (userData?.isAdmin) return true;
+    if (userData?.id === selectedPerson) {
+      return true;
+    }
+    return false;
+  };
   const genterateCard = (reservation: Reservation) => {
     const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
     const endDate =
-      dayjs(reservation.endTime).year() === 9999
+      reservation.endTime === null
         ? "Brak daty zakończenia"
         : dayjs(reservation.endTime).format("YYYY-MM-DD");
 
@@ -291,7 +341,7 @@ const DeskReservationForm = ({
             },
           ]}
         />
-        {validateRoles() && (
+        {validateRoles(reservation) && (
           <Button
             danger
             onClick={() => handleCardUnreserv(reservation.reservationID)}
@@ -317,7 +367,11 @@ const DeskReservationForm = ({
       return;
     }
     try {
-      await unreserveDeskAsync(reservation.reservationID);
+      if (userData?.isAdmin) {
+        await handleDeleteReservation(reservation.reservationID);
+      } else {
+        await handleDeleteReservationCurrentUser(reservation.reservationID);
+      }
       message.success("Desk unreserved successfully.");
       onSubmit();
     } catch (error) {
@@ -371,6 +425,7 @@ const DeskReservationForm = ({
               placeholder="Wybierz osobę"
               optionFilterProp="label"
               defaultValue={employeeId}
+              disabled={!userData?.isAdmin}
               value={selectedPerson}
               onChange={onChangePerson}
               options={employees.map((person) => ({
@@ -385,6 +440,7 @@ const DeskReservationForm = ({
               showSearch
               placeholder="Wybierz projekt"
               defaultValue={projectCode}
+              disabled={!userData?.isAdmin}
               optionFilterProp="label"
               onChange={onChangeProject}
               options={(projects ?? []).map((project) => ({
@@ -394,33 +450,43 @@ const DeskReservationForm = ({
               style={{ width: "100%" }}
             />
           </div>
-          {selectedProject === "Hotdesk" && selectedPerson && (
-            <div className="calendar-container">
-              <DatePicker.RangePicker
-                value={selectedDates}
-                cellRender={cellRender}
-                onChange={handleRangeChange}
-                disabledDate={isReservedDate}
-                minDate={dayjs().startOf("day")}
-              />
-            </div>
-          )}
+          {selectedProject === "Hotdesk" &&
+            selectedPerson &&
+            allowOwnReservation() && (
+              <div className="calendar-container">
+                <DatePicker.RangePicker
+                  value={selectedDates}
+                  cellRender={cellRender}
+                  onChange={handleRangeChange}
+                  disabledDate={isReservedDate}
+                  minDate={dayjs().startOf("day")}
+                />
+              </div>
+            )}
           <div style={{ display: "flex", gap: "8px" }}>
-            {(!personAssigned || selectedProject === "Hotdesk") && (
-              <Button color="primary" variant="outlined" onClick={handleSubmit}>
-                Zatwierdź
-              </Button>
-            )}
-            {validateRoles() && personAssigned && !todayDeleted && (
-              <Button
-                color="red"
-                variant="outlined"
-                onClick={handleUnreserve}
-                style={{ color: "orange", borderColor: "orange" }}
-              >
-                Usuń rezerwację
-              </Button>
-            )}
+            {(!personAssigned || selectedProject === "Hotdesk") &&
+              allowOwnReservation() && (
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={handleSubmit}
+                >
+                  Zatwierdź
+                </Button>
+              )}
+            {currentReservation &&
+              validateRoles(currentReservation) &&
+              personAssigned &&
+              !todayDeleted && (
+                <Button
+                  color="red"
+                  variant="outlined"
+                  onClick={handleUnreserve}
+                  style={{ color: "orange", borderColor: "orange" }}
+                >
+                  Usuń rezerwację
+                </Button>
+              )}
             <Button danger onClick={onCancel}>
               Anuluj
             </Button>
@@ -436,7 +502,7 @@ const DeskReservationForm = ({
           cancelButtonProps={{ style: { display: "none" } }}
         >
           <List
-            dataSource={newReservation}
+            dataSource={currentReservations}
             renderItem={(item: Reservation) => genterateCard(item)}
             style={{
               maxHeight: 600,
