@@ -215,7 +215,7 @@ const MainPage = () => {
   };
   return (
     <>
-      <Layout>
+      <Layout className="h-screen w-full flex flex-col">
         <Header style={{ display: "flex", alignItems: "center" }}>
           <NavbarMenu handleFloorChange={handleFloorChange} />
           <Button
@@ -226,7 +226,7 @@ const MainPage = () => {
             {userData?.name} {userData?.surname}
           </Button>
         </Header>
-        <Layout>
+        <Layout className="flex-1 flex flex-col overflow-hidden">
           <ProjectSider
             selectedFloor={selectedFloor}
             darkenColor={darkenColor}
@@ -239,6 +239,7 @@ const MainPage = () => {
                 placeholder="Wyszukaj osobę"
                 optionFilterProp="label"
                 onChange={handleEmployeeSelected}
+                className="mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md h-[32px]"
                 options={allEmployees?.map((emp: any) => ({
                   value: emp.id,
                   label: emp.name + " " + emp.surname,
