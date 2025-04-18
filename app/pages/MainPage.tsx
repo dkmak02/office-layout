@@ -44,6 +44,7 @@ const MainPage = () => {
   const queryClient = useQueryClient();
   const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
   const {
+    selectedEmployees,
     setSelectedEmployees,
     choosenProject,
     selectedFloor,
@@ -70,9 +71,20 @@ const MainPage = () => {
   } | null>(null);
   const [showReservationForm, setShowReservationForm] = useState(false);
   const [selectedDesk, setSelectedDesk] = useState<Desk | null>(null);
+  const [desks, setDesks] = useState<Desk[]>([]);
+  useEffect(() => {
+    if (desksData) {
+      const coloredDesks = findDesks(
+        selectedEmployees,
+        choosenProject,
+        desksData
+      );
+      setDesks(coloredDesks);
+    }
+  }, [desksData]);
   useEffect(() => {
     const loadFloorComponent = async () => {
-      if (!selectedFloor || !desksData) return;
+      if (!selectedFloor || !desks) return;
       const floorKey = selectedFloor.toLowerCase().replace(/\s+/g, "");
       if (!floorComponents[floorKey]) {
         console.warn(`No component found for floor: ${selectedFloor}`);
@@ -91,7 +103,7 @@ const MainPage = () => {
     };
 
     loadFloorComponent();
-  }, [selectedFloor, desksData]);
+  }, [selectedFloor, desks]);
 
   const handleDeskClick = (desk: Desk) => {
     setSelectedDesk(desk);
@@ -144,11 +156,7 @@ const MainPage = () => {
   };
   const handleEmployeeSelected = (employeeIds: number[]) => {
     setSelectedEmployees(employeeIds);
-    const filteredDesks = findDesks(
-      employeeIds,
-      choosenProject,
-      desksData || []
-    );
+    const filteredDesks = findDesks(employeeIds, choosenProject, desks);
     queryClient.setQueryData(
       ["floors", selectedFloor, selectedDate],
       filteredDesks
@@ -273,13 +281,11 @@ const MainPage = () => {
                     onSelect={(e) => {
                       const added = e.added.map((el) => ({
                         id:
-                          (desksData ?? []).find(
-                            (d) => d.deskId === Number(el.id)
-                          )?.deskId || null,
+                          desks.find((d) => d.deskId === Number(el.id))
+                            ?.deskId || null,
                         name:
-                          (desksData ?? []).find(
-                            (d) => d.deskId === Number(el.id)
-                          )?.name || null,
+                          desks.find((d) => d.deskId === Number(el.id))?.name ||
+                          null,
                       }));
                       const removed = e.removed.map((el) => Number(el.id));
                       setSelectedElements((prev: any) => [
@@ -293,9 +299,9 @@ const MainPage = () => {
                   />
                 )}
 
-                {SvgComponent && desksData && (
+                {SvgComponent && desks && (
                   <SvgComponent
-                    desks={desksData}
+                    desks={desks}
                     handleDeskClick={handleDeskClick}
                     handleDeskHover={handleDeskHover}
                     handleLeave={handleLeave}
