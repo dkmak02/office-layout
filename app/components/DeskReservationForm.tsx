@@ -24,6 +24,7 @@ import { Reservation } from "../models/deskModel";
 import { useHandleDeleteReservation } from "../util/handlers/deleteReservation";
 import { useDataContext } from "../util/providers/AppDataContext";
 import useUser from "../util/api/UserApi";
+import useDesksMutations from "../util/api/DesksMutation";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const DeskReservationForm = ({
@@ -45,7 +46,7 @@ const DeskReservationForm = ({
     changeDeskTypeAsync,
     hotdeskReservationAsync,
     hotdeskReservationCurrentUserAsync,
-  } = useDesks(selectedFloor, selectedDate);
+  } = useDesksMutations(selectedFloor, selectedDate);
   const projectCode = desk.hotdesk ? "Hotdesk" : desk.project.code;
   const projectAssigned = desk.hotdesk ? "Hotdesk" : desk.project.projectName;
   const currentReservation = desk.reservations.find(

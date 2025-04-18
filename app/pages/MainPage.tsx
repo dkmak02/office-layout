@@ -149,7 +149,6 @@ const MainPage = () => {
       choosenProject,
       desksData || []
     );
-    console.log(selectedDate);
     queryClient.setQueryData(
       ["floors", selectedFloor, selectedDate],
       filteredDesks

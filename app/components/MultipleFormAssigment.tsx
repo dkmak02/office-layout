@@ -7,6 +7,7 @@ import { MulipleFormAssigmentProps } from "@/app/models/componentsModels";
 import { MultipleDeskReservation } from "../models/deskModel";
 import { Project } from "../models/projectModel";
 import { useDataContext } from "../util/providers/AppDataContext";
+import useDesksMutations from "../util/api/DesksMutation";
 const MultipleFormAssigment = ({
   selectedDesks,
   showMultipleFormModal,
@@ -18,7 +19,10 @@ const MultipleFormAssigment = ({
   const { data: projects, changeProjectAsync } = useProjects(selectedFloor);
   const { selectedDate } = useDataContext();
   console.log(selectedFloor, selectedDate);
-  const { changeDeskTypeAsync } = useDesks(selectedFloor, selectedDate);
+  const { changeDeskTypeAsync } = useDesksMutations(
+    selectedFloor,
+    selectedDate
+  );
   const multipleProjectChange = (value: string) => {
     setSelectedProject(value);
   };

@@ -34,6 +34,7 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
     const currentDesks = queryClient.getQueryData<Desk[]>([
       "floors",
       selectedFloor,
+      selectedDate,
     ]);
     setChoosenProject(newSelectedProject);
     const filteredDesks = findDesks(
