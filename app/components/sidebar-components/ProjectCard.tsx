@@ -23,8 +23,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        margin: 16,
-        padding: 12,
+        margin: 8,
+        padding: 5,
         background: "#ffffff",
         cursor: "pointer",
         borderRadius: 8,

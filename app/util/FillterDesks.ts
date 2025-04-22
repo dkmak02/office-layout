@@ -57,7 +57,7 @@ export function findDesks(employeeIds: number[], projectCode:string, desks: Desk
         const isFiltered = filteredDesks.some(
           (filteredDesk) => filteredDesk.deskId === desk.deskId
         );
-        return { ...desk, opacity: isFiltered ? 1 : 0.5 };
+        return { ...desk, opacity: isFiltered ? 1 : 0 };
       });
     }
     if (employeeIds.length > 0) {
@@ -66,17 +66,17 @@ export function findDesks(employeeIds: number[], projectCode:string, desks: Desk
         const isFiltered = employeeDesks.some(
           (filteredDesk) => filteredDesk.deskId === desk.deskId
         );
-        return { ...desk, opacity: isFiltered ? 1 : 0.5 };
+        return { ...desk, opacity: isFiltered ? 1 : 0 };
       });
     }
     if (projectCode !== "") {
-        const projectDesks = findProjectDesksByCode(desks, projectCode);
-        return desks.map((desk) => {
-            const isFiltered = projectDesks.some(
-                (filteredDesk) => filteredDesk.deskId === desk.deskId
-            );
-            return { ...desk, opacity: isFiltered ? 1 : 0.5 };
-        });
+      const projectDesks = findProjectDesksByCode(desks, projectCode);
+      return desks.map((desk) => {
+        const isFiltered = projectDesks.some(
+          (filteredDesk) => filteredDesk.deskId === desk.deskId
+        );
+        return { ...desk, opacity: isFiltered ? 1 : 0 };
+      });
     }
     return desks;
 

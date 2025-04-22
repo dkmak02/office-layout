@@ -39,9 +39,9 @@ const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
   floor8: require("../components/floors/Floor8"),
 };
-
+import { useTranslations } from "next-intl";
 const MainPage = () => {
-  const queryClient = useQueryClient();
+  const t = useTranslations();
   const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
   const {
     selectedEmployees,
@@ -61,6 +61,7 @@ const MainPage = () => {
   const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
   const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
   const [selectedElements, setSelectedElements] = useState<Desk[]>([]);
+  const [backgroundOpacity, setBackgroundOpacity] = useState(1);
   const [showMultipleFormModal, setShowMultipleFormModal] =
     useState<boolean>(false);
   const [showUsersReservation, setShowUsersReservation] =
@@ -80,6 +81,9 @@ const MainPage = () => {
         desksData
       );
       setDesks(coloredDesks);
+      setBackgroundOpacity(
+        choosenProject !== "" || selectedEmployees.length > 0 ? 0.3 : 1
+      );
     }
   }, [desksData, selectedEmployees, choosenProject]);
   useEffect(() => {
@@ -181,7 +185,6 @@ const MainPage = () => {
       reservation.endTime === null
         ? "Brak daty zakończenia"
         : dayjs(reservation.endTime).format("YYYY-MM-DD");
-    console.log(reservation);
     return (
       <Card
         key={reservation.reservationID}
@@ -299,15 +302,19 @@ const MainPage = () => {
                     }}
                   />
                 )}
-
-                {SvgComponent && desks && (
-                  <SvgComponent
-                    desks={desks}
-                    handleDeskClick={handleDeskClick}
-                    handleDeskHover={handleDeskHover}
-                    handleLeave={handleLeave}
-                  />
-                )}
+                <div className="relative h-full w-full">
+                  <div className="relative z-10 flex flex-col items-center justify-center h-full">
+                    {SvgComponent && desks && (
+                      <SvgComponent
+                        desks={desks}
+                        handleDeskClick={handleDeskClick}
+                        handleDeskHover={handleDeskHover}
+                        handleLeave={handleLeave}
+                        backgroundOpacity={backgroundOpacity}
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
             </Content>
           </Layout>

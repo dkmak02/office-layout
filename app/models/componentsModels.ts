@@ -22,6 +22,7 @@ export interface FloorComponentProps {
     desk: Desk
   ) => void;
   handleLeave: () => void;
+  backgroundOpacity: number;
 }
 export interface DeskFormProps {
   desk: Desk;

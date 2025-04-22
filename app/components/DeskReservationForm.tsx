@@ -488,9 +488,11 @@ const DeskReservationForm = ({
                   Usuń rezerwację
                 </Button>
               )}
-            <Button danger onClick={onCancel}>
-              Anuluj
-            </Button>
+            {allowOwnReservation() && (
+              <Button danger onClick={onCancel}>
+                Anuluj
+              </Button>
+            )}
           </div>
         </div>
       </Modal>
