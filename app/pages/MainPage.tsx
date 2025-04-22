@@ -39,9 +39,7 @@ const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
   floor8: require("../components/floors/Floor8"),
 };
-import { useTranslations } from "next-intl";
 const MainPage = () => {
-  const t = useTranslations();
   const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
   const {
     selectedEmployees,
