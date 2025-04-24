@@ -6,9 +6,9 @@ export interface SvgComponentProps {
   handleDeskHover: () => void;
   handleLeave: () => void;
 }
-export interface NavbarMenuProps {
-  handleFloorChange: (floorKey: string) => void;
-}
+// export interface NavbarMenuProps {
+//   handleFloorChange: (floorKey: string) => void;
+// }
 
 export interface ProjectSiderProps {
   selectedFloor: string;

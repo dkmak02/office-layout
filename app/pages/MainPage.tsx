@@ -40,11 +40,10 @@ const floorComponents: any = {
   floor8: require("../components/floors/Floor8"),
 };
 const MainPage = () => {
-  const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
   const {
     selectedEmployees,
     setSelectedEmployees,
-    choosenProject,
+    choosenProjects,
     selectedFloor,
     setSelectedFloor,
     setCurrentReservations,
@@ -55,7 +54,9 @@ const MainPage = () => {
   const { data: userData } = useUser();
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
-  const { data: allEmployees } = useEmployees();
+  const { allEmployees } = useEmployees({
+    isAdmin: userData?.isAdmin || false,
+  });
   const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
   const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
   const [selectedElements, setSelectedElements] = useState<Desk[]>([]);
@@ -75,15 +76,15 @@ const MainPage = () => {
     if (desksData) {
       const coloredDesks = findDesks(
         selectedEmployees,
-        choosenProject,
+        choosenProjects,
         desksData
       );
       setDesks(coloredDesks);
       setBackgroundOpacity(
-        choosenProject !== "" || selectedEmployees.length > 0 ? 0.3 : 1
+        choosenProjects.length !== 0 || selectedEmployees.length > 0 ? 0.3 : 1
       );
     }
-  }, [desksData, selectedEmployees, choosenProject]);
+  }, [desksData, selectedEmployees, choosenProjects]);
   useEffect(() => {
     const loadFloorComponent = async () => {
       if (!selectedFloor || !desks) return;
@@ -140,9 +141,6 @@ const MainPage = () => {
   const handleLeave = () => {
     setShowDeskPopup(false);
   };
-  const handleFloorChange = (floor: string) => {
-    setSelectedFloor(floor);
-  };
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -164,158 +162,101 @@ const MainPage = () => {
     //   filteredDesks
     // );
   };
-  const handleCardUnreserv = async (reservationId: number) => {
-    try {
-      await handleDeleteReservationCurrentUser(reservationId);
-      message.success("Reservation unreserved successfully.");
-    } catch (error) {
-      console.error("Unreserve failed:", error);
-      message.error("Failed to unreserve the desk.");
-    }
-  };
+
   const handleUserNameClick = () => {
     setShowUsersReservation(true);
     setCurrentReservations(userData?.reservations || []);
   };
-  const genterateCard = (reservation: Reservation) => {
-    const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
-    const endDate =
-      reservation.endTime === null
-        ? "Brak daty zakończenia"
-        : dayjs(reservation.endTime).format("YYYY-MM-DD");
-    return (
-      <Card
-        key={reservation.reservationID}
-        title={`Rezerwacja: ${reservation.deskNo}`}
-        variant="outlined"
-        style={{ marginTop: 16 }}
-      >
-        <Timeline
-          style={{ padding: 0, margin: 0 }}
-          items={[
-            {
-              children: reservation.userName,
-            },
-            {
-              dot: <ClockCircleOutlined className="timeline-clock-icon" />,
-              color: "red",
-              children: startDate + " / " + endDate,
-              style: { padding: 0, margin: 0 },
-            },
-          ]}
-        />
-        <Button
-          danger
-          onClick={() => handleCardUnreserv(reservation.reservationID)}
-          style={{ margin: 0 }}
-        >
-          Usuń rezerwację
-        </Button>
-      </Card>
-    );
-  };
   return (
     <>
-      <Layout className="h-screen w-full flex flex-col">
-        <Header style={{ display: "flex", alignItems: "center" }}>
-          <NavbarMenu handleFloorChange={handleFloorChange} />
-          <Button
-            type="primary"
-            onClick={handleUserNameClick}
-            style={{ borderRadius: 0, height: "100%" }}
-          >
-            {userData?.name} {userData?.surname}
-          </Button>
-        </Header>
-        <Layout className="flex-1 flex flex-col overflow-hidden">
-          <ProjectSider
-            selectedFloor={selectedFloor}
-            darkenColor={darkenColor}
-          />
-          <Layout style={{ padding: "0 24px 24px" }}>
-            <div className="flex justify-between items-center gap-4 mt-4 mb-2">
-              <Select
-                mode="multiple"
-                showSearch
-                placeholder="Wyszukaj osobę"
-                optionFilterProp="label"
-                onChange={handleEmployeeSelected}
-                className="mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md h-[32px]"
-                options={allEmployees?.map((emp: any) => ({
-                  value: emp.id,
-                  label: emp.name + " " + emp.surname,
-                }))}
-                style={{
-                  minWidth: 250,
-                  flex: 1,
-                  maxWidth: "50%",
-                }}
-                optionRender={(option) => <Space>{option.data.label}</Space>}
-              />
-
-              <div>
-                <DaySwitcher />
-              </div>
-            </div>
-            <Breadcrumb
-              items={[{ title: selectedFloor }]}
-              style={{ margin: "16px 0" }}
-            />
-            <Content
+      <Layout
+        className="w-full flex flex-col"
+        style={{ height: "calc(100vh - 64px)" }}
+      >
+        <ProjectSider selectedFloor={selectedFloor} darkenColor={darkenColor} />
+        <Layout style={{ padding: "0 24px 24px" }}>
+          <div className="flex justify-between items-center gap-4 mt-4 mb-2">
+            <Select
+              mode="multiple"
+              showSearch
+              placeholder="Wyszukaj osobę"
+              optionFilterProp="label"
+              onChange={handleEmployeeSelected}
+              className="mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md h-[32px]"
+              options={allEmployees.data?.map((emp: any) => ({
+                value: emp.id,
+                label: emp.name + " " + emp.surname,
+              }))}
               style={{
-                padding: 24,
-                margin: 0,
-                minHeight: 280,
-                height: "100%",
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
+                minWidth: 250,
+                flex: 1,
+                maxWidth: "50%",
               }}
-              className="selectable-container"
-            >
-              <div>
-                {userData?.isAdmin && (
-                  <Selecto
-                    dragContainer={".selectable-container"}
-                    selectableTargets={[".desk"]}
-                    hitRate={100}
-                    ratio={0}
-                    selectByClick={false}
-                    onSelect={(e) => {
-                      const added = e.added.map((el) => ({
-                        id:
-                          desks.find((d) => d.deskId === Number(el.id))
-                            ?.deskId || null,
-                        name:
-                          desks.find((d) => d.deskId === Number(el.id))?.name ||
-                          null,
-                      }));
-                      const removed = e.removed.map((el) => Number(el.id));
-                      setSelectedElements((prev: any) => [
-                        ...prev.filter((el: any) => !removed.includes(el.id)),
-                        ...added,
-                      ]);
-                    }}
-                    onSelectEnd={() => {
-                      setShowMultipleFormModal(selectedElements.length > 0);
-                    }}
-                  />
-                )}
-                <div className="relative h-full w-full">
-                  <div className="relative z-10 flex flex-col items-center justify-center h-full">
-                    {SvgComponent && desks && (
-                      <SvgComponent
-                        desks={desks}
-                        handleDeskClick={handleDeskClick}
-                        handleDeskHover={handleDeskHover}
-                        handleLeave={handleLeave}
-                        backgroundOpacity={backgroundOpacity}
-                      />
-                    )}
-                  </div>
+              optionRender={(option) => <Space>{option.data.label}</Space>}
+            />
+
+            <div>
+              <DaySwitcher />
+            </div>
+          </div>
+          <Breadcrumb
+            items={[{ title: selectedFloor }]}
+            style={{ margin: "16px 0" }}
+          />
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+              height: "100%",
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+            }}
+            className="selectable-container"
+          >
+            <div>
+              {userData?.isAdmin && (
+                <Selecto
+                  dragContainer={".selectable-container"}
+                  selectableTargets={[".desk"]}
+                  hitRate={100}
+                  ratio={0}
+                  selectByClick={false}
+                  onSelect={(e) => {
+                    const added = e.added.map((el) => ({
+                      id:
+                        desks.find((d) => d.deskId === Number(el.id))?.deskId ||
+                        null,
+                      name:
+                        desks.find((d) => d.deskId === Number(el.id))?.name ||
+                        null,
+                    }));
+                    const removed = e.removed.map((el) => Number(el.id));
+                    setSelectedElements((prev: any) => [
+                      ...prev.filter((el: any) => !removed.includes(el.id)),
+                      ...added,
+                    ]);
+                  }}
+                  onSelectEnd={() => {
+                    setShowMultipleFormModal(selectedElements.length > 0);
+                  }}
+                />
+              )}
+              <div className="relative h-full w-full">
+                <div className="relative z-10 flex flex-col items-center justify-center h-full">
+                  {SvgComponent && desks && (
+                    <SvgComponent
+                      desks={desks}
+                      handleDeskClick={handleDeskClick}
+                      handleDeskHover={handleDeskHover}
+                      handleLeave={handleLeave}
+                      backgroundOpacity={backgroundOpacity}
+                    />
+                  )}
                 </div>
               </div>
-            </Content>
-          </Layout>
+            </div>
+          </Content>
         </Layout>
       </Layout>
       {showDeskPopup && popupData && (
@@ -331,7 +272,7 @@ const MainPage = () => {
           selectedFloor={selectedFloor}
           onSubmit={handleDeskReservationSubmit}
           onCancel={() => setShowReservationForm(false)}
-          employees={allEmployees || []}
+          employees={allEmployees.data || []}
         />
       )}
       {showMultipleFormModal && (
@@ -342,28 +283,8 @@ const MainPage = () => {
           setShowMultipleFormModal={setShowMultipleFormModal}
         />
       )}
-      {showUsersReservation && (
-        <Modal
-          title="Moje rezerwacje"
-          open={showUsersReservation}
-          onCancel={() => setShowUsersReservation(false)}
-          okButtonProps={{ style: { display: "none" } }}
-          cancelButtonProps={{ style: { display: "none" } }}
-        >
-          <List
-            dataSource={currentReservations}
-            renderItem={(item: Reservation) => genterateCard(item)}
-            style={{
-              maxHeight: 600,
-              overflowY: "auto",
-            }}
-          />
-        </Modal>
-      )}
     </>
   );
 };
 
 export default MainPage;
-
-

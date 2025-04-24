@@ -4,17 +4,17 @@ import { Project } from "@/app/models/projectModel";
 
 interface ProjectCardProps {
   project: Project;
-  choosenProject: string;
+  choosenProjects: string[];
   onSelect: (code: string) => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
-  choosenProject,
+  choosenProjects,
   onSelect,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const isSelected = choosenProject === project.code;
+  const isSelected = choosenProjects.includes(project.code);
 
   return (
     <Card

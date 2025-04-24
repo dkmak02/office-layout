@@ -172,10 +172,14 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
 
   const unreserveMutation = useMutation({
     mutationFn: unreserveDesk,
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["floors", selectedFloor, date],
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployees"],
+      });
+    },
   });
 
   const personMutation = useMutation({
@@ -186,6 +190,9 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: ["user"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployees"],
       });
     },
   });
@@ -205,6 +212,9 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployees"],
+      });
     },
   });
   const hotdeskMutationCurrentUser = useMutation({
@@ -216,6 +226,9 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployees"],
+      });
     },
   });
   const unreserveMutationCurrentUser = useMutation({
@@ -226,6 +239,9 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: ["user"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployees"],
       });
     },
   });

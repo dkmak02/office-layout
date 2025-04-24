@@ -4,3 +4,11 @@ export interface Employee {
   surname: string;
   position: string;
 }
+export interface UnassignedEmployee {
+  id: number;
+  name: string;
+  surname: string;
+  companyName: string;
+  department: string;
+  position: string;
+}

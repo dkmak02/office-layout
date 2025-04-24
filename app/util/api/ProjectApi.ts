@@ -6,7 +6,6 @@ import {
 } from "@tanstack/react-query";
 import axios from "axios";
 import { Project } from "@/app/models/projectModel";
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const fetchProjects = async ({
@@ -19,6 +18,7 @@ const fetchProjects = async ({
   try {
     const [projectsResponse, hotdesksResponse] = await Promise.all([
       axios.get<Project[]>(`${API_URL}/projects`, {
+        params: { floor: selectedFloor },
         withCredentials: true,
       }),
       axios.get<Project>(`${API_URL}/desks/info`, {
@@ -31,7 +31,7 @@ const fetchProjects = async ({
       throw new Error("Error fetching project or desk data");
     }
 
-    const combinedData = [...projectsResponse.data, hotdesksResponse.data];
+    const combinedData = [hotdesksResponse.data, ...projectsResponse.data];
     return combinedData;
   } catch (error) {
     console.error("Error fetching projects:", error);

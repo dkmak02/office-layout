@@ -465,7 +465,7 @@ const DeskReservationForm = ({
               </div>
             )}
           <div style={{ display: "flex", gap: "8px" }}>
-            {(!personAssigned || selectedProject === "Hotdesk") &&
+            {(!selectedPerson || selectedProject === "Hotdesk") &&
               allowOwnReservation() && (
                 <Button
                   color="primary"

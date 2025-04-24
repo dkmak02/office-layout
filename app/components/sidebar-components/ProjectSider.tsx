@@ -18,8 +18,12 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const { selectedEmployees, setChoosenProject, choosenProject, selectedDate } =
-    useDataContext();
+  const {
+    selectedEmployees,
+    setChoosenProjects,
+    choosenProjects,
+    selectedDate,
+  } = useDataContext();
   const { data: projects, isLoading } = useProjects(selectedFloor);
 
   if (isLoading) {
@@ -31,9 +35,13 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
   }
 
   const handleSelectedProjectChange = (projectCode: string) => {
-    const newSelectedProject =
-      projectCode === choosenProject ? "" : projectCode;
-    setChoosenProject(newSelectedProject);
+    // const newSelectedProject =
+    //   projectCode === choosenProject ? "" : projectCode;
+    if (choosenProjects.includes(projectCode)) {
+      setChoosenProjects((prev) => prev.filter((code) => code !== projectCode));
+    } else {
+      setChoosenProjects((prev) => [...prev, projectCode]);
+    }
   };
 
   return (
@@ -55,7 +63,7 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({
           <ProjectCard
             key={project.code}
             project={project}
-            choosenProject={choosenProject}
+            choosenProjects={choosenProjects}
             onSelect={handleSelectedProjectChange}
           />
         )}

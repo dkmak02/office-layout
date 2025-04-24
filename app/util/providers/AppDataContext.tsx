@@ -5,12 +5,10 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 interface AppDataContextType {
   selectedEmployees: number[];
   setSelectedEmployees: React.Dispatch<React.SetStateAction<number[]>>;
-  choosenProject: string;
-  setChoosenProject: React.Dispatch<React.SetStateAction<string>>;
+  choosenProjects: string[];
+  setChoosenProjects: React.Dispatch<React.SetStateAction<string[]>>;
   currentReservations: Reservation[];
-  setCurrentReservations: React.Dispatch<
-    React.SetStateAction<Reservation[]>
-  >;
+  setCurrentReservations: React.Dispatch<React.SetStateAction<Reservation[]>>;
   selectedFloor: string;
   setSelectedFloor: React.Dispatch<React.SetStateAction<string>>;
   selectedDate: string;
@@ -26,14 +24,17 @@ interface AppDataProviderProps {
 export const AppDataProvider: React.FC<AppDataProviderProps> = ({
   children,
 }) => {
-
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
-  const formattedDate = dayjs(currentDate).add(1,'hour').format("YYYY-MM-DDTHH:mm:ss");
+  const formattedDate = dayjs(currentDate)
+    .add(1, "hour")
+    .format("YYYY-MM-DDTHH:mm:ss");
 
   const [selectedEmployees, setSelectedEmployees] = useState<number[]>([]);
-  const [choosenProject, setChoosenProject] = useState<string>("");
-  const [currentReservations, setCurrentReservations] = useState<Reservation[]>([]);
+  const [choosenProjects, setChoosenProjects] = useState<string[]>([]);
+  const [currentReservations, setCurrentReservations] = useState<Reservation[]>(
+    []
+  );
   const [selectedFloor, setSelectedFloor] = useState<string>("Floor 7");
   const [selectedDate, setSelectedDate] = useState<string>(formattedDate);
 
@@ -42,8 +43,8 @@ export const AppDataProvider: React.FC<AppDataProviderProps> = ({
       value={{
         selectedEmployees,
         setSelectedEmployees,
-        choosenProject,
-        setChoosenProject,
+        choosenProjects,
+        setChoosenProjects,
         currentReservations,
         setCurrentReservations,
         selectedFloor,

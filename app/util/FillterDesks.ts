@@ -8,76 +8,85 @@ const MAX_DATE = new Date(8640000000000000);
   };
 export function findProjectDesksByCode(
   desks: Desk[],
-  selectedProject: string | null
+  selectedProjects: string[] | null
 ): Desk[] {
-  return desks.filter((desk) => desk.project.code === selectedProject || (selectedProject === "Hotdesk" && desk.hotdesk === true));
+  return desks.filter(
+    (desk) =>
+      selectedProjects?.includes(desk.project.code) ||
+      (selectedProjects?.includes("Hotdesk") && desk.hotdesk === true)
+  );
 }
 export function findProjectDesksByCodeAndEmployees(
-    desks: Desk[],
-    selectedProject: string | null,
-    selectedEmployees: number[]
-    ): Desk[] {
-    return desks.filter((desk) => {
-        const hasReservationForSelected = desk.reservations.some(
-          (reservation) =>
-            selectedEmployees.includes(reservation.userId) &&
-            isCurrentDateInRange(reservation.startTime, reservation.endTime)
-        );
-        const isSelectedProject = desk.project.code === selectedProject || (selectedProject === "Hotdesk" && desk.hotdesk === true);
-        return hasReservationForSelected && isSelectedProject;
-    });
-    }
-export function findProjectDesksByEmployees(
-    desks: Desk[],
-    selectedEmployees: number[]
+  desks: Desk[],
+  selectedProjects: string[] | null,
+  selectedEmployees: number[]
 ): Desk[] {
-    if (selectedEmployees.length === 0) {
-        return desks;
-    }
-
-    return desks.filter((desk) =>
-      desk.reservations.some(
-        (reservation) =>
-          selectedEmployees.includes(reservation.userId) &&
-          isCurrentDateInRange(reservation.startTime, reservation.endTime)
-      )
+  return desks.filter((desk) => {
+    const hasReservationForSelected = desk.reservations.some(
+      (reservation) =>
+        selectedEmployees.includes(reservation.userId) &&
+        isCurrentDateInRange(reservation.startTime, reservation.endTime)
     );
+    const isSelectedProject =
+      selectedProjects?.includes(desk.project.code) ||
+      (selectedProjects?.includes("Hotdesk") && desk.hotdesk === true);
+    return hasReservationForSelected && isSelectedProject;
+  });
 }
-export function findDesks(employeeIds: number[], projectCode:string, desks: Desk[]): Desk[] {
-    if (employeeIds.length === 0 && projectCode === "") {
-      return desks.map((desk) => ({ ...desk, opacity: 1 }));
-    }
-    if (employeeIds.length > 0 && projectCode !== "") {
-      const filteredDesks = findProjectDesksByCodeAndEmployees(
-        desks,
-        projectCode,
-        employeeIds
-      );
-      return desks.map((desk) => {
-        const isFiltered = filteredDesks.some(
-          (filteredDesk) => filteredDesk.deskId === desk.deskId
-        );
-        return { ...desk, opacity: isFiltered ? 1 : 0 };
-      });
-    }
-    if (employeeIds.length > 0) {
-      const employeeDesks = findProjectDesksByEmployees(desks, employeeIds);
-      return desks.map((desk) => {
-        const isFiltered = employeeDesks.some(
-          (filteredDesk) => filteredDesk.deskId === desk.deskId
-        );
-        return { ...desk, opacity: isFiltered ? 1 : 0 };
-      });
-    }
-    if (projectCode !== "") {
-      const projectDesks = findProjectDesksByCode(desks, projectCode);
-      return desks.map((desk) => {
-        const isFiltered = projectDesks.some(
-          (filteredDesk) => filteredDesk.deskId === desk.deskId
-        );
-        return { ...desk, opacity: isFiltered ? 1 : 0 };
-      });
-    }
+export function findProjectDesksByEmployees(
+  desks: Desk[],
+  selectedEmployees: number[]
+): Desk[] {
+  if (selectedEmployees.length === 0) {
     return desks;
+  }
 
+  return desks.filter((desk) =>
+    desk.reservations.some(
+      (reservation) =>
+        selectedEmployees.includes(reservation.userId) &&
+        isCurrentDateInRange(reservation.startTime, reservation.endTime)
+    )
+  );
+}
+export function findDesks(
+  employeeIds: number[],
+  projectCodes: string[],
+  desks: Desk[]
+): Desk[] {
+  if (employeeIds.length === 0 && projectCodes.length === 0) {
+    return desks.map((desk) => ({ ...desk, opacity: 1 }));
+  }
+  if (employeeIds.length > 0 && projectCodes.length !== 0) {
+    const filteredDesks = findProjectDesksByCodeAndEmployees(
+      desks,
+      projectCodes,
+      employeeIds
+    );
+    return desks.map((desk) => {
+      const isFiltered = filteredDesks.some(
+        (filteredDesk) => filteredDesk.deskId === desk.deskId
+      );
+      return { ...desk, opacity: isFiltered ? 1 : 0 };
+    });
+  }
+  if (employeeIds.length > 0) {
+    const employeeDesks = findProjectDesksByEmployees(desks, employeeIds);
+    return desks.map((desk) => {
+      const isFiltered = employeeDesks.some(
+        (filteredDesk) => filteredDesk.deskId === desk.deskId
+      );
+      return { ...desk, opacity: isFiltered ? 1 : 0 };
+    });
+  }
+  if (projectCodes.length !== 0) {
+    const projectDesks = findProjectDesksByCode(desks, projectCodes);
+    return desks.map((desk) => {
+      const isFiltered = projectDesks.some(
+        (filteredDesk) => filteredDesk.deskId === desk.deskId
+      );
+      return { ...desk, opacity: isFiltered ? 1 : 0 };
+    });
+  }
+  return desks;
 }
