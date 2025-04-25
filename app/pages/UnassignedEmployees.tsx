@@ -1,141 +1,187 @@
 "use client";
 
-import { useState,useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useEmployees from "../util/api/GetEmployees";
-import { Table, Spin, Alert, Layout, Input } from "antd";
+import { Table, Spin, Alert, Layout, Input, Select } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { UnassignedEmployee } from "@/app/models/employeeModel";
 import { Content } from "antd/es/layout/layout";
 import useUser from "@/app/util/api/UserApi";
+import { useDataContext } from "../util/providers/AppDataContext";
+const { Option } = Select;
 
 const UnassignedEmployees = () => {
   const {
     data: userData,
     isLoading: userLoading,
     isError: userError,
-  } = useUser(); 
-      const [isAdmin, setIsAdmin] = useState(false);
-  const { unassignedEmployees } = useEmployees({ isAdmin });
+  } = useUser();
+  const { selectedDate } = useDataContext();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { unassignedEmployees } = useEmployees({ isAdmin, date: selectedDate });
   const allData = unassignedEmployees.data || [];
-    const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  if (userData) {
-    setIsAdmin(userData.isAdmin);
-    setLoading(false); 
-  }
-}, [userData]);
- if (userLoading || unassignedEmployees.isLoading || loading) {
-   return <Spin tip="Loading data..." />;
- }
+  const [loading, setLoading] = useState(true);
 
- if (userError || unassignedEmployees.isError) {
-   return (
-     <Alert
-       message="Error"
-       description="Failed to load data."
-       type="error"
-       showIcon
-     />
-   );
- }
+  useEffect(() => {
+    if (userData) {
+      setIsAdmin(userData.isAdmin);
+      setLoading(false);
+    }
+  }, [userData]);
 
- if (!isAdmin) {
-   return <div>You do not have permission to view this page.</div>;
- }
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    name: string;
+    companyName: string[];
+    department: string[];
+    position: string[];
+  }>({
     name: "",
-    companyName: "",
-    department: "",
-    position: "",
+    companyName: [],
+    department: [],
+    position: [],
   });
 
-  const handleFilterChange = (key: string, value: string) => {
+  const handleFilterChange = (key: string, value: any) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
+
+  const companyOptions = useMemo(
+    () => [...new Set(allData.map((e) => e.companyName))],
+    [allData]
+  );
+  const departmentOptions = useMemo(
+    () => [...new Set(allData.map((e) => e.department))],
+    [allData]
+  );
+  const positionOptions = useMemo(
+    () => [...new Set(allData.map((e) => e.position))],
+    [allData]
+  );
 
   const filteredData = allData.filter((employee) => {
     const fullName = `${employee.name} ${employee.surname}`.toLowerCase();
     return (
       fullName.includes(filters.name.toLowerCase()) &&
-      employee.companyName
-        .toLowerCase()
-        .includes(filters.companyName.toLowerCase()) &&
-      employee.department
-        .toLowerCase()
-        .includes(filters.department.toLowerCase()) &&
-      employee.position.toLowerCase().includes(filters.position.toLowerCase())
+      (filters.companyName.length === 0 ||
+        filters.companyName.includes(employee.companyName)) &&
+      (filters.department.length === 0 ||
+        filters.department.includes(employee.department)) &&
+      (filters.position.length === 0 ||
+        filters.position.includes(employee.position))
     );
   });
+
+  const columnHeaderStyle = {
+    display: "block",
+    whiteSpace: "normal",
+    overflow: "visible",
+  } as const;
 
   const columns: ColumnsType<UnassignedEmployee> = [
     {
       title: (
-        <div>
+        <div style={columnHeaderStyle}>
           <div>Name</div>
           <Input
             size="small"
             placeholder="Search name"
             value={filters.name}
             onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: "100%", minWidth: 0 }}
           />
         </div>
       ),
       render: (_, record) => `${record.name} ${record.surname}`,
       key: "name",
+      width: 200,
+      ellipsis: true,
     },
     {
       title: (
-        <div>
+        <div style={columnHeaderStyle}>
           <div>Company</div>
-          <Input
+          <Select
+            mode="multiple"
             size="small"
-            placeholder="Search company"
+            placeholder="Filter company"
             value={filters.companyName}
-            onChange={(e) => handleFilterChange("companyName", e.target.value)}
-          />
+            onChange={(value) => handleFilterChange("companyName", value)}
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {companyOptions.map((company) => (
+              <Option key={company} value={company}>
+                {company}
+              </Option>
+            ))}
+          </Select>
         </div>
       ),
       dataIndex: "companyName",
       key: "companyName",
+      width: 200,
+      ellipsis: true,
     },
     {
       title: (
-        <div>
+        <div style={columnHeaderStyle}>
           <div>Department</div>
-          <Input
+          <Select
+            mode="multiple"
             size="small"
-            placeholder="Search department"
+            placeholder="Filter department"
             value={filters.department}
-            onChange={(e) => handleFilterChange("department", e.target.value)}
-          />
+            onChange={(value) => handleFilterChange("department", value)}
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {departmentOptions.map((dept) => (
+              <Option key={dept} value={dept}>
+                {dept}
+              </Option>
+            ))}
+          </Select>
         </div>
       ),
       dataIndex: "department",
       key: "department",
+      width: 200,
+      ellipsis: true,
     },
     {
       title: (
-        <div>
+        <div style={columnHeaderStyle}>
           <div>Position</div>
-          <Input
+          <Select
+            mode="multiple"
             size="small"
-            placeholder="Search position"
+            placeholder="Filter position"
             value={filters.position}
-            onChange={(e) => handleFilterChange("position", e.target.value)}
-          />
+            onChange={(value) => handleFilterChange("position", value)}
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {positionOptions.map((pos) => (
+              <Option key={pos} value={pos}>
+                {pos}
+              </Option>
+            ))}
+          </Select>
         </div>
       ),
       dataIndex: "position",
       key: "position",
+      width: 200,
+      ellipsis: true,
     },
   ];
 
-  if (unassignedEmployees.isLoading) {
+  if (unassignedEmployees.isLoading || loading) {
     return <Spin tip="Loading unassigned employees..." />;
   }
 
-  if (unassignedEmployees.isError) {
+  if (unassignedEmployees.isError || userError) {
     return (
       <Alert
         message="Error"
@@ -157,7 +203,8 @@ useEffect(() => {
               rowKey="id"
               bordered
               pagination={false}
-              scroll={{ x: true }}
+              scroll={{ x: "100%" }}
+              tableLayout="fixed"
               className="rounded-lg"
             />
           </div>

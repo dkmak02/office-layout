@@ -54,8 +54,9 @@ const MainPage = () => {
   const { data: userData } = useUser();
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
-  const { allEmployees } = useEmployees({
+  const { allEmployees, unassignedEmployeesDate } = useEmployees({
     isAdmin: userData?.isAdmin || false,
+    date: selectedDate,
   });
   const [popupData, setPopupData] = useState<DeskPopupData | null>(null);
   const [showDeskPopup, setShowDeskPopup] = useState<boolean>(false);
@@ -272,6 +273,7 @@ const MainPage = () => {
           selectedFloor={selectedFloor}
           onSubmit={handleDeskReservationSubmit}
           onCancel={() => setShowReservationForm(false)}
+          unassignedEmployees={unassignedEmployeesDate.data || []}
           employees={allEmployees.data || []}
         />
       )}

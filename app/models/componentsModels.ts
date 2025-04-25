@@ -30,6 +30,7 @@ export interface DeskFormProps {
   onSubmit: () => void;
   onCancel: () => void;
   employees: Employee[];
+  unassignedEmployees: Employee[];
 }
 export interface MulipleFormAssigmentProps {
   selectedDesks: any[];

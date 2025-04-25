@@ -18,7 +18,6 @@ const MultipleFormAssigment = ({
   const [isLoading, setIsLoading] = useState(false);
   const { data: projects, changeProjectAsync } = useProjects(selectedFloor);
   const { selectedDate } = useDataContext();
-  console.log(selectedFloor, selectedDate);
   const { changeDeskTypeAsync } = useDesksMutations(
     selectedFloor,
     selectedDate

@@ -30,7 +30,7 @@ export function findProjectDesksByCodeAndEmployees(
     const isSelectedProject =
       selectedProjects?.includes(desk.project.code) ||
       (selectedProjects?.includes("Hotdesk") && desk.hotdesk === true);
-    return hasReservationForSelected && isSelectedProject;
+    return hasReservationForSelected || isSelectedProject;
   });
 }
 export function findProjectDesksByEmployees(

@@ -179,6 +179,10 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       queryClient.invalidateQueries({
         queryKey: ["unassignedEmployees"],
       });
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployeesDate", date],
+      });
     },
   });
 
@@ -193,6 +197,10 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: ["unassignedEmployees"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployeesDate", date],
       });
     },
   });
@@ -215,6 +223,10 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       queryClient.invalidateQueries({
         queryKey: ["unassignedEmployees"],
       });
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployeesDate", date],
+      });
     },
   });
   const hotdeskMutationCurrentUser = useMutation({
@@ -229,6 +241,10 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       queryClient.invalidateQueries({
         queryKey: ["unassignedEmployees"],
       });
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployeesDate", date],
+      });
     },
   });
   const unreserveMutationCurrentUser = useMutation({
@@ -242,6 +258,10 @@ const useDesksMutations = (selectedFloor: string, date: string) => {
       });
       queryClient.invalidateQueries({
         queryKey: ["unassignedEmployees"],
+      });
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployeesDate", date],
       });
     },
   });

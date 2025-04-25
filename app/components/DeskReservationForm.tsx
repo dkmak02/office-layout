@@ -33,6 +33,7 @@ const DeskReservationForm = ({
   onSubmit,
   onCancel,
   employees,
+  unassignedEmployees,
 }: DeskFormProps) => {
   const { name: deskName, reservations } = desk;
   const { data: userData } = useUser();
@@ -258,7 +259,7 @@ const DeskReservationForm = ({
       message.error("Selected project is invalid.");
       return;
     }
-    if (project.code === "Hotdesk" && (!employee || !selectedDates)) {
+    if (project.code === "Hotdesk" && employee && !selectedDates) {
       message.error("Please select an employee and a dates for the hotdesk.");
       return;
     }
@@ -278,9 +279,13 @@ const DeskReservationForm = ({
       sumbmitEmployeeChange(employee, desk.deskId);
     }
   };
-  const validateRoles = (reservation: Reservation) => {
+  const validateRoles = (reservation?: Reservation) => {
     if (userData?.isAdmin) return true;
-    if (userData?.id === reservation?.userId && projectCode === "Hotdesk") {
+    if (
+      reservation &&
+      userData?.id === reservation?.userId &&
+      projectCode === "Hotdesk"
+    ) {
       return true;
     }
     return false;
@@ -429,7 +434,7 @@ const DeskReservationForm = ({
               disabled={!userData?.isAdmin}
               value={selectedPerson}
               onChange={onChangePerson}
-              options={employees.map((person) => ({
+              options={unassignedEmployees.map((person) => ({
                 label: person.name + " " + person.surname,
                 value: person.id,
               }))}
@@ -465,7 +470,9 @@ const DeskReservationForm = ({
               </div>
             )}
           <div style={{ display: "flex", gap: "8px" }}>
-            {(!selectedPerson || selectedProject === "Hotdesk") &&
+            {(!selectedPerson ||
+              selectedProject === "Hotdesk" ||
+              validateRoles()) &&
               allowOwnReservation() && (
                 <Button
                   color="primary"
