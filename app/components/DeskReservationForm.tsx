@@ -25,6 +25,9 @@ import { useHandleDeleteReservation } from "../util/handlers/deleteReservation";
 import { useDataContext } from "../util/providers/AppDataContext";
 import useUser from "../util/api/UserApi";
 import useDesksMutations from "../util/api/DesksMutation";
+import GenerateCard from "./ReservationCard";
+import { User } from "../models/userModel";
+import { allowDeleteReservation } from "../util/handlers/validatePermisions";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const DeskReservationForm = ({
@@ -253,8 +256,7 @@ const DeskReservationForm = ({
     message.success("Reservation created successfully.");
     onSubmit();
   };
-  const handleSubmit = (e: any) => {
-    console.log("handleSubmit", selectedPerson, selectedProject);
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!selectedPerson && !selectedProject) {
       message.error("Please select an employee and a project.");
@@ -285,6 +287,9 @@ const DeskReservationForm = ({
         selectedDates[1]
       );
     } else if (project.code !== "Hotdesk") {
+      if (currentReservation) {
+        await handleDeleteReservation(currentReservation.reservationID);
+      }
       sumbmitEmployeeChange(employee, desk.deskId);
     }
     onSubmit();
@@ -329,44 +334,28 @@ const DeskReservationForm = ({
     }
     return false;
   };
-  const genterateCard = (reservation: Reservation) => {
-    const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
-    const endDate =
-      reservation.endTime === null
-        ? "Brak daty zakończenia"
-        : dayjs(reservation.endTime).format("YYYY-MM-DD");
-
+  if (!userData) return null;
+  const genterateCard = (
+    reservation: Reservation,
+    userData: User,
+    deskName: string,
+    projectCode: string,
+    handleCardUnreserv: (reservationId: number) => void,
+    allowDeleteReservation: (
+      userData?: User,
+      reservation?: Reservation,
+      projectCode?: string
+    ) => boolean
+  ) => {
     return (
-      <Card
-        key={reservation.reservationID}
-        title={`Rezerwacja: ${deskName}`}
-        variant="outlined"
-        style={{ marginTop: 16 }}
-      >
-        <Timeline
-          style={{ padding: 0, margin: 0 }}
-          items={[
-            {
-              children: reservation.userName,
-            },
-            {
-              dot: <ClockCircleOutlined className="timeline-clock-icon" />,
-              color: "red",
-              children: startDate + " / " + endDate,
-              style: { padding: 0, margin: 0 },
-            },
-          ]}
-        />
-        {validateRoles(reservation) && (
-          <Button
-            danger
-            onClick={() => handleCardUnreserv(reservation.reservationID)}
-            style={{ margin: 0 }}
-          >
-            Usuń rezerwację
-          </Button>
-        )}
-      </Card>
+      <GenerateCard
+        reservation={reservation}
+        userData={userData}
+        deskName={deskName}
+        projectCode={projectCode}
+        handleCardUnreserv={handleCardUnreserv}
+        validateRoles={allowDeleteReservation}
+      />
     );
   };
   const handleUnreserve = async (e: any) => {
@@ -395,6 +384,7 @@ const DeskReservationForm = ({
       message.error("Failed to unreserve the desk.");
     }
   };
+
   return (
     <Flex
       style={{
@@ -523,7 +513,16 @@ const DeskReservationForm = ({
         >
           <List
             dataSource={currentReservations}
-            renderItem={(item: Reservation) => genterateCard(item)}
+            renderItem={(item: Reservation) =>
+              genterateCard(
+                item,
+                userData,
+                deskName,
+                projectCode,
+                handleCardUnreserv,
+                allowDeleteReservation
+              )
+            }
             style={{
               maxHeight: 600,
               overflowY: "auto",

@@ -7,9 +7,11 @@ import { useDataContext } from "@/app/util/providers/AppDataContext";
 import { useState } from "react";
 import useUser from "../../util/api/UserApi";
 import { Reservation } from "@/app/models/deskModel";
-import dayjs from "dayjs";
+import { allowOwnUnreserv } from "@/app/util/handlers/validatePermisions";
 import { useHandleDeleteReservation } from "@/app/util/handlers/deleteReservation";
+import GenterateCard from "../ReservationCard";
 import Link from "next/link";
+import { User } from "@/app/models/userModel";
 
 const NavbarMenu = () => {
   const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
@@ -61,56 +63,36 @@ const NavbarMenu = () => {
     }
   };
 
-  const genterateCard = (reservation: Reservation) => {
-    const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
-    const endDate =
-      reservation.endTime === null
-        ? "Brak daty zakończenia"
-        : dayjs(reservation.endTime).format("YYYY-MM-DD");
+  const genterateCard = (
+    reservation: Reservation,
+    userData: User,
+    handleCardUnreserv: (reservationId: number) => void,
+    allowOwnUnreserv: () => boolean
+  ) => {
+    if (!reservation.deskNo) return null;
     return (
-      <Card
-        key={reservation.reservationID}
-        title={`Rezerwacja: ${reservation.deskNo}`}
-        variant="outlined"
-        style={{ marginTop: 16 }}
-      >
-        <Timeline
-          style={{ padding: 0, margin: 0 }}
-          items={[
-            {
-              children: reservation.userName,
-            },
-            {
-              dot: <ClockCircleOutlined className="timeline-clock-icon" />,
-              color: "red",
-              children: startDate + " / " + endDate,
-              style: { padding: 0, margin: 0 },
-            },
-          ]}
-        />
-        <Button
-          danger
-          onClick={() => handleCardUnreserv(reservation.reservationID)}
-          style={{ margin: 0 }}
-        >
-          Usuń rezerwację
-        </Button>
-      </Card>
+      <GenterateCard
+        reservation={reservation}
+        userData={userData}
+        deskName={reservation.deskNo}
+        projectCode=""
+        handleCardUnreserv={handleCardUnreserv}
+        validateRoles={allowOwnUnreserv}
+      />
     );
   };
-
+  if (!userData) return null;
   return (
     <>
-      {/* Sticky Header */}
       <Header
         style={{
           display: "flex",
           alignItems: "center",
-          position: "sticky", // This will make the header sticky
-          top: 0, // It will stay on top
-          zIndex: 999, // Ensure the header stays above other content
-          width: "100%", // Ensure it takes full width
-          backgroundColor: "#001529", // Optional: You can customize the background color
+          position: "sticky",
+          top: 0,
+          zIndex: 999,
+          width: "100%",
+          backgroundColor: "#001529",
           height: "64px",
         }}
       >
@@ -130,8 +112,6 @@ const NavbarMenu = () => {
           {userData?.name} {userData?.surname}
         </Button>
       </Header>
-
-      {/* Modal for User Reservations */}
       {showUsersReservation && (
         <Modal
           title="Moje rezerwacje"
@@ -142,7 +122,14 @@ const NavbarMenu = () => {
         >
           <List
             dataSource={currentReservations}
-            renderItem={(item: Reservation) => genterateCard(item)}
+            renderItem={(item: Reservation) =>
+              genterateCard(
+                item,
+                userData,
+                handleCardUnreserv,
+                allowOwnUnreserv
+              )
+            }
             style={{
               maxHeight: 600,
               overflowY: "auto",

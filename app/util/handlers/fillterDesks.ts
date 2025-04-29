@@ -1,4 +1,5 @@
-import { Desk } from "../models/deskModel";
+import { Desk } from "@/app/models/deskModel";
+
 const MAX_DATE = new Date(8640000000000000);
   const isCurrentDateInRange = (startTime: string, endTime: string) => {
     const currentDate = new Date();

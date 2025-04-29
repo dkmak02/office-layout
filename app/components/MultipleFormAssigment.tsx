@@ -2,7 +2,6 @@ import { Modal, List, Typography, Button, Select, message, Spin } from "antd";
 import { useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import useProjects from "../util/api/ProjectApi";
-import useDesks from "../util/api/DesksApi";
 import { MulipleFormAssigmentProps } from "@/app/models/componentsModels";
 import { MultipleDeskReservation } from "../models/deskModel";
 import { Project } from "../models/projectModel";

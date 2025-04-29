@@ -28,7 +28,7 @@ import useEmployees from "../util/api/GetEmployees";
 import { FloorComponentProps } from "../models/componentsModels";
 import { useDataContext } from "../util/providers/AppDataContext";
 import { Desk, DeskPopupData, Reservation } from "../models/deskModel";
-import { findDesks } from "../util/FillterDesks";
+import { findDesks } from "../util/handlers/fillterDesks";
 import useUser from "../util/api/UserApi";
 import dayjs from "dayjs";
 import { ClockCircleOutlined } from "@ant-design/icons";
