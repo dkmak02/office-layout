@@ -21,13 +21,14 @@ const ProjectInfo = () => {
     isLoading: projectsLoading,
     isError: projectsError,
     changeProjectColorAsync,
+    changeProjectTypeColorAsync,
   } = useProjects(selectedFloor);
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-    const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
-        null
-    );
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
   const [projectList, setProjectList] = useState<Project[]>([]);
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const ProjectInfo = () => {
 
   useEffect(() => {
     if (projects) {
-      setProjectList(projects.filter((p: Project) => p.code !== "Hotdesk"));
+      setProjectList(projects);
     }
   }, [projects]);
 
@@ -55,21 +56,27 @@ const ProjectInfo = () => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-    const handleColorChange = async (id: number, color: string) => {
-      setProjectList((prev) =>
-        prev.map((project) =>
-          project.id === id ? { ...project, color } : project
-        )
-      );
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout);
-      }
-      const timeout = setTimeout(async () => {
-        console.log("Saving color change:", id, color);
+  const handleColorChange = async (id: number, color: string) => {
+    setProjectList((prev) =>
+      prev.map((project) =>
+        project.id === id ? { ...project, color } : project
+      )
+    );
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+    const timeout = setTimeout(async () => {
+      if (id === -170) {
+        await changeProjectTypeColorAsync({
+          projectType: "Hotdesk",
+          color,
+        });
+      } else {
         await changeProjectColorAsync({ projectId: id, color });
-      }, 500);
-      setDebounceTimeout(timeout);
-    };
+      }
+    }, 500);
+    setDebounceTimeout(timeout);
+  };
 
   const filteredData = projectList.filter((project) => {
     return (

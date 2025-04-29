@@ -83,7 +83,36 @@ const changeProject = async ({
     throw error;
   }
 };
+const changeProjectTypeColor = async ({
+  projectType,
+  color,
+}: {
+  projectType: string;
+  color: string;
+}) => {
+  try {
+    const response = await axios.put(`${API_URL}/desk/type/color`, null, {
+      params: {
+        type: projectType,
+        HexColor: color,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      withCredentials: true,
+    });
 
+    if (response.status !== 200) {
+      throw new Error("Failed to update project type color");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error changing project type color:", error);
+    throw error;
+  }
+};
 const changeProjectColor = async ({
   projectId,
   color,
@@ -136,6 +165,13 @@ const useProjects = (selectedFloor: string) => {
       queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
     },
   });
+  const projectTypeColorMutation = useMutation({
+    mutationFn: changeProjectTypeColor,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
+    },
+  });
 
   return {
     ...projectQuery,
@@ -144,6 +180,9 @@ const useProjects = (selectedFloor: string) => {
 
     changeProjectColor: projectColorMutation.mutate,
     changeProjectColorAsync: projectColorMutation.mutateAsync,
+
+    changeProjectTypeColor: projectTypeColorMutation.mutate,
+    changeProjectTypeColorAsync: projectTypeColorMutation.mutateAsync,
   };
 };
 
