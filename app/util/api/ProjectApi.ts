@@ -22,7 +22,7 @@ const fetchProjects = async ({
         withCredentials: true,
       }),
       axios.get<Project>(`${API_URL}/desks/info`, {
-        params: { floor: selectedFloor },
+        params: { floor: selectedFloor, type: "Hotdesk" },
         withCredentials: true,
       }),
     ]);
@@ -30,8 +30,19 @@ const fetchProjects = async ({
     if (projectsResponse.status !== 200 || hotdesksResponse.status !== 200) {
       throw new Error("Error fetching project or desk data");
     }
-
-    const combinedData = [hotdesksResponse.data, ...projectsResponse.data];
+    const hotdeskWithId = {
+      ...hotdesksResponse.data,
+      id: -170,
+    };
+    const combinedData = [hotdeskWithId, ...projectsResponse.data];
+    const projectIdToMove = 1000005;
+    const projectIndex = combinedData.findIndex(
+      (project) => project.id === projectIdToMove
+    );
+    if (projectIndex !== -1) {
+      const [projectToMove] = combinedData.splice(projectIndex, 1);
+      combinedData.push(projectToMove);
+    }
     return combinedData;
   } catch (error) {
     console.error("Error fetching projects:", error);
@@ -73,6 +84,36 @@ const changeProject = async ({
   }
 };
 
+const changeProjectColor = async ({
+  projectId,
+  color,
+}: {
+  projectId: number;
+  color: string;
+}) => {
+  try {
+    const response = await axios.put(`${API_URL}/project/color`, null, {
+      params: {
+        ProjectID: projectId,
+        HexColor: color,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      withCredentials: true,
+    });
+
+    if (response.status !== 200) {
+      throw new Error("Failed to update project color");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error changing project color:", error);
+    throw error;
+  }
+};
 const useProjects = (selectedFloor: string) => {
   const queryClient = useQueryClient();
 
@@ -88,11 +129,21 @@ const useProjects = (selectedFloor: string) => {
       queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
     },
   });
+  const projectColorMutation = useMutation({
+    mutationFn: changeProjectColor,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
+    },
+  });
 
   return {
     ...projectQuery,
     changeProject: projectMutation.mutate,
     changeProjectAsync: projectMutation.mutateAsync,
+
+    changeProjectColor: projectColorMutation.mutate,
+    changeProjectColorAsync: projectColorMutation.mutateAsync,
   };
 };
 

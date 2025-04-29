@@ -27,7 +27,8 @@ const fetchDesks = async ({
   }
   return (response.data.desks as Desk[]).map((desk) => ({
     ...desk,
-    opacity: 1,
+    opacity: desk.currentReservationID ? 1 : 0.6,
+    baseOpacity: desk.currentReservationID ? 1 : 0.6,
   }));
 };
 

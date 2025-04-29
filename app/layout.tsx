@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Office Layout",
+  title: "DeskHub",
   description: "A simple office layout application",
 };
 

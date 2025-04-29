@@ -3,40 +3,20 @@ import { Layout, List, theme } from "antd";
 import { ProjectSiderProps } from "@/app/models/componentsModels";
 import { Project } from "@/app/models/projectModel";
 import { useDataContext } from "@/app/util/providers/AppDataContext";
-import { useQueryClient } from "@tanstack/react-query";
 import useProjects from "@/app/util/api/ProjectApi";
 import ProjectCard from "./ProjectCard";
 
 const { Sider } = Layout;
 
-const ProjectSider: React.FC<ProjectSiderProps> = ({
-  selectedFloor,
-  darkenColor,
-}) => {
-  const queryClient = useQueryClient();
+const ProjectSider: React.FC<ProjectSiderProps> = ({ selectedFloor }) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const {
-    selectedEmployees,
-    setChoosenProjects,
-    choosenProjects,
-    selectedDate,
-  } = useDataContext();
-  const { data: projects, isLoading } = useProjects(selectedFloor);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!projects) {
-    return <div>No projects available</div>;
-  }
+  const { setChoosenProjects, choosenProjects } = useDataContext();
+  const { data: projects } = useProjects(selectedFloor);
 
   const handleSelectedProjectChange = (projectCode: string) => {
-    // const newSelectedProject =
-    //   projectCode === choosenProject ? "" : projectCode;
     if (choosenProjects.includes(projectCode)) {
       setChoosenProjects((prev) => prev.filter((code) => code !== projectCode));
     } else {

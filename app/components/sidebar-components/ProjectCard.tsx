@@ -41,6 +41,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           ? "0 2px 8px rgba(0,0,0,0.05)"
           : "none",
         transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+        textOverflow: "ellipsis",
+        overflow: "hidden",
       }}
       styles={{
         body: {
@@ -50,7 +52,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       }}
     >
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
+        <div
+          className="flex items-center overflow-hidden"
+          style={{ minWidth: 0 }}
+        >
           <div
             style={{
               width: 12,
@@ -58,12 +63,31 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               backgroundColor: project.color || "#aaa",
               borderRadius: 2,
               marginRight: 8,
+              flexShrink: 0,
             }}
           />
-          <span style={{ fontWeight: 600, color: "#333" }}>{project.name}</span>
+          <span
+            style={{
+              fontWeight: 500,
+              color: "#333",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: "180px",
+            }}
+          >
+            {project.name}
+          </span>
         </div>
 
-        <span style={{ fontSize: 14, color: "#555" }}>
+        <span
+          style={{
+            fontSize: 14,
+            color: "#555",
+            marginLeft: 8,
+            flexShrink: 0,
+          }}
+        >
           {project.taken}/{project.total}
         </span>
       </div>

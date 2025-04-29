@@ -72,10 +72,18 @@ const DeskReservationForm = ({
     useState<boolean>(false);
   const [todayDeleted, setTodayDeleted] = useState<boolean>(false);
   const isProgrammaticUpdate = useRef(false);
+  const [unassignedUsers, setUnassignedUsers] =
+    useState<Employee[]>(unassignedEmployees);
   useEffect(() => {
     setCurrentReservations(reservations);
     setSeletedPerson(employeeId);
     setSelectedProject(projectCode);
+    if (employeeId !== null) {
+      const foundEmployee = employees.find((e) => e.id === employeeId);
+      if (foundEmployee) {
+        setUnassignedUsers([...unassignedEmployees, foundEmployee]);
+      }
+    }
   }, []);
   const doesRangeIncludeCustomDate = (start: any, end: any) => {
     const range = [];
@@ -246,6 +254,7 @@ const DeskReservationForm = ({
     onSubmit();
   };
   const handleSubmit = (e: any) => {
+    console.log("handleSubmit", selectedPerson, selectedProject);
     e.preventDefault();
     if (!selectedPerson && !selectedProject) {
       message.error("Please select an employee and a project.");
@@ -278,6 +287,7 @@ const DeskReservationForm = ({
     } else if (project.code !== "Hotdesk") {
       sumbmitEmployeeChange(employee, desk.deskId);
     }
+    onSubmit();
   };
   const validateRoles = (reservation?: Reservation) => {
     if (userData?.isAdmin) return true;
@@ -434,7 +444,7 @@ const DeskReservationForm = ({
               disabled={!userData?.isAdmin}
               value={selectedPerson}
               onChange={onChangePerson}
-              options={unassignedEmployees.map((person) => ({
+              options={unassignedUsers.map((person) => ({
                 label: person.name + " " + person.surname,
                 value: person.id,
               }))}

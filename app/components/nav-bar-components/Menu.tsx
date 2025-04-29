@@ -39,6 +39,10 @@ const NavbarMenu = () => {
       key: "unassigned",
       label: <Link href="/unassignedEmployees">Unassigned Employees</Link>,
     });
+    floorsData.push({
+      key: "projects",
+      label: <Link href="/projectinfo">Projects</Link>,
+    });
   }
 
   const handleNavbarItemChange = (key: string) => {

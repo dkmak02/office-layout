@@ -23,6 +23,7 @@ export interface Desk {
   y: string;
   rotation?: string;
   opacity: number;
+  baseOpacity: number;
 }
 export interface DeskPopupData {
   deskId: number;
