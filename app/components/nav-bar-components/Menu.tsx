@@ -12,9 +12,11 @@ import { useHandleDeleteReservation } from "@/app/util/handlers/deleteReservatio
 import GenterateCard from "../ReservationCard";
 import Link from "next/link";
 import { User } from "@/app/models/userModel";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import LocaleSwitcher from "../LocaleSwithcer";
 const NavbarMenu = () => {
   const pathname = usePathname();
+  const params = useSearchParams();
   const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
   const { setCurrentReservations, currentReservations } = useDataContext();
   const { data: userData } = useUser();
@@ -29,13 +31,14 @@ const NavbarMenu = () => {
   const floorsData = [
     {
       key: "Floor 7",
-      label: <Link href="/floor7">Floor 7</Link>,
+      label: <Link href={{ pathname: "/", query: { floor: 7 } }}>Floor 7</Link>,
     },
     {
       key: "Floor 8",
-      label: <Link href="/floor8">Floor 8</Link>,
+      label: <Link href={{ pathname: "/", query: { floor: 8 } }}>Floor 8</Link>,
     },
   ];
+
   if (userData?.isAdmin) {
     floorsData.push({
       key: "unassigned",
@@ -46,10 +49,10 @@ const NavbarMenu = () => {
       label: <Link href="/projectinfo">Projects</Link>,
     });
   }
-  const getMenuKeyFromPath = (path: string) => {
+  const getMenuKeyFromPath = (path: string, params: string) => {
     if (path.includes("/unassignedEmployees")) return "unassigned";
     if (path.includes("/projectinfo")) return "projects";
-    if (path.includes("/floor8")) return "Floor 8";
+    if (params.includes("8")) return "Floor 8";
     return "Floor 7";
   };
 
@@ -99,10 +102,13 @@ const NavbarMenu = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          selectedKeys={[getMenuKeyFromPath(pathname)]}
+          selectedKeys={[
+            getMenuKeyFromPath(pathname, params.get("floor") || ""),
+          ]}
           items={floorsData}
           style={{ flex: 1, minWidth: 0 }}
         />
+        <LocaleSwitcher />
         <Button
           type="primary"
           onClick={handleUserNameClick}

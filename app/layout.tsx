@@ -4,7 +4,10 @@ import { ReactQueryProvider } from "./util/providers/ReactQueryProvider";
 import { AppDataProvider } from "./util/providers/AppDataContext";
 import "./globals.css";
 import NavbarMenu from "./components/nav-bar-components/Menu";
-
+import { Suspense } from "react";
+// import "./i18n";
+// import { I18nextProvider } from "react-i18next";
+// import i18n from "./i18n";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,17 +29,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // <I18nextProvider i18n={i18n}>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AppDataProvider>
           <ReactQueryProvider>
-            <NavbarMenu />
-            {children}
+            <Suspense fallback={<div>Loading...</div>}>
+              <NavbarMenu />
+              {children}
+            </Suspense>
           </ReactQueryProvider>
         </AppDataProvider>
       </body>
     </html>
+    // </I18nextProvider>
   );
 }

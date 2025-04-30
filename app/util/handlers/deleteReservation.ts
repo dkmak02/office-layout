@@ -3,11 +3,13 @@ import { useDataContext } from "../providers/AppDataContext";
 import { Reservation } from "@/app/models/deskModel";
 import { useQueryClient } from "@tanstack/react-query";
 import useDesksMutations from "../api/DesksMutation";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 export const useHandleDeleteReservation = () => {
   const queryClient = useQueryClient();
-  const pathname = usePathname();
-  const selectedFloor = pathname.includes("/floor8") ? "Floor 8" : "Floor 7";
+  const params = useSearchParams();
+  const selectedFloor = params.get("floor")?.includes("8")
+    ? "Floor 8"
+    : "Floor 7";
   const { setCurrentReservations, currentReservations, selectedDate } =
     useDataContext();
   const { unreserveDeskAsync, unreserveDeskCurrentUserAsync } =

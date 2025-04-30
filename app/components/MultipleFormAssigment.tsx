@@ -29,8 +29,8 @@ const MultipleFormAssigment = ({
     project: string
   ) => {
     const projectId = projects?.find((p: Project) => p.code === project)?.id;
-    const deskType = projectId ? "Project" : "Hotdesk";
-    console.log(desks, project);
+    const deskType = projectId !== -170 ? "Project" : "Hotdesk";
+    const desksWithReservation: string[] = [];
     await Promise.allSettled(
       desks.map(async (deskId) => {
         try {
@@ -38,20 +38,27 @@ const MultipleFormAssigment = ({
             deskId: deskId.id,
             deskType: deskType,
           });
-
-          if (projectId) {
+          if (projectId && deskType === "Project") {
             await changeProjectAsync({
               deskId: deskId.id,
               projectId: projectId,
             });
           }
         } catch (error) {
-          message.error(
-            `Nie można przypisać projektu do biurka ${deskId.name} (biurko ma rezerwację).`
-          );
+          desksWithReservation.push(deskId.name);
         }
       })
-    );
+    ).finally(() => {
+      if (desksWithReservation.length > 0) {
+        message.error(
+          `Nie można przypisać projektu do biurek: ${desksWithReservation.join(
+            ", "
+          )} (biurka mają rezerwację).`
+        );
+      } else {
+        message.success("Biurka zostały pomyślnie przypisane do projektu.");
+      }
+    });
   };
   const handleMultipleProjectChange = async () => {
     if (!selectedDesks.length || !selectedProject) {
@@ -65,10 +72,9 @@ const MultipleFormAssigment = ({
       console.error("Error updating desks:", error);
     } finally {
       setIsLoading(false);
+      setSelectedProject(null);
+      setShowMultipleFormModal(false);
     }
-
-    setSelectedProject(null);
-    setShowMultipleFormModal(false);
   };
 
   return (

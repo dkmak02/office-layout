@@ -4,10 +4,12 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useDataContext } from "../util/providers/AppDataContext";
 import { QueryClient } from "@tanstack/react-query";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 const DaySwitcher = () => {
-  const pathname = usePathname();
-  const selectedFloor = pathname.includes("/floor8") ? "Floor 8" : "Floor 7";
+  const params = useSearchParams();
+  const selectedFloor = params.get("floor")?.includes("8")
+    ? "Floor 8"
+    : "Floor 7";
   const { setSelectedDate, selectedDate } = useDataContext();
   const queryClient = new QueryClient();
   const handleDayPick = (date: Dayjs | null) => {
