@@ -9,8 +9,6 @@ interface AppDataContextType {
   setChoosenProjects: React.Dispatch<React.SetStateAction<string[]>>;
   currentReservations: Reservation[];
   setCurrentReservations: React.Dispatch<React.SetStateAction<Reservation[]>>;
-  selectedFloor: string;
-  setSelectedFloor: React.Dispatch<React.SetStateAction<string>>;
   selectedDate: string;
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -35,7 +33,6 @@ export const AppDataProvider: React.FC<AppDataProviderProps> = ({
   const [currentReservations, setCurrentReservations] = useState<Reservation[]>(
     []
   );
-  const [selectedFloor, setSelectedFloor] = useState<string>("Floor 7");
   const [selectedDate, setSelectedDate] = useState<string>(formattedDate);
 
   return (
@@ -47,8 +44,6 @@ export const AppDataProvider: React.FC<AppDataProviderProps> = ({
         setChoosenProjects,
         currentReservations,
         setCurrentReservations,
-        selectedFloor,
-        setSelectedFloor,
         selectedDate,
         setSelectedDate,
       }}

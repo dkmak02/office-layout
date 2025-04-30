@@ -15,10 +15,8 @@ import { User } from "@/app/models/userModel";
 import { usePathname } from "next/navigation";
 const NavbarMenu = () => {
   const pathname = usePathname();
-
   const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
-  const { setSelectedFloor, setCurrentReservations, currentReservations } =
-    useDataContext();
+  const { setCurrentReservations, currentReservations } = useDataContext();
   const { data: userData } = useUser();
   const [showUsersReservation, setShowUsersReservation] =
     useState<boolean>(false);
@@ -53,12 +51,6 @@ const NavbarMenu = () => {
     if (path.includes("/projectinfo")) return "projects";
     if (path.includes("/floor8")) return "Floor 8";
     return "Floor 7";
-  };
-
-  const handleNavbarItemChange = (key: string) => {
-    if (key.includes("Floor")) {
-      setSelectedFloor(key);
-    }
   };
 
   const handleCardUnreserv = async (reservationId: number) => {
@@ -110,7 +102,6 @@ const NavbarMenu = () => {
           selectedKeys={[getMenuKeyFromPath(pathname)]}
           items={floorsData}
           style={{ flex: 1, minWidth: 0 }}
-          onClick={(e) => handleNavbarItemChange(e.key)}
         />
         <Button
           type="primary"

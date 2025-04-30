@@ -34,6 +34,7 @@ import dayjs from "dayjs";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { useHandleDeleteReservation } from "../util/handlers/deleteReservation";
 import DaySwitcher from "../components/DaySwitcher";
+import { usePathname } from "next/navigation";
 const { Header, Content } = Layout;
 const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
@@ -44,12 +45,12 @@ const MainPage = () => {
     selectedEmployees,
     setSelectedEmployees,
     choosenProjects,
-    selectedFloor,
-    setSelectedFloor,
     setCurrentReservations,
     currentReservations,
     selectedDate,
   } = useDataContext();
+  const pathname = usePathname();
+  const selectedFloor = pathname.includes("/floor8") ? "Floor 8" : "Floor 7";
   const { data: desksData } = useDesks(selectedFloor, selectedDate);
   const { data: userData } = useUser();
   const [SvgComponent, setSvgComponent] =

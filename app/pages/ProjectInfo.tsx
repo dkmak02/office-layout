@@ -8,14 +8,15 @@ import useUser from "@/app/util/api/UserApi";
 import { useDataContext } from "../util/providers/AppDataContext";
 import useProjects from "../util/api/ProjectApi";
 import { Project } from "@/app/models/projectModel";
-
+import { usePathname } from "next/navigation";
 const ProjectInfo = () => {
   const {
     data: userData,
     isLoading: userLoading,
     isError: userError,
   } = useUser();
-  const { selectedFloor } = useDataContext();
+  const pathname = usePathname();
+  const selectedFloor = pathname.includes("/floor8") ? "Floor 8" : "Floor 7";
   const {
     data: projects,
     isLoading: projectsLoading,

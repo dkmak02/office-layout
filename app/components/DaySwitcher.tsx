@@ -4,12 +4,15 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useDataContext } from "../util/providers/AppDataContext";
 import { QueryClient } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 const DaySwitcher = () => {
-  const { selectedFloor,setSelectedDate,selectedDate } = useDataContext();
+  const pathname = usePathname();
+  const selectedFloor = pathname.includes("/floor8") ? "Floor 8" : "Floor 7";
+  const { setSelectedDate, selectedDate } = useDataContext();
   const queryClient = new QueryClient();
   const handleDayPick = (date: Dayjs | null) => {
     if (date) {
-      setSelectedDate(date.add(1,'hour').format("YYYY-MM-DDTHH:mm:ss"));
+      setSelectedDate(date.add(1, "hour").format("YYYY-MM-DDTHH:mm:ss"));
       queryClient.invalidateQueries({
         queryKey: [
           "floors",
