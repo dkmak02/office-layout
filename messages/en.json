@@ -1,5 +1,79 @@
 {
   "HomePage": {
-    "title": "Hello world!"
+    "errorLoadingFloorComponent": "Could not load floor",
+    "searchEmployee": "Search employee",
+    "sync": "Sync projects",
+    "syncError": "Sync error",
+    "syncSuccess": "Sync success"
+  },
+  "LanguageSwitcher": {
+    "pl": "Polski",
+    "en": "English",
+    "language": "English"
+  },
+  "NavbarMenu": {
+    "unreserveSuccess": "Unreserved successfully",
+    "unreserveError": "Could not unreserve",
+    "reservationModalTitle": "My reservations"
+  },
+  "DaySwitcher": {
+    "chooseDate": "Choose day"
+  },
+  "DeskPopup": {
+    "personAssigned": "Person assigned",
+    "projectAssigned": "Project assigned",
+    "noneAssigned": "None"
+  },
+  "DeskReservation": {
+    "invalidDateRange": "The selected range includes a restricted date",
+    "hotdeskRangeNotChosen": "Please select a date range for the hotdesk",
+    "invalidProjectId": "Project ID is not available",
+    "doubleReservationsNotAllowed": "User already has reservation for this time period!",
+    "reservationSuccess": "Reservation successful",
+    "employeeNotFound": "Employee not found",
+    "validationErrorEmployeeAndProject": "Please select an employee and a project",
+    "validationErrorProject": "Selected project is invalid",
+    "validationErrorHotdeskDateMissing": "Please select an employee and a dates for the hotdesk",
+    "unreserveSuccess": "Unreserved successfully",
+    "unreserveError": "Failed to unreserve the desk",
+    "noReservationFoundDelete": "No reservation found to delete",
+    "showAll": "Show all reservations",
+    "personAssigned": "Person assigned",
+    "choosePerson": "Choose person",
+    "projectAssigned": "Project assigned",
+    "chooseProject": "Choose project",
+    "confirmButton": "Confirm",
+    "cancelButton": "Cancel",
+    "deleteReservationButton": "Delete reservation",
+    "reservationsTitle": "Reservations",
+    "multipleReservationsError": "Cannot assign hotdesks to project: {desks} (hotdesks already have a reservation).",
+    "multipleReservationsSuccess": "Desks successfully assigned to the project",
+    "multipleReservationValidationeError": "Please select a project and desks",
+    "multipleProjectAssigment": "Project assignment",
+    "multipleChoosenDesks": "Choosen desks",
+    "dsa": ""
+  },
+  "ReservationCard": {
+    "reservationNoEndTime": "No end time",
+    "reservation": "Reservation",
+    "deleteReservationButton": "Delete reservation",
+    "dsa": "DSA"
+  },
+  "UnassignedEmployee": {
+    "filterPosition": "Filter by position",
+    "filterName": "Filter by name",
+    "filterCompany": "Filter by company",
+    "filterDepartment": "Filter by department",
+    "company": "Company",
+    "department": "Department",
+    "position": "Position",
+    "name": "Name"
+  },
+  "ProjectInfo": {
+    "code": "Code",
+    "description": "Description",
+    "filterCode": "Filter by code",
+    "filterDescription": "Filter by description",
+    "color": "Color"
   }
 }

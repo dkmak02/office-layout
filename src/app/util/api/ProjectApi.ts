@@ -143,6 +143,30 @@ const changeProjectColor = async ({
     throw error;
   }
 };
+const syncProject = async () => {
+  try {
+    const response = await axios.patch(
+      `${API_URL}/SyncUnactiveProjects`,
+      null,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status !== 200) {
+      throw new Error("Failed to sync project");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error changing project:", error);
+    throw error;
+  }
+};
 const useProjects = (selectedFloor: string) => {
   const queryClient = useQueryClient();
 
@@ -172,6 +196,13 @@ const useProjects = (selectedFloor: string) => {
       queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
     },
   });
+  const syncProjectMutation = useMutation({
+    mutationFn: syncProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects", selectedFloor] });
+      queryClient.invalidateQueries({ queryKey: ["floors", selectedFloor] });
+    },
+  });
 
   return {
     ...projectQuery,
@@ -183,6 +214,9 @@ const useProjects = (selectedFloor: string) => {
 
     changeProjectTypeColor: projectTypeColorMutation.mutate,
     changeProjectTypeColorAsync: projectTypeColorMutation.mutateAsync,
+
+    syncProject: syncProjectMutation.mutate,
+    syncProjectAsync: syncProjectMutation.mutateAsync,
   };
 };
 

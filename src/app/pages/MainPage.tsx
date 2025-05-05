@@ -35,12 +35,15 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import { useHandleDeleteReservation } from "../util/handlers/deleteReservation";
 import DaySwitcher from "../components/DaySwitcher";
 import { useSearchParams } from "next/navigation";
+import useProjects from "../util/api/ProjectApi";
+import { useTranslations } from "next-intl";
 const { Header, Content } = Layout;
 const floorComponents: any = {
   floor7: require("../components/floors/Floor7"),
   floor8: require("../components/floors/Floor8"),
 };
 const MainPage = () => {
+  const t = useTranslations("HomePage");
   const {
     selectedEmployees,
     setSelectedEmployees,
@@ -55,6 +58,7 @@ const MainPage = () => {
     : "Floor 7";
   const { data: desksData } = useDesks(selectedFloor, selectedDate);
   const { data: userData } = useUser();
+  const { syncProjectAsync } = useProjects(selectedFloor);
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
   const { allEmployees, unassignedEmployeesDate } = useEmployees({
@@ -104,7 +108,7 @@ const MainPage = () => {
         setSvgComponent(() => component.default);
       } catch (error) {
         console.error("Error loading the floor component:", error);
-        message.error("Failed to load the floor component.");
+        message.error(t("errorLoadingFloorComponent"));
         setSvgComponent(null);
       }
     };
@@ -160,16 +164,15 @@ const MainPage = () => {
   };
   const handleEmployeeSelected = (employeeIds: number[]) => {
     setSelectedEmployees(employeeIds);
-    // const filteredDesks = findDesks(employeeIds, choosenProject, desks);
-    // queryClient.setQueryData(
-    //   ["floors", selectedFloor, selectedDate],
-    //   filteredDesks
-    // );
   };
-
-  const handleUserNameClick = () => {
-    setShowUsersReservation(true);
-    setCurrentReservations(userData?.reservations || []);
+  const handleSyncProjects = async () => {
+    try {
+      await syncProjectAsync();
+      message.success(t("syncSuccess"));
+    } catch (error) {
+      console.error("Sync failed:", error);
+      message.error(t("syncError"));
+    }
   };
   return (
     <>
@@ -179,14 +182,15 @@ const MainPage = () => {
       >
         <ProjectSider selectedFloor={selectedFloor} darkenColor={darkenColor} />
         <Layout style={{ padding: "0 24px 24px" }}>
-          <div className="flex justify-between items-center gap-4 mt-4 mb-2">
+          <div className="flex justify-between items-center gap-4 mt-4 mb-2" >
             <Select
               mode="multiple"
               showSearch
-              placeholder="Wyszukaj osobę"
+              placeholder={t("searchEmployee")}
               optionFilterProp="label"
               onChange={handleEmployeeSelected}
-              className="mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md h-[32px]"
+              allowClear
+              className="mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md overflow-y-auto"
               options={allEmployees.data?.map((emp: any) => ({
                 value: emp.id,
                 label: emp.name + " " + emp.surname,
@@ -196,9 +200,21 @@ const MainPage = () => {
                 flex: 1,
                 maxWidth: "50%",
               }}
+              maxTagCount={4}
+              maxTagTextLength={10}
               optionRender={(option) => <Space>{option.data.label}</Space>}
             />
-
+            <div className="flex items-center gap-2">
+              {userData?.isAdmin && (
+                <Button
+                  type="primary"
+                  onClick={() => handleSyncProjects()}
+                  icon={<ClockCircleOutlined />}
+                >
+                 {t("sync")}
+                </Button>
+              )}
+            </div>
             <div>
               <DaySwitcher />
             </div>

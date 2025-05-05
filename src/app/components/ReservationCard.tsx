@@ -4,6 +4,7 @@ import { Reservation } from "../models/deskModel";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { allowDeleteReservation } from "../util/handlers/validatePermisions";
 import { User } from "../models/userModel";
+import { useTranslations } from "next-intl";
 interface GenerateCardProps {
   reservation: Reservation;
   userData: User;
@@ -25,16 +26,17 @@ const GenerateCard = ({
   handleCardUnreserv,
   validateRoles,
 }: GenerateCardProps) => {
+  const t = useTranslations("ReservationCard");
   const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
   const endDate =
     dayjs(reservation.endTime).year() === 9999
-      ? "Brak daty zakończenia"
+      ? t("reservationNoEndTime")
       : dayjs(reservation.endTime).format("YYYY-MM-DD");
 
   return (
     <Card
       key={reservation.reservationID}
-      title={`Rezerwacja: ${deskName}`}
+      title={`${t("reservation")}: ${deskName}`}
       variant="outlined"
       style={{ marginTop: 16 }}
     >
@@ -58,7 +60,7 @@ const GenerateCard = ({
           onClick={() => handleCardUnreserv(reservation.reservationID)}
           style={{ margin: 0 }}
         >
-          Usuń rezerwację
+          {t("deleteReservationButton")}
         </Button>
       )}
     </Card>

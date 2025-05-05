@@ -9,7 +9,9 @@ import { useDataContext } from "../util/providers/AppDataContext";
 import useProjects from "../util/api/ProjectApi";
 import { Project } from "@/app/models/projectModel";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 const ProjectInfo = () => {
+  const t = useTranslations("ProjectInfo");
   const {
     data: userData,
     isLoading: userLoading,
@@ -107,11 +109,11 @@ const ProjectInfo = () => {
     {
       title: (
         <div style={columnHeaderStyle}>
-          <div>Code</div>
+          <div>{t("code")}</div>
           <Select
             mode="multiple"
             size="small"
-            placeholder="Filter code"
+            placeholder={t("filterCode")}
             value={filters.code}
             onChange={(value) => handleFilterChange("code", value)}
             style={{ width: "100%", minWidth: 0 }}
@@ -133,11 +135,11 @@ const ProjectInfo = () => {
     {
       title: (
         <div style={columnHeaderStyle}>
-          <div>Description</div>
+          <div>{t("description")}</div>
           <Select
             mode="multiple"
             size="small"
-            placeholder="Filter description"
+            placeholder={t("filterDescription")}
             value={filters.name}
             onChange={(value) => handleFilterChange("name", value)}
             style={{ width: "100%", minWidth: 0 }}
@@ -157,7 +159,7 @@ const ProjectInfo = () => {
       ellipsis: true,
     },
     {
-      title: <div style={{ textAlign: "center" }}>Color</div>,
+      title: <div style={{ textAlign: "center" }}>{t("color")}</div>,
       dataIndex: "color",
       key: "color",
       width: 120,

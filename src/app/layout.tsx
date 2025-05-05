@@ -5,6 +5,7 @@ import { AppDataProvider } from "./util/providers/AppDataContext";
 import "./globals.css";
 import NavbarMenu from "./components/nav-bar-components/Menu";
 import { Suspense } from "react";
+import { NextIntlClientProvider } from "next-intl";
 // import "./i18n";
 // import { I18nextProvider } from "react-i18next";
 // import i18n from "./i18n";
@@ -29,21 +30,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <I18nextProvider i18n={i18n}>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AppDataProvider>
-          <ReactQueryProvider>
-            <Suspense fallback={<div>Loading...</div>}>
-              <NavbarMenu />
-              {children}
-            </Suspense>
-          </ReactQueryProvider>
-        </AppDataProvider>
+        <NextIntlClientProvider>
+          <AppDataProvider>
+            <ReactQueryProvider>
+              <Suspense fallback={<div>Loading...</div>}>
+                <NavbarMenu />
+                {children}
+              </Suspense>
+            </ReactQueryProvider>
+          </AppDataProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
-    // </I18nextProvider>
   );
 }

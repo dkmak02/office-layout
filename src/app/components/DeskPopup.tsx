@@ -1,8 +1,10 @@
 import React from "react";
 import { DeskPopupProps } from "../models/deskModel";
+import { useTranslations } from "next-intl";
 const DeskPopup = (
   { deskData, position, isConferenceRoom }:DeskPopupProps
 ) => {
+  const t = useTranslations("DeskPopup");
   const { x, y } = position;
   const { deskName, personAssigned, projectAssigned } = deskData;
 
@@ -41,12 +43,14 @@ const DeskPopup = (
 
       {!isConferenceRoom && (
         <p className="m-1 text-sm text-gray-600">
-          <strong>Przypisana osoba:</strong> {personAssigned || "Brak"}
+          <strong>{`${t("personAssigned")}:`}</strong>{" "}
+          {personAssigned || `${t("noneAssigned")}`}
         </p>
       )}
       {!isConferenceRoom && (
         <p className="m-1 text-sm text-gray-600">
-          <strong>Przypisany projekt:</strong> {projectAssigned || "Brak"}
+          <strong>{`${t("projectAssigned")}:`}</strong>{" "}
+          {projectAssigned || `${t("noneAssigned")}`}
         </p>
       )}
     </div>

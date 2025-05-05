@@ -5,7 +5,9 @@ import { useState } from "react";
 import { useDataContext } from "../util/providers/AppDataContext";
 import { QueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 const DaySwitcher = () => {
+  const t = useTranslations("DaySwitcher");
   const params = useSearchParams();
   const selectedFloor = params.get("floor")?.includes("8")
     ? "Floor 8"
@@ -27,7 +29,7 @@ const DaySwitcher = () => {
 
   return (
     <div className="flex items-center justify-between gap-10 mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md h-[32px] max-w-[400px] w-full">
-      <span className="text-sm text-gray-600 font-medium">Wybierz dzień:</span>
+      <span className="text-sm text-gray-600 font-medium">{`${t("chooseDate")}:`}</span>
 
       <DatePicker
         value={dayjs(selectedDate)}

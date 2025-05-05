@@ -8,9 +8,11 @@ import { UnassignedEmployee } from "@/app/models/employeeModel";
 import { Content } from "antd/es/layout/layout";
 import useUser from "@/app/util/api/UserApi";
 import { useDataContext } from "../util/providers/AppDataContext";
+import { useTranslations } from "next-intl";
 const { Option } = Select;
 
 const UnassignedEmployees = () => {
+  const t = useTranslations("UnassignedEmployee");
   const {
     data: userData,
     isLoading: userLoading,
@@ -82,10 +84,10 @@ const UnassignedEmployees = () => {
     {
       title: (
         <div style={columnHeaderStyle}>
-          <div>Name</div>
+          <div>{t("name")}</div>
           <Input
             size="small"
-            placeholder="Search name"
+            placeholder={t("filterName")}
             value={filters.name}
             onChange={(e) => handleFilterChange("name", e.target.value)}
             style={{ width: "100%", minWidth: 0 }}
@@ -100,11 +102,11 @@ const UnassignedEmployees = () => {
     {
       title: (
         <div style={columnHeaderStyle}>
-          <div>Company</div>
+          <div>{t("company")}</div>
           <Select
             mode="multiple"
             size="small"
-            placeholder="Filter company"
+            placeholder={t("filterCompany")}
             value={filters.companyName}
             onChange={(value) => handleFilterChange("companyName", value)}
             style={{ width: "100%", minWidth: 0 }}
@@ -126,11 +128,11 @@ const UnassignedEmployees = () => {
     {
       title: (
         <div style={columnHeaderStyle}>
-          <div>Department</div>
+          <div>{t("department")}</div>
           <Select
             mode="multiple"
             size="small"
-            placeholder="Filter department"
+            placeholder={t("filterDepartment")}
             value={filters.department}
             onChange={(value) => handleFilterChange("department", value)}
             style={{ width: "100%", minWidth: 0 }}
@@ -152,11 +154,11 @@ const UnassignedEmployees = () => {
     {
       title: (
         <div style={columnHeaderStyle}>
-          <div>Position</div>
+          <div>{t("position")}</div>
           <Select
             mode="multiple"
             size="small"
-            placeholder="Filter position"
+            placeholder={t("filterPosition")}
             value={filters.position}
             onChange={(value) => handleFilterChange("position", value)}
             style={{ width: "100%", minWidth: 0 }}

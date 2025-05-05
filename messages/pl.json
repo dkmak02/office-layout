@@ -1,5 +1,72 @@
 {
   "HomePage": {
-    "title": "Hello world!2"
+    "errorLoadingFloorComponent": "Nie można załadować piętra",
+    "searchEmployee": "Wyszukaj osobę",
+    "sync": "Synchronizuj projekty",
+    "syncError": "Błąd synchronizacji",
+    "syncSuccess": "Synchronizacja zakończona sukcesem"
+  },
+  "LanguageSwitcher": {
+    "pl": "Polski",
+    "en": "English",
+    "language": "Polski"
+  },
+  "NavbarMenu": {
+    "unreserveSuccess": "Odwołano rezerwację",
+    "unreserveError": "Nie można odwołać rezerwacji",
+    "reservationModalTitle": "Moje rezerwacje"
+  },
+  "DaySwitcher": {
+    "chooseDate": "Wybierz dzień"
+  },
+  "DeskPopup": {
+    "personAssigned": "Przypisana osoba",
+    "projectAssigned": "Przypisany projekt",
+    "noneAssigned": "Brak"
+  },
+  "DeskReservation": {
+    "invalidDateRange": "Wybrany zakres zawiera niedozwoloną datę",
+    "hotdeskRangeNotChosen": "Proszę wybrać zakres dat dla hotdesku",
+    "invalidProjectId": "ID projektu jest niedostępne",
+    "doubleReservationsNotAllowed": "Użytkownik ma już rezerwację w tym okresie!",
+    "reservationSuccess": "Rezerwacja zakończona sukcesem",
+    "employeeNotFound": "Pracownik nie został znaleziony",
+    "validationErrorEmployeeAndProject": "Proszę wybrać pracownika i projekt",
+    "validationErrorProject": "Wybrany projekt jest nieprawidłowy",
+    "validationErrorHotdeskDateMissing": "Proszę wybrać pracownika i daty dla hotdesku",
+    "unreserveSuccess": "Rezerwacja została anulowana",
+    "unreserveError": "Nie udało się anulować rezerwacji",
+    "noReservationFoundDelete": "Nie znaleziono rezerwacji do usunięcia",
+    "showAll": "Pokaż wszystkie rezerwacje",
+    "personAssigned": "Przypisana osoba",
+    "choosePerson": "Wybierz osobę",
+    "projectAssigned": "Przypisany projekt",
+    "chooseProject": "Wybierz projekt",
+    "confirmButton": "Potwierdź",
+    "cancelButton": "Anuluj",
+    "deleteReservationButton": "Usuń rezerwację",
+    "reservationsTitle": "Rezerwacje",
+    "multipleReservationsError": "Nie można przypisać hotdesków do projektu: {desks} (hotdeski mają już rezerwację).",
+    "multipleReservationsSuccess": "Biurka zostały pomyślnie przypisane do projektu.",
+    "multipleReservationValidationeError": "Proszę wybrać projekt i biurka.",
+    "multipleProjectAssigment": "Przypisanie do projektu",
+    "multipleChoosenDesks": "Wybrane biurka"
+  },
+  "UnassignedEmployee": {
+    "filterPosition": "Filtruj według stanowiska",
+    "filterName": "Filtruj według imienia i nazwiska",
+    "filterCompany": "Filtruj według firmy",
+    "filterDepartment": "Filtruj według działu",
+    "company": "Firma",
+    "department": "Dział",
+    "position": "Stanowisko",
+    "name": "Imię i nazwisko"
+  },
+  "ProjectInfo": {
+    "code": "Kod",
+    "description": "Opis",
+    "filterCode": "Filtruj według kodu",
+    "filterDescription": "Filtruj według opisu",
+    "color": "Kolor"
   }
 }

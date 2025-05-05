@@ -4,7 +4,7 @@ import { Header } from "antd/es/layout/layout";
 import { Button, Modal, List } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { useDataContext } from "@/app/util/providers/AppDataContext";
-import { useState } from "react";
+import { use, useState } from "react";
 import useUser from "../../util/api/UserApi";
 import { Reservation } from "@/app/models/deskModel";
 import { allowOwnUnreserv } from "@/app/util/handlers/validatePermisions";
@@ -13,8 +13,10 @@ import GenterateCard from "../ReservationCard";
 import Link from "next/link";
 import { User } from "@/app/models/userModel";
 import { usePathname, useSearchParams } from "next/navigation";
-import LocaleSwitcher from "../LocaleSwithcer";
+import LocaleSwitcher from "../LocaleSwitcher";
+import { useTranslations } from "next-intl";
 const NavbarMenu = () => {
+  const t = useTranslations("NavbarMenu");
   const pathname = usePathname();
   const params = useSearchParams();
   const { handleDeleteReservationCurrentUser } = useHandleDeleteReservation();
@@ -59,10 +61,10 @@ const NavbarMenu = () => {
   const handleCardUnreserv = async (reservationId: number) => {
     try {
       await handleDeleteReservationCurrentUser(reservationId);
-      message.success("Reservation unreserved successfully.");
+      message.success(t("unreserveSuccess"));
     } catch (error) {
       console.error("Unreserve failed:", error);
-      message.error("Failed to unreserve the desk.");
+      message.error(t("unreserveError"));
     }
   };
 
@@ -119,7 +121,7 @@ const NavbarMenu = () => {
       </Header>
       {showUsersReservation && (
         <Modal
-          title="Moje rezerwacje"
+          title={t("reservationModalTitle")}
           open={showUsersReservation}
           onCancel={() => setShowUsersReservation(false)}
           okButtonProps={{ style: { display: "none" } }}

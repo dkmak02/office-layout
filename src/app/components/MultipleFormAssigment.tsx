@@ -7,12 +7,14 @@ import { MultipleDeskReservation } from "../models/deskModel";
 import { Project } from "../models/projectModel";
 import { useDataContext } from "../util/providers/AppDataContext";
 import useDesksMutations from "../util/api/DesksMutation";
+import { useTranslations } from "next-intl";
 const MultipleFormAssigment = ({
   selectedDesks,
   showMultipleFormModal,
   setShowMultipleFormModal,
   selectedFloor,
 }: MulipleFormAssigmentProps) => {
+  const t = useTranslations("DeskReservation");
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { data: projects, changeProjectAsync } = useProjects(selectedFloor);
@@ -51,18 +53,18 @@ const MultipleFormAssigment = ({
     ).finally(() => {
       if (desksWithReservation.length > 0) {
         message.error(
-          `Nie można przypisać projektu do biurek: ${desksWithReservation.join(
-            ", "
-          )} (biurka mają rezerwację).`
+          t("multipleReservationsError", {
+            desks: desksWithReservation.join(", "),
+          })
         );
       } else {
-        message.success("Biurka zostały pomyślnie przypisane do projektu.");
+        message.success(t("multipleReservationsSuccess"));
       }
     });
   };
   const handleMultipleProjectChange = async () => {
     if (!selectedDesks.length || !selectedProject) {
-      message.error("Wybierz biurka i projekt");
+      message.error(t("multipleReservationValidationeError"));
       return;
     }
     setIsLoading(true);
@@ -81,9 +83,9 @@ const MultipleFormAssigment = ({
     <Modal
       title={
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div>Przypisanie projektu</div>
+          <div>{t("multipleProjectAssigment")}</div>
           <div style={{ paddingRight: 25 }}>
-            Wybrane biurka: {selectedDesks.length}
+            {`${t("multipleChoosenDesks")}:`} {selectedDesks.length}
           </div>
         </div>
       }
@@ -111,7 +113,7 @@ const MultipleFormAssigment = ({
         />
         <Select
           showSearch
-          placeholder="Wybierz projekt"
+          placeholder={t("chooseProject")}
           value={selectedProject}
           optionFilterProp="label"
           onChange={multipleProjectChange}
@@ -128,7 +130,7 @@ const MultipleFormAssigment = ({
             onClick={handleMultipleProjectChange}
             disabled={isLoading}
           >
-            Zatwierdź
+            {t("confirmButton")}
           </Button>
           <Button
             danger
@@ -138,7 +140,7 @@ const MultipleFormAssigment = ({
             }}
             disabled={isLoading}
           >
-            Anuluj
+            {t("cancelButton")}
           </Button>
         </div>
       </Spin>
