@@ -182,7 +182,7 @@ const MainPage = () => {
       >
         <ProjectSider selectedFloor={selectedFloor} darkenColor={darkenColor} />
         <Layout style={{ padding: "0 24px 24px" }}>
-          <div className="flex justify-between items-center gap-4 mt-4 mb-2" >
+          <div className="flex justify-between items-center gap-4 mt-4 mb-2">
             <Select
               mode="multiple"
               showSearch
@@ -211,7 +211,7 @@ const MainPage = () => {
                   onClick={() => handleSyncProjects()}
                   icon={<ClockCircleOutlined />}
                 >
-                 {t("sync")}
+                  {t("sync")}
                 </Button>
               )}
             </div>
@@ -220,7 +220,7 @@ const MainPage = () => {
             </div>
           </div>
           <Breadcrumb
-            items={[{ title: selectedFloor }]}
+            items={[{ title: t(`${selectedFloor}`) }]}
             style={{ margin: "16px 0" }}
           />
           <Content

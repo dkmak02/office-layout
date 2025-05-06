@@ -4,7 +4,9 @@
     "searchEmployee": "Wyszukaj osobę",
     "sync": "Synchronizuj projekty",
     "syncError": "Błąd synchronizacji",
-    "syncSuccess": "Synchronizacja zakończona sukcesem"
+    "syncSuccess": "Synchronizacja zakończona sukcesem",
+    "Floor 7": "Piętro 7",
+    "Floor 8": "Piętro 8"
   },
   "LanguageSwitcher": {
     "pl": "Polski",
@@ -14,7 +16,11 @@
   "NavbarMenu": {
     "unreserveSuccess": "Odwołano rezerwację",
     "unreserveError": "Nie można odwołać rezerwacji",
-    "reservationModalTitle": "Moje rezerwacje"
+    "reservationModalTitle": "Moje rezerwacje",
+    "floor7": "Piętro 7",
+    "floor8": "Piętro 8",
+    "unassigned": "Nieprzypisani pracownicy",
+    "projects": "Projekty"
   },
   "DaySwitcher": {
     "chooseDate": "Wybierz dzień"
@@ -52,6 +58,12 @@
     "multipleProjectAssigment": "Przypisanie do projektu",
     "multipleChoosenDesks": "Wybrane biurka"
   },
+  "ReservationCard": {
+    "reservationNoEndTime": "Brak daty zakończonia",
+    "reservation": "Rezerwacja",
+    "deleteReservationButton": "Usuń rezerwację",
+    "dsa": "DSA"
+  },
   "UnassignedEmployee": {
     "filterPosition": "Filtruj według stanowiska",
     "filterName": "Filtruj według imienia i nazwiska",
@@ -63,10 +75,10 @@
     "name": "Imię i nazwisko"
   },
   "ProjectInfo": {
-    "code": "Kod",
-    "description": "Opis",
+    "code": "Kod projektu",
+    "description": "Nazwa projektu",
     "filterCode": "Filtruj według kodu",
-    "filterDescription": "Filtruj według opisu",
+    "filterDescription": "Filtruj według nazwy",
     "color": "Kolor"
   }
 }

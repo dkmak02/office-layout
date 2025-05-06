@@ -33,22 +33,26 @@ const NavbarMenu = () => {
   const floorsData = [
     {
       key: "Floor 7",
-      label: <Link href={{ pathname: "/", query: { floor: 7 } }}>Floor 7</Link>,
+      label: (
+        <Link href={{ pathname: "/", query: { floor: 7 } }}>{t("floor7")}</Link>
+      ),
     },
     {
       key: "Floor 8",
-      label: <Link href={{ pathname: "/", query: { floor: 8 } }}>Floor 8</Link>,
+      label: (
+        <Link href={{ pathname: "/", query: { floor: 8 } }}>{t("floor8")}</Link>
+      ),
     },
   ];
 
   if (userData?.isAdmin) {
     floorsData.push({
       key: "unassigned",
-      label: <Link href="/unassignedEmployees">Unassigned Employees</Link>,
+      label: <Link href="/unassignedEmployees">{t("unassigned")}</Link>,
     });
     floorsData.push({
       key: "projects",
-      label: <Link href="/projectinfo">Projects</Link>,
+      label: <Link href="/projectinfo">{t("projects")}</Link>,
     });
   }
   const getMenuKeyFromPath = (path: string, params: string) => {

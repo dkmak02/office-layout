@@ -4,7 +4,9 @@
     "searchEmployee": "Search employee",
     "sync": "Sync projects",
     "syncError": "Sync error",
-    "syncSuccess": "Sync success"
+    "syncSuccess": "Sync success",
+    "Floor 7": "Floor 7",
+    "Floor 8": "Floor 8"
   },
   "LanguageSwitcher": {
     "pl": "Polski",
@@ -14,7 +16,11 @@
   "NavbarMenu": {
     "unreserveSuccess": "Unreserved successfully",
     "unreserveError": "Could not unreserve",
-    "reservationModalTitle": "My reservations"
+    "reservationModalTitle": "My reservations",
+    "floor7": "Floor 7",
+    "floor8": "Floor 8",
+    "unassigned": "Unassigned Employees",
+    "projects": "Projects"
   },
   "DaySwitcher": {
     "chooseDate": "Choose day"
@@ -70,10 +76,10 @@
     "name": "Name"
   },
   "ProjectInfo": {
-    "code": "Code",
-    "description": "Description",
+    "code": "Project code",
+    "description": "Project name",
     "filterCode": "Filter by code",
-    "filterDescription": "Filter by description",
+    "filterDescription": "Filter by name",
     "color": "Color"
   }
 }

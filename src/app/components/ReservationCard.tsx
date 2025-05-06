@@ -29,7 +29,7 @@ const GenerateCard = ({
   const t = useTranslations("ReservationCard");
   const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
   const endDate =
-    dayjs(reservation.endTime).year() === 9999
+    reservation.endTime === null
       ? t("reservationNoEndTime")
       : dayjs(reservation.endTime).format("YYYY-MM-DD");
 

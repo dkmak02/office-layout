@@ -10,6 +10,7 @@ import {
   List,
   Card,
   Timeline,
+  ConfigProvider,
 } from "antd";
 import dayjs from "dayjs";
 import { ClockCircleOutlined } from "@ant-design/icons";
@@ -29,9 +30,9 @@ import GenerateCard from "./ReservationCard";
 import { User } from "../models/userModel";
 import { allowDeleteReservation } from "../util/handlers/validatePermisions";
 import { useTranslations } from "next-intl";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
 const DeskReservationForm = ({
   desk,
   selectedFloor,
@@ -155,7 +156,6 @@ const DeskReservationForm = ({
     const [start, end] = dates;
 
     if (doesRangeIncludeCustomDate(start, end)) {
-      
       message.error(t("invalidDateRange"));
       setSelectedDates(null);
       isProgrammaticUpdate.current = true;
@@ -290,7 +290,10 @@ const DeskReservationForm = ({
         selectedDates[0],
         selectedDates[1]
       );
-    } else if (project.code !== "Hotdesk") {
+    } else if (
+      project.code !== "Hotdesk" &&
+      selectedPerson !== currentReservation?.userId
+    ) {
       if (currentReservation) {
         await handleDeleteReservation(currentReservation.reservationID);
       }
@@ -469,7 +472,7 @@ const DeskReservationForm = ({
                   cellRender={cellRender}
                   onChange={handleRangeChange}
                   disabledDate={isReservedDate}
-                  minDate={dayjs().startOf("day")}
+                  minDate={dayjs(selectedDate).startOf("day")}
                 />
               </div>
             )}
