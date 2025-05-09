@@ -5,11 +5,11 @@ import { Table, Spin, Alert, Layout, Select, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Content } from "antd/es/layout/layout";
 import useUser from "@/app/util/api/UserApi";
-import { useDataContext } from "../util/providers/AppDataContext";
 import useProjects from "../util/api/ProjectApi";
 import { Project } from "@/app/models/projectModel";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useDataContext } from "../util/providers/AppDataContext";
 const ProjectInfo = () => {
   const t = useTranslations("ProjectInfo");
   const {
@@ -21,13 +21,14 @@ const ProjectInfo = () => {
   const selectedFloor = params.get("floor")?.includes("8")
     ? "Floor 8"
     : "Floor 7";
+  const { selectedDate } = useDataContext();
   const {
     data: projects,
     isLoading: projectsLoading,
     isError: projectsError,
     changeProjectColorAsync,
     changeProjectTypeColorAsync,
-  } = useProjects(selectedFloor);
+  } = useProjects(selectedFloor, selectedDate);
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);

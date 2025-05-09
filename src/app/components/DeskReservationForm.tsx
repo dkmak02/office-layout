@@ -48,7 +48,10 @@ const DeskReservationForm = ({
     useDataContext();
   const { handleDeleteReservation, handleDeleteReservationCurrentUser } =
     useHandleDeleteReservation();
-  const { data: projects, changeProjectAsync } = useProjects(selectedFloor);
+  const { data: projects, changeProjectAsync } = useProjects(
+    selectedFloor,
+    selectedDate
+  );
   const {
     changePersonAsync,
     changeDeskTypeAsync,
@@ -178,6 +181,10 @@ const DeskReservationForm = ({
   };
   const submitProjectChange = async (project: Project, projectCode: string) => {
     if (projectCode === project.code) {
+      return;
+    }
+    if (desk.hotdesk && project.code !== "Hotdesk" && currentReservation) {
+      message.error(t("hotdeskHasFutureReservation"));
       return;
     }
     if (project.code === "Hotdesk") {

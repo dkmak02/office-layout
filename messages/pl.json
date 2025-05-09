@@ -34,7 +34,7 @@
     "invalidDateRange": "Wybrany zakres zawiera niedozwoloną datę",
     "hotdeskRangeNotChosen": "Proszę wybrać zakres dat dla hotdesku",
     "invalidProjectId": "ID projektu jest niedostępne",
-    "doubleReservationsNotAllowed": "Użytkownik ma już rezerwację w tym okresie!",
+    "doubleReservationsNotAllowed": "Użytkownik ma już rezerwację biurka. Proszę ją usunąć, a następnie spróbować ponownie.",
     "reservationSuccess": "Rezerwacja zakończona sukcesem",
     "employeeNotFound": "Pracownik nie został znaleziony",
     "validationErrorEmployeeAndProject": "Proszę wybrać pracownika i projekt",
@@ -56,7 +56,8 @@
     "multipleReservationsSuccess": "Biurka zostały pomyślnie przypisane do projektu.",
     "multipleReservationValidationeError": "Proszę wybrać projekt i biurka.",
     "multipleProjectAssigment": "Przypisanie do projektu",
-    "multipleChoosenDesks": "Wybrane biurka"
+    "multipleChoosenDesks": "Wybrane biurka",
+    "hotdeskHasFutureReservation": "Usuń wszystkie rezerwacje, aby zmienić projekt"
   },
   "ReservationCard": {
     "reservationNoEndTime": "Brak daty zakończonia",

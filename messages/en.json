@@ -34,7 +34,7 @@
     "invalidDateRange": "The selected range includes a restricted date",
     "hotdeskRangeNotChosen": "Please select a date range for the hotdesk",
     "invalidProjectId": "Project ID is not available",
-    "doubleReservationsNotAllowed": "User already has reservation for this time period!",
+    "doubleReservationsNotAllowed": "This user already has a hot desk reservation. Please remove it before trying again.",
     "reservationSuccess": "Reservation successful",
     "employeeNotFound": "Employee not found",
     "validationErrorEmployeeAndProject": "Please select an employee and a project",
@@ -57,6 +57,7 @@
     "multipleReservationValidationeError": "Please select a project and desks",
     "multipleProjectAssigment": "Project assignment",
     "multipleChoosenDesks": "Choosen desks",
+    "hotdeskHasFutureReservation": "Delete all reservations to change project",
     "dsa": ""
   },
   "ReservationCard": {

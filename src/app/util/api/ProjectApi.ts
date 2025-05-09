@@ -14,7 +14,7 @@ const fetchProjects = async ({
   queryKey: QueryKey;
 }): Promise<Project[]> => {
   const selectedFloor = queryKey[1] as string;
-
+  const date = queryKey[2] as string;
   try {
     const [projectsResponse, hotdesksResponse] = await Promise.all([
       axios.get<Project[]>(`${API_URL}/projects`, {
@@ -22,7 +22,7 @@ const fetchProjects = async ({
         withCredentials: true,
       }),
       axios.get<Project>(`${API_URL}/desks/info`, {
-        params: { floor: selectedFloor, type: "Hotdesk" },
+        params: { floor: selectedFloor, type: "Hotdesk", pointInTime: date },
         withCredentials: true,
       }),
     ]);
@@ -167,11 +167,10 @@ const syncProject = async () => {
     throw error;
   }
 };
-const useProjects = (selectedFloor: string) => {
+const useProjects = (selectedFloor: string, selectedDate: string) => {
   const queryClient = useQueryClient();
-
   const projectQuery = useQuery<Project[]>({
-    queryKey: ["projects", selectedFloor],
+    queryKey: ["projects", selectedFloor, selectedDate],
     queryFn: fetchProjects,
   });
 

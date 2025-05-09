@@ -58,7 +58,7 @@ const MainPage = () => {
     : "Floor 7";
   const { data: desksData } = useDesks(selectedFloor, selectedDate);
   const { data: userData } = useUser();
-  const { syncProjectAsync } = useProjects(selectedFloor);
+  const { syncProjectAsync } = useProjects(selectedFloor, selectedDate);
   const [SvgComponent, setSvgComponent] =
     useState<React.FC<FloorComponentProps> | null>(null);
   const { allEmployees, unassignedEmployeesDate } = useEmployees({
@@ -70,8 +70,6 @@ const MainPage = () => {
   const [selectedElements, setSelectedElements] = useState<Desk[]>([]);
   const [backgroundOpacity, setBackgroundOpacity] = useState(1);
   const [showMultipleFormModal, setShowMultipleFormModal] =
-    useState<boolean>(false);
-  const [showUsersReservation, setShowUsersReservation] =
     useState<boolean>(false);
   const [popupPosition, setPopupPosition] = useState<{
     x: number;
@@ -187,6 +185,7 @@ const MainPage = () => {
               mode="multiple"
               showSearch
               placeholder={t("searchEmployee")}
+              value={selectedEmployees}
               optionFilterProp="label"
               onChange={handleEmployeeSelected}
               allowClear

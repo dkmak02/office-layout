@@ -13,8 +13,9 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({ selectedFloor }) => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const { setChoosenProjects, choosenProjects } = useDataContext();
-  const { data: projects } = useProjects(selectedFloor);
+  const { setChoosenProjects, choosenProjects, selectedDate } =
+    useDataContext();
+  const { data: projects } = useProjects(selectedFloor, selectedDate);
 
   const handleSelectedProjectChange = (projectCode: string) => {
     if (choosenProjects.includes(projectCode)) {
