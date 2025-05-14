@@ -40,14 +40,16 @@ const ProjectSider: React.FC<ProjectSiderProps> = ({ selectedFloor }) => {
       <List
         dataSource={projects}
         style={{ paddingBottom: 8 }}
-        renderItem={(project: Project) => (
-          <ProjectCard
-            key={project.code}
-            project={project}
-            choosenProjects={choosenProjects}
-            onSelect={handleSelectedProjectChange}
-          />
-        )}
+        renderItem={(project: Project) =>
+          project.visibility && (
+            <ProjectCard
+              key={project.code}
+              project={project}
+              choosenProjects={choosenProjects}
+              onSelect={handleSelectedProjectChange}
+            />
+          )
+        }
       />
     </Sider>
   );

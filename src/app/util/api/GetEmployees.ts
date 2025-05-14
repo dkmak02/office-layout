@@ -52,6 +52,7 @@ const fetchUnassignedEmployeesDate = async ({
     throw error;
   }
 };
+
 const useEmployees = ({
   isAdmin,
   date,

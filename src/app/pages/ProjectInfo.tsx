@@ -23,13 +23,13 @@ const ProjectInfo = () => {
     : "Floor 7";
   const { selectedDate } = useDataContext();
   const {
-    data: projects,
+    allProjects,
     isLoading: projectsLoading,
     isError: projectsError,
     changeProjectColorAsync,
     changeProjectTypeColorAsync,
+    changeProjectVisibilityAsync,
   } = useProjects(selectedFloor, selectedDate);
-
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
@@ -45,23 +45,32 @@ const ProjectInfo = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (projects) {
-      setProjectList(projects);
+    if (allProjects) {
+      setProjectList(allProjects);
     }
-  }, [projects]);
+  }, [allProjects]);
 
   const [filters, setFilters] = useState<{
     name: string[];
     code: string[];
+    visibility: boolean | null;
   }>({
     name: [],
     code: [],
+    visibility: null,
   });
 
-  const handleFilterChange = (key: "name" | "code", value: string[]) => {
+  const handleFilterChange = (key: "name" | "code", value: string[]): void => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
-
+  const handleVisibilityChange = (value: boolean | string | null) => {
+    if (value === null || value === undefined) {
+      setFilters((prev) => ({ ...prev, visibility: null }));
+    } else {
+      const boolValue = value === "true" || value === true;
+      setFilters((prev) => ({ ...prev, visibility: boolValue }));
+    }
+  };
   const handleColorChange = async (id: number, color: string) => {
     setProjectList((prev) =>
       prev.map((project) =>
@@ -83,14 +92,39 @@ const ProjectInfo = () => {
     }, 500);
     setDebounceTimeout(timeout);
   };
+  const handleVisibilityChangeServer = async (
+    projectId: number,
+    visibility: boolean
+  ) => {
+    setProjectList((prev) =>
+      prev.map((project) =>
+        project.id === projectId ? { ...project, visibility } : project
+      )
+    );
+    try {
+      await changeProjectVisibilityAsync({
+        projectId,
+        visibility,
+      });
+    } catch (error) {
+      setProjectList((prev) =>
+        prev.map((project) =>
+          project.id === projectId
+            ? { ...project, visibility: !visibility }
+            : project
+        )
+      );
+      console.error("Error changing project visibility:", error);
+    }
+  };
 
   const filteredData = projectList.filter((project) => {
     return (
       (filters.code.length === 0 || filters.code.includes(project.code)) &&
-      (filters.name.length === 0 || filters.name.includes(project.name))
+      (filters.name.length === 0 || filters.name.includes(project.name)) &&
+      (filters.visibility === null || project.visibility === filters.visibility)
     );
   });
-
   const nameOptions = useMemo(
     () => [...new Set(projectList.map((p) => p.name))],
     [projectList]
@@ -99,6 +133,10 @@ const ProjectInfo = () => {
     () => [...new Set(projectList.map((p) => p.code))],
     [projectList]
   );
+  const visibilityOptions = [
+    { value: true, label: t("visible") },
+    { value: false, label: t("hidden") },
+  ];
 
   const columnHeaderStyle = {
     display: "block",
@@ -158,6 +196,54 @@ const ProjectInfo = () => {
       key: "name",
       width: 300,
       ellipsis: true,
+    },
+    {
+      title: (
+        <div style={columnHeaderStyle}>
+          <div>{t("visibility")}</div>
+          <Select
+            size="small"
+            placeholder={t("filterVisibility")}
+            value={
+              filters.visibility === null
+                ? undefined
+                : String(filters.visibility)
+            }
+            onChange={(value) =>
+              handleVisibilityChange(value === undefined ? null : value)
+            }
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {visibilityOptions.map((opt) => (
+              <Select.Option key={String(opt.value)} value={String(opt.value)}>
+                {opt.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      ),
+      dataIndex: "visibility",
+      key: "visibility",
+      width: 300,
+      ellipsis: true,
+      render: (value: boolean, record: Project) => (
+        <Select
+          size="small"
+          value={String(value)}
+          onChange={(val) =>
+            handleVisibilityChangeServer(record.id, val === "true")
+          }
+          style={{ width: "100%" }}
+          disabled={record.code === "Hotdesk" || record.total > 0}
+        >
+          {visibilityOptions.map((opt) => (
+            <Select.Option key={String(opt.value)} value={String(opt.value)}>
+              {opt.label}
+            </Select.Option>
+          ))}
+        </Select>
+      ),
     },
     {
       title: <div style={{ textAlign: "center" }}>{t("color")}</div>,

@@ -47,8 +47,8 @@ const NavbarMenu = () => {
 
   if (userData?.isAdmin) {
     floorsData.push({
-      key: "unassigned",
-      label: <Link href="/unassignedEmployees">{t("unassigned")}</Link>,
+      key: "employees",
+      label: <Link href="/employees">{t("unassigned")}</Link>,
     });
     floorsData.push({
       key: "projects",
@@ -56,7 +56,7 @@ const NavbarMenu = () => {
     });
   }
   const getMenuKeyFromPath = (path: string, params: string) => {
-    if (path.includes("/unassignedEmployees")) return "unassigned";
+    if (path.includes("/employees")) return "employees";
     if (path.includes("/projectinfo")) return "projects";
     if (params.includes("8")) return "Floor 8";
     return "Floor 7";

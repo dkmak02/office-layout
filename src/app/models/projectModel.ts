@@ -5,5 +5,6 @@ export interface Project {
   color: string;
   taken: number;
   total: number;
+  visibility: boolean;
 }
 export type SelectedProject = string | null;

@@ -33,6 +33,7 @@ const fetchProjects = async ({
     const hotdeskWithId = {
       ...hotdesksResponse.data,
       id: -170,
+      visibility: true,
     };
     const combinedData = [hotdeskWithId, ...projectsResponse.data];
     const projectIdToMove = 1000005;
@@ -49,7 +50,76 @@ const fetchProjects = async ({
     throw error;
   }
 };
+const fetchAllProjects = async ({
+  queryKey,
+}: {
+  queryKey: QueryKey;
+}): Promise<Project[]> => {
+  const selectedFloor = queryKey[1] as string;
+  const date = queryKey[2] as string;
+  try {
+    const [projectsResponse, hotdesksResponse] = await Promise.all([
+      axios.get<Project[]>(`${API_URL}/getAllProjects`, {
+        withCredentials: true,
+      }),
+      axios.get<Project>(`${API_URL}/desks/info`, {
+        params: { floor: selectedFloor, type: "Hotdesk", pointInTime: date },
+        withCredentials: true,
+      }),
+    ]);
+    if (projectsResponse.status !== 200 || hotdesksResponse.status !== 200) {
+      throw new Error("Error fetching project or desk data");
+    }
+    const hotdeskWithId = {
+      ...hotdesksResponse.data,
+      id: -170,
+      visibility: true,
+    };
+    const combinedData = [hotdeskWithId, ...projectsResponse.data];
+    const projectIdToMove = 1000005;
+    const projectIndex = combinedData.findIndex(
+      (project) => project.id === projectIdToMove
+    );
+    if (projectIndex !== -1) {
+      const [projectToMove] = combinedData.splice(projectIndex, 1);
+      combinedData.push(projectToMove);
+    }
+    return combinedData;
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    throw error;
+  }
+};
+const changeProjectVisibility = async ({
+  projectId,
+  visibility,
+}: {
+  projectId: number;
+  visibility: boolean;
+}) => {
+  try {
+    const response = await axios.patch(`${API_URL}/project/visibility`, null, {
+      params: {
+        ProjectID: projectId,
+        Visibility: visibility,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      withCredentials: true,
+    });
 
+    if (response.status !== 200) {
+      throw new Error("Failed to update project visibility");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error changing project visibility:", error);
+    throw error;
+  }
+};
 const changeProject = async ({
   deskId,
   projectId,
@@ -173,7 +243,17 @@ const useProjects = (selectedFloor: string, selectedDate: string) => {
     queryKey: ["projects", selectedFloor, selectedDate],
     queryFn: fetchProjects,
   });
-
+  const allProjectQuery = useQuery<Project[]>({
+    queryKey: ["projects", selectedFloor, selectedDate, "all"],
+    queryFn: fetchAllProjects,
+  });
+  const changeProjectVisibilityMutation = useMutation({
+    mutationFn: changeProjectVisibility,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      queryClient.invalidateQueries({ queryKey: ["floors"] });
+    },
+  });
   const projectMutation = useMutation({
     mutationFn: changeProject,
     onSuccess: () => {
@@ -205,6 +285,8 @@ const useProjects = (selectedFloor: string, selectedDate: string) => {
 
   return {
     ...projectQuery,
+
+    allProjects: allProjectQuery.data,
     changeProject: projectMutation.mutate,
     changeProjectAsync: projectMutation.mutateAsync,
 
@@ -216,6 +298,9 @@ const useProjects = (selectedFloor: string, selectedDate: string) => {
 
     syncProject: syncProjectMutation.mutate,
     syncProjectAsync: syncProjectMutation.mutateAsync,
+
+    changeProjectVisibility: changeProjectVisibilityMutation.mutate,
+    changeProjectVisibilityAsync: changeProjectVisibilityMutation.mutateAsync,
   };
 };
 

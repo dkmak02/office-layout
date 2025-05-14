@@ -9,10 +9,12 @@ import { Content } from "antd/es/layout/layout";
 import useUser from "@/app/util/api/UserApi";
 import { useDataContext } from "../util/providers/AppDataContext";
 import { useTranslations } from "next-intl";
+import useEmployeesMutaion from "../util/api/Employees";
 const { Option } = Select;
 
 const UnassignedEmployees = () => {
   const t = useTranslations("UnassignedEmployee");
+  const { changeRemoteWorkMutation, isLoading } = useEmployeesMutaion();
   const {
     data: userData,
     isLoading: userLoading,
@@ -37,11 +39,15 @@ const UnassignedEmployees = () => {
     companyName: string[];
     department: string[];
     position: string[];
+    remoteWork: number[];
+    permanentlyAssigned?: boolean;
   }>({
     name: "",
     companyName: [],
     department: [],
     position: [],
+    remoteWork: [],
+    permanentlyAssigned: undefined,
   });
 
   const handleFilterChange = (key: string, value: any) => {
@@ -60,7 +66,17 @@ const UnassignedEmployees = () => {
     () => [...new Set(allData.map((e) => e.position))],
     [allData]
   );
-
+  const remoteWorkOptions = [
+    { value: 0, label: "0%" },
+    { value: 33, label: "33%" },
+    { value: 66, label: "66%" },
+    { value: 100, label: "100%" },
+    { value: 101, label: "101%" },
+  ];
+  const permaOptions = [
+    { value: true, label: t("yes"), key: "yes" },
+    { value: false, label: t("no"), key: "no" },
+  ];
   const filteredData = allData.filter((employee) => {
     const fullName = `${employee.name} ${employee.surname}`.toLowerCase();
     return (
@@ -70,7 +86,11 @@ const UnassignedEmployees = () => {
       (filters.department.length === 0 ||
         filters.department.includes(employee.department)) &&
       (filters.position.length === 0 ||
-        filters.position.includes(employee.position))
+        filters.position.includes(employee.position)) &&
+      (filters.remoteWork.length === 0 ||
+        filters.remoteWork.includes(employee.availability)) &&
+      (filters.permanentlyAssigned === undefined ||
+        filters.permanentlyAssigned === employee.permanentlyAssigned)
     );
   });
 
@@ -79,7 +99,16 @@ const UnassignedEmployees = () => {
     whiteSpace: "normal",
     overflow: "visible",
   } as const;
-
+  const handleAvailabilityChange = async (id: number, value: number) => {
+    try {
+      await changeRemoteWorkMutation({
+        employeeID: id,
+        availability: value,
+      });
+    } catch (error) {
+      console.error("Error changing project visibility:", error);
+    }
+  };
   const columns: ColumnsType<UnassignedEmployee> = [
     {
       title: (
@@ -174,6 +203,82 @@ const UnassignedEmployees = () => {
       ),
       dataIndex: "position",
       key: "position",
+      width: 200,
+      ellipsis: true,
+    },
+    {
+      title: (
+        <div style={columnHeaderStyle}>
+          <div>{t("permamentlyAssigned")}</div>
+          <Select
+            size="small"
+            placeholder={t("filterPermamentlyAssigned")}
+            value={filters.permanentlyAssigned}
+            onChange={(value) =>
+              handleFilterChange("permanentlyAssigned", value)
+            }
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {permaOptions.map((pos) => (
+              <Option key={pos.key} value={pos.value}>
+                {pos.label}
+              </Option>
+            ))}
+          </Select>
+        </div>
+      ),
+      dataIndex: "permanentlyAssigned",
+      render: (_, record) => {
+        return record.permanentlyAssigned ? t("yes") : t("no");
+      },
+      key: "permanentlyAssigned",
+      width: 200,
+      ellipsis: true,
+    },
+    {
+      title: (
+        <div style={columnHeaderStyle}>
+          <div>{t("remoteWork")}</div>
+          <Select
+            mode="multiple"
+            size="small"
+            placeholder={t("filterRemoteWork")}
+            value={filters.remoteWork}
+            onChange={(value) => handleFilterChange("remoteWork", value)}
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {remoteWorkOptions.map((pos) => (
+              <Option key={pos.value} value={pos.value}>
+                {pos.label}
+              </Option>
+            ))}
+          </Select>
+        </div>
+      ),
+      dataIndex: "availability",
+      key: "availability",
+      render: (value: boolean, record: UnassignedEmployee) => (
+        <Select
+          size="small"
+          value={String(value)}
+          onChange={(val) => handleAvailabilityChange(record.id, Number(val))}
+          style={{ width: "100%" }}
+          disabled={record.permanentlyAssigned === true || isLoading}
+          loading={isLoading}
+        >
+          {remoteWorkOptions.map((opt) => (
+            <Select.Option
+              key={String(opt.value)}
+              value={String(opt.value)}
+              disabled={record.hotdeskReservation === true}
+            >
+              {opt.label}
+            </Select.Option>
+          ))}
+        </Select>
+      ),
       width: 200,
       ellipsis: true,
     },

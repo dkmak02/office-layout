@@ -11,4 +11,7 @@ export interface UnassignedEmployee {
   companyName: string;
   department: string;
   position: string;
+  permanentlyAssigned: boolean;
+  availability: number;
+  hotdeskReservation: boolean;
 }

@@ -19,7 +19,7 @@
     "reservationModalTitle": "Moje rezerwacje",
     "floor7": "Piętro 7",
     "floor8": "Piętro 8",
-    "unassigned": "Nieprzypisani pracownicy",
+    "unassigned": "Pracownicy",
     "projects": "Projekty"
   },
   "DaySwitcher": {
@@ -73,13 +73,23 @@
     "company": "Firma",
     "department": "Dział",
     "position": "Stanowisko",
-    "name": "Imię i nazwisko"
+    "name": "Imię i nazwisko",
+    "permamentlyAssigned": "Przypisany na stałe",
+    "remoteWork": "Praca zdalna",
+    "filterRemoteWork": "Filtruj według pracy zdalnej",
+    "filterPermamentlyAssigned": "Filtruj według przypisania na stałe",
+    "yes": "Tak",
+    "no": "Nie"
   },
   "ProjectInfo": {
     "code": "Kod projektu",
     "description": "Nazwa projektu",
     "filterCode": "Filtruj według kodu",
     "filterDescription": "Filtruj według nazwy",
-    "color": "Kolor"
+    "color": "Kolor",
+    "visibility": "Widoczność",
+    "filterVisibility": "Filtruj według widoczności",
+    "visible": "Widoczny",
+    "hidden": "Ukryty"
   }
 }

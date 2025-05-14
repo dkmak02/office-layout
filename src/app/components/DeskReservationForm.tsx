@@ -282,10 +282,10 @@ const DeskReservationForm = ({
       return;
     }
     if (project.code === "Hotdesk" && employee && !selectedDates) {
-      message.error("validationErrorHotdeskDateMissing");
+      message.error(t("validationErrorHotdeskDateMissing"));
       return;
     }
-    submitProjectChange(project, projectCode);
+    await submitProjectChange(project, projectCode);
     if (!employee) {
       onSubmit();
       return;

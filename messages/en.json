@@ -19,7 +19,7 @@
     "reservationModalTitle": "My reservations",
     "floor7": "Floor 7",
     "floor8": "Floor 8",
-    "unassigned": "Unassigned Employees",
+    "unassigned": "Employees",
     "projects": "Projects"
   },
   "DaySwitcher": {
@@ -74,13 +74,23 @@
     "company": "Company",
     "department": "Department",
     "position": "Position",
-    "name": "Name"
+    "name": "Name",
+    "permamentlyAssigned": "Permanently assigned",
+    "remoteWork": "Remote work",
+    "filterRemoteWork": "Filter by remote work",
+    "filterPermamentlyAssigned": "Filter by permanently assigned",
+    "yes": "Yes",
+    "no": "No"
   },
   "ProjectInfo": {
     "code": "Project code",
     "description": "Project name",
     "filterCode": "Filter by code",
     "filterDescription": "Filter by name",
-    "color": "Color"
+    "color": "Color",
+    "visibility": "Visibility",
+    "filterVisibility": "Filter by visibility",
+    "visible": "Visible",
+    "hidden": "Hidden"
   }
 }
