@@ -3,6 +3,7 @@ export interface Employee {
   name: string;
   surname: string;
   position: string;
+  availability: string;
 }
 export interface UnassignedEmployee {
   id: number;
@@ -12,6 +13,6 @@ export interface UnassignedEmployee {
   department: string;
   position: string;
   permanentlyAssigned: boolean;
-  availability: number;
+  availability: string;
   hotdeskReservation: boolean;
 }

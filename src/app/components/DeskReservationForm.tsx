@@ -14,7 +14,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { ClockCircleOutlined } from "@ant-design/icons";
-import { Employee } from "../models/employeeModel";
+import { Employee, UnassignedEmployee } from "../models/employeeModel";
 import { Project } from "../models/projectModel";
 import { DeskFormProps } from "../models/componentsModels";
 import useProjects from "../util/api/ProjectApi";
@@ -83,16 +83,38 @@ const DeskReservationForm = ({
   const [todayDeleted, setTodayDeleted] = useState<boolean>(false);
   const isProgrammaticUpdate = useRef(false);
   const [unassignedUsers, setUnassignedUsers] =
-    useState<Employee[]>(unassignedEmployees);
+    useState<UnassignedEmployee[]>(unassignedEmployees);
+  const [currentEmployee, setCurrentEmployee] =
+    useState<UnassignedEmployee | null>(null);
   useEffect(() => {
     setCurrentReservations(reservations);
     setSeletedPerson(employeeId);
     setSelectedProject(projectCode);
     if (employeeId !== null) {
-      const foundEmployee = employees.find((e) => e.id === employeeId);
+      const foundEmployee = employees.find(
+        (e) => e.id === employeeId
+      ) as UnassignedEmployee;
       if (foundEmployee) {
-        setUnassignedUsers([...unassignedEmployees, foundEmployee]);
+        setCurrentEmployee(foundEmployee);
+        const filteredUnassignedEmployees = unassignedEmployees.filter(
+          (employee) =>
+            (employee.availability === "0" && selectedProject !== "Hotdesk") ||
+            ((employee.availability !== "0" ||
+              ["USA", "DE", "MX"].includes(employee.availability)) &&
+              selectedProject === "Hotdesk")
+        );
+        const newUsers = [...filteredUnassignedEmployees, foundEmployee];
+        setUnassignedUsers(newUsers);
       }
+    } else {
+      const filteredUnassignedEmployees = unassignedEmployees.filter(
+        (employee) =>
+          (employee.availability === "0" && selectedProject !== "Hotdesk") ||
+          ((employee.availability !== "0" ||
+            ["USA", "DE", "MX"].includes(employee.availability)) &&
+            selectedProject === "Hotdesk")
+      );
+      setUnassignedUsers(filteredUnassignedEmployees);
     }
   }, []);
   const doesRangeIncludeCustomDate = (start: any, end: any) => {
@@ -171,6 +193,14 @@ const DeskReservationForm = ({
   };
   const onChangeProject = (value: any) => {
     setSelectedProject(value);
+    const filteredUnassignedEmployees = unassignedEmployees.filter(
+      (employee) =>
+        (employee.availability === "0" && value !== "Hotdesk") ||
+        ((employee.availability !== "0" ||
+          ["USA", "DE", "MX"].includes(employee.availability)) &&
+          selectedProject === "Hotdesk")
+    );
+    setUnassignedUsers(filteredUnassignedEmployees);
   };
   const validateHotDesk = () => {
     if (selectedProject === "Hotdesk" && (!selectedDates || !selectedPerson)) {
@@ -279,6 +309,22 @@ const DeskReservationForm = ({
     );
     if (!project) {
       message.error(t("validationErrorProject"));
+      return;
+    }
+    if (
+      project.code === "Hotdesk" &&
+      employee &&
+      employee.availability === "0"
+    ) {
+      message.error(t("remoteWork0Hotdesk"));
+      return;
+    }
+    if (
+      project.code !== "Hotdesk" &&
+      employee &&
+      employee.availability !== "0"
+    ) {
+      message.error(t("remoteWork1Desk"));
       return;
     }
     if (project.code === "Hotdesk" && employee && !selectedDates) {

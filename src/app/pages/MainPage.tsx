@@ -83,7 +83,8 @@ const MainPage = () => {
       const coloredDesks = findDesks(
         selectedEmployees,
         choosenProjects,
-        desksData
+        desksData,
+        selectedDate
       );
       setDesks(coloredDesks);
       setBackgroundOpacity(

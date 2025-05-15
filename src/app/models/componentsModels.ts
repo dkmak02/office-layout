@@ -1,5 +1,5 @@
 import { Desk } from "./deskModel";
-import { Employee } from "./employeeModel";
+import { Employee, UnassignedEmployee } from "./employeeModel";
 export interface SvgComponentProps {
   desks: any[];
   handleDeskClick: () => void;
@@ -30,7 +30,7 @@ export interface DeskFormProps {
   onSubmit: () => void;
   onCancel: () => void;
   employees: Employee[];
-  unassignedEmployees: Employee[];
+  unassignedEmployees: UnassignedEmployee[];
 }
 export interface MulipleFormAssigmentProps {
   selectedDesks: any[];

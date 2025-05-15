@@ -46,7 +46,7 @@ const fetchUnassignedEmployeesDate = async ({
     if (response.status !== 200) {
       throw new Error("Error fetching unassigned employees date data");
     }
-    return response.data as Employee[];
+    return response.data as UnassignedEmployee[];
   } catch (error) {
     console.error("Error fetching unassigned employees date data:", error);
     throw error;
@@ -70,7 +70,7 @@ const useEmployees = ({
     queryFn: fetchUnassignedEmployees,
     enabled: isAdmin,
   });
-  const unassignedEmployeesDate = useQuery<Employee[]>({
+  const unassignedEmployeesDate = useQuery<UnassignedEmployee[]>({
     queryKey: ["unassignedEmployeesDate", date],
     queryFn: fetchUnassignedEmployeesDate,
   });

@@ -168,7 +168,7 @@ const ProjectInfo = () => {
       ),
       dataIndex: "code",
       key: "code",
-      width: 200,
+      width: 125,
       ellipsis: true,
     },
     {
@@ -225,7 +225,7 @@ const ProjectInfo = () => {
       ),
       dataIndex: "visibility",
       key: "visibility",
-      width: 300,
+      width: 100,
       ellipsis: true,
       render: (value: boolean, record: Project) => (
         <Select

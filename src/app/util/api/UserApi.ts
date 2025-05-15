@@ -11,6 +11,7 @@ const fetchUser = async () => {
     if (response.status !== 200) {
       throw new Error("Error fetching floors data");
     }
+    response.data.isAdmin = response.data.isAdmin || response.data.isModerator;
     return response.data as User;
   } catch (error) {
     console.error("Error fetching floors data:", error);

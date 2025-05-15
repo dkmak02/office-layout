@@ -39,7 +39,7 @@ const UnassignedEmployees = () => {
     companyName: string[];
     department: string[];
     position: string[];
-    remoteWork: number[];
+    remoteWork: string[];
     permanentlyAssigned?: boolean;
   }>({
     name: "",
@@ -67,11 +67,14 @@ const UnassignedEmployees = () => {
     [allData]
   );
   const remoteWorkOptions = [
-    { value: 0, label: "0%" },
-    { value: 33, label: "33%" },
-    { value: 66, label: "66%" },
-    { value: 100, label: "100%" },
-    { value: 101, label: "101%" },
+    { value: "0", label: "0%" },
+    { value: "33", label: "33%" },
+    { value: "66", label: "66%" },
+    { value: "100", label: "100%" },
+    { value: "OFF", label: "OFF" },
+    { value: "MX", label: "MX" },
+    { value: "USA", label: "USA" },
+    { value: "DE", label: "DE" },
   ];
   const permaOptions = [
     { value: true, label: t("yes"), key: "yes" },
@@ -99,7 +102,7 @@ const UnassignedEmployees = () => {
     whiteSpace: "normal",
     overflow: "visible",
   } as const;
-  const handleAvailabilityChange = async (id: number, value: number) => {
+  const handleAvailabilityChange = async (id: number, value: string) => {
     try {
       await changeRemoteWorkMutation({
         employeeID: id,
@@ -209,36 +212,6 @@ const UnassignedEmployees = () => {
     {
       title: (
         <div style={columnHeaderStyle}>
-          <div>{t("permamentlyAssigned")}</div>
-          <Select
-            size="small"
-            placeholder={t("filterPermamentlyAssigned")}
-            value={filters.permanentlyAssigned}
-            onChange={(value) =>
-              handleFilterChange("permanentlyAssigned", value)
-            }
-            style={{ width: "100%", minWidth: 0 }}
-            allowClear
-          >
-            {permaOptions.map((pos) => (
-              <Option key={pos.key} value={pos.value}>
-                {pos.label}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      ),
-      dataIndex: "permanentlyAssigned",
-      render: (_, record) => {
-        return record.permanentlyAssigned ? t("yes") : t("no");
-      },
-      key: "permanentlyAssigned",
-      width: 200,
-      ellipsis: true,
-    },
-    {
-      title: (
-        <div style={columnHeaderStyle}>
           <div>{t("remoteWork")}</div>
           <Select
             mode="multiple"
@@ -263,23 +236,53 @@ const UnassignedEmployees = () => {
         <Select
           size="small"
           value={String(value)}
-          onChange={(val) => handleAvailabilityChange(record.id, Number(val))}
+          onChange={(val) => handleAvailabilityChange(record.id, val)}
           style={{ width: "100%" }}
-          disabled={record.permanentlyAssigned === true || isLoading}
-          loading={isLoading}
+          disabled={record.permanentlyAssigned === true}
         >
           {remoteWorkOptions.map((opt) => (
             <Select.Option
               key={String(opt.value)}
               value={String(opt.value)}
-              disabled={record.hotdeskReservation === true}
+              disabled={record.hotdeskReservation === true && opt.value === "0"}
+              loading={isLoading}
             >
               {opt.label}
             </Select.Option>
           ))}
         </Select>
       ),
-      width: 200,
+      width: 100,
+      ellipsis: true,
+    },
+    {
+      title: (
+        <div style={columnHeaderStyle}>
+          <div>{t("permamentlyAssigned")}</div>
+          <Select
+            size="small"
+            placeholder={t("filterPermamentlyAssigned")}
+            value={filters.permanentlyAssigned}
+            onChange={(value) =>
+              handleFilterChange("permanentlyAssigned", value)
+            }
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {permaOptions.map((pos) => (
+              <Option key={pos.key} value={pos.value}>
+                {pos.label}
+              </Option>
+            ))}
+          </Select>
+        </div>
+      ),
+      dataIndex: "permanentlyAssigned",
+      render: (_, record) => {
+        return record.permanentlyAssigned ? t("yes") : t("no");
+      },
+      key: "permanentlyAssigned",
+      width: 100,
       ellipsis: true,
     },
   ];

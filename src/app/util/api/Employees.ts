@@ -8,7 +8,7 @@ const handleUpdateEmployeeRemoteWork = async ({
   availability,
 }: {
   employeeID: number;
-  availability: number;
+  availability: string;
 }) => {
   try {
     const response = await axios.put(`${API_URL}/SetUserAvailability`, null, {

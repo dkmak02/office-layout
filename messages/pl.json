@@ -57,7 +57,9 @@
     "multipleReservationValidationeError": "Proszę wybrać projekt i biurka.",
     "multipleProjectAssigment": "Przypisanie do projektu",
     "multipleChoosenDesks": "Wybrane biurka",
-    "hotdeskHasFutureReservation": "Usuń wszystkie rezerwacje, aby zmienić projekt"
+    "hotdeskHasFutureReservation": "Usuń wszystkie rezerwacje, aby zmienić projekt",
+    "remoteWork0Hotdesk": "Nie można przypisać pracownika z 3/5 dniami pracy w biurze do hotdesku",
+    "remoteWork1Desk": "Nie można przypisać pracownika z mniej niż 3/5 dniami pracy w biurze do biurka"
   },
   "ReservationCard": {
     "reservationNoEndTime": "Brak daty zakończonia",
