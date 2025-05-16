@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, use } from "react";
 import {
   message,
   DatePicker,
@@ -96,25 +96,43 @@ const DeskReservationForm = ({
       ) as UnassignedEmployee;
       if (foundEmployee) {
         setCurrentEmployee(foundEmployee);
-        const filteredUnassignedEmployees = unassignedEmployees.filter(
+        const filterHotdeskUsers = unassignedEmployees.filter(
+          (employee) =>
+            (employee.availability !== "0" ||
+              ["USA", "DE", "MX"].includes(employee.availability)) &&
+            selectedProject === "Hotdesk" &&
+            !employee.ignoreAvailability
+        );
+        const filterProjectUsers = unassignedEmployees.filter(
           (employee) =>
             (employee.availability === "0" && selectedProject !== "Hotdesk") ||
-            ((employee.availability !== "0" ||
-              ["USA", "DE", "MX"].includes(employee.availability)) &&
-              selectedProject === "Hotdesk")
+            employee.ignoreAvailability
         );
-        const newUsers = [...filteredUnassignedEmployees, foundEmployee];
-        setUnassignedUsers(newUsers);
+        if (selectedProject === "Hotdesk") {
+          setUnassignedUsers([...filterHotdeskUsers, foundEmployee]);
+        } else {
+          setUnassignedUsers([...filterProjectUsers, foundEmployee]);
+        }
       }
     } else {
-      const filteredUnassignedEmployees = unassignedEmployees.filter(
+      const filterHotdeskUsers = unassignedEmployees.filter(
+        (employee) =>
+          (employee.availability !== "0" ||
+            ["USA", "DE", "MX"].includes(employee.availability)) &&
+          selectedProject === "Hotdesk" &&
+          !employee.ignoreAvailability
+      );
+      const filterProjectUsers = unassignedEmployees.filter(
         (employee) =>
           (employee.availability === "0" && selectedProject !== "Hotdesk") ||
-          ((employee.availability !== "0" ||
-            ["USA", "DE", "MX"].includes(employee.availability)) &&
-            selectedProject === "Hotdesk")
+          employee.ignoreAvailability
       );
-      setUnassignedUsers(filteredUnassignedEmployees);
+      console.log("unassignedUsers", filterProjectUsers, filterHotdeskUsers);
+      if (selectedProject === "Hotdesk") {
+        setUnassignedUsers(filterHotdeskUsers);
+      } else {
+        setUnassignedUsers(filterProjectUsers);
+      }
     }
   }, []);
   const doesRangeIncludeCustomDate = (start: any, end: any) => {
@@ -193,14 +211,23 @@ const DeskReservationForm = ({
   };
   const onChangeProject = (value: any) => {
     setSelectedProject(value);
-    const filteredUnassignedEmployees = unassignedEmployees.filter(
+    const filterHotdeskUsers = unassignedEmployees.filter(
       (employee) =>
-        (employee.availability === "0" && value !== "Hotdesk") ||
-        ((employee.availability !== "0" ||
+        (employee.availability !== "0" ||
           ["USA", "DE", "MX"].includes(employee.availability)) &&
-          selectedProject === "Hotdesk")
+        selectedProject === "Hotdesk" &&
+        !employee.ignoreAvailability
     );
-    setUnassignedUsers(filteredUnassignedEmployees);
+    const filterProjectUsers = unassignedEmployees.filter(
+      (employee) =>
+        (employee.availability === "0" && selectedProject !== "Hotdesk") ||
+        employee.ignoreAvailability
+    );
+    if (selectedProject === "Hotdesk") {
+      setUnassignedUsers(filterHotdeskUsers);
+    } else {
+      setUnassignedUsers(filterProjectUsers);
+    }
   };
   const validateHotDesk = () => {
     if (selectedProject === "Hotdesk" && (!selectedDates || !selectedPerson)) {
@@ -273,7 +300,7 @@ const DeskReservationForm = ({
       .tz("Europe/Warsaw")
       .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     try {
-      if (userData?.isAdmin) {
+      if (userData?.isAdmin || userData?.isModerator) {
         await hotdeskReservationAsync({
           deskId,
           employeeId: employee.id,
@@ -322,7 +349,8 @@ const DeskReservationForm = ({
     if (
       project.code !== "Hotdesk" &&
       employee &&
-      employee.availability !== "0"
+      employee.availability !== "0" &&
+      !employee.ignoreAvailability
     ) {
       message.error(t("remoteWork1Desk"));
       return;
@@ -355,7 +383,7 @@ const DeskReservationForm = ({
     onSubmit();
   };
   const validateRoles = (reservation?: Reservation) => {
-    if (userData?.isAdmin) return true;
+    if (userData?.isAdmin || userData?.isModerator) return true;
     if (
       reservation &&
       userData?.id === reservation?.userId &&
@@ -371,7 +399,7 @@ const DeskReservationForm = ({
   };
   const handleCardUnreserv = async (reservationId: number) => {
     try {
-      if (userData?.isAdmin) {
+      if (userData?.isAdmin || userData?.isModerator) {
         await handleDeleteReservation(reservationId);
       } else {
         await handleDeleteReservationCurrentUser(reservationId);
@@ -388,7 +416,7 @@ const DeskReservationForm = ({
     }
   };
   const allowOwnReservation = () => {
-    if (userData?.isAdmin) return true;
+    if (userData?.isAdmin || userData?.isModerator) return true;
     if (userData?.id === selectedPerson) {
       return true;
     }
@@ -432,7 +460,7 @@ const DeskReservationForm = ({
       return;
     }
     try {
-      if (userData?.isAdmin) {
+      if (userData?.isAdmin || userData?.isModerator) {
         await handleDeleteReservation(reservation.reservationID);
       } else {
         await handleDeleteReservationCurrentUser(reservation.reservationID);
@@ -491,7 +519,7 @@ const DeskReservationForm = ({
               placeholder={`${t("choosePerson")}`}
               optionFilterProp="label"
               defaultValue={employeeId}
-              disabled={!userData?.isAdmin}
+              disabled={!userData?.isAdmin && !userData?.isModerator}
               value={selectedPerson}
               onChange={onChangePerson}
               options={unassignedUsers.map((person) => ({
@@ -506,13 +534,21 @@ const DeskReservationForm = ({
               showSearch
               placeholder={`${t("chooseProject")}`}
               defaultValue={projectCode}
-              disabled={!userData?.isAdmin}
+              disabled={
+                (!userData?.isAdmin && !userData?.isModerator) ||
+                (selectedProject === "Hotdesk" && userData?.isModerator)
+              }
               optionFilterProp="label"
               onChange={onChangeProject}
-              options={(projects ?? []).map((project) => ({
-                label: project.name,
-                value: project.code,
-              }))}
+              options={(projects ?? [])
+                .filter(
+                  (project) =>
+                    !(userData.isModerator && project.code === "Hotdesk")
+                )
+                .map((project) => ({
+                  label: project.name,
+                  value: project.code,
+                }))}
               style={{ width: "100%" }}
             />
           </div>

@@ -4,6 +4,7 @@ export interface Employee {
   surname: string;
   position: string;
   availability: string;
+  ignoreAvailability: boolean;
 }
 export interface UnassignedEmployee {
   id: number;
@@ -15,4 +16,5 @@ export interface UnassignedEmployee {
   permanentlyAssigned: boolean;
   availability: string;
   hotdeskReservation: boolean;
+  ignoreAvailability: boolean;
 }

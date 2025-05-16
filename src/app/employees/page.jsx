@@ -11,7 +11,7 @@ export default function Home() {
     setSelectedEmployees([]);
   }, [setChoosenProjects, setSelectedEmployees]);
   if (!userData) return null;
-  if (!userData.isAdmin) {
+  if (!userData.isAdmin && !userData.isModerator) {
     return <div>Access Denied</div>;
   }
   return <UnassignedEmployees />;

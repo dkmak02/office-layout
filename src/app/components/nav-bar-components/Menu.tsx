@@ -45,7 +45,7 @@ const NavbarMenu = () => {
     },
   ];
 
-  if (userData?.isAdmin) {
+  if (userData?.isAdmin || userData?.isModerator) {
     floorsData.push({
       key: "employees",
       label: <Link href="/employees">{t("unassigned")}</Link>,

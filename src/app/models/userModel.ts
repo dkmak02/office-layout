@@ -7,4 +7,5 @@ export interface User {
   position: string;
   reservations: Reservation[];
   isAdmin: boolean;
+  isModerator: boolean;
 }

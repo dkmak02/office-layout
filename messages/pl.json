@@ -58,8 +58,8 @@
     "multipleProjectAssigment": "Przypisanie do projektu",
     "multipleChoosenDesks": "Wybrane biurka",
     "hotdeskHasFutureReservation": "Usuń wszystkie rezerwacje, aby zmienić projekt",
-    "remoteWork0Hotdesk": "Nie można przypisać pracownika z 3/5 dniami pracy w biurze do hotdesku",
-    "remoteWork1Desk": "Nie można przypisać pracownika z mniej niż 3/5 dniami pracy w biurze do biurka"
+    "remoteWork0Hotdesk": "Nie można przypisać do HotDesku pracownika, któremu przysługuje stałe biurko",
+    "remoteWork1Desk": "Nie można przypisać pracownika na stałe, ponieważ posiada indywidualne ustalenia pracy zdalnej"
   },
   "ReservationCard": {
     "reservationNoEndTime": "Brak daty zakończonia",
@@ -71,7 +71,9 @@
     "filterPosition": "Filtruj według stanowiska",
     "filterName": "Filtruj według imienia i nazwiska",
     "filterCompany": "Filtruj według firmy",
+    "overrideHotdesk": "Nadpisz hotdesk",
     "filterDepartment": "Filtruj według działu",
+    "fileterHotdeskOveride": "Filtruj według nadpisania hotdesku",
     "company": "Firma",
     "department": "Dział",
     "position": "Stanowisko",

@@ -14,7 +14,11 @@ const { Option } = Select;
 
 const UnassignedEmployees = () => {
   const t = useTranslations("UnassignedEmployee");
-  const { changeRemoteWorkMutation, isLoading } = useEmployeesMutaion();
+  const {
+    changeRemoteWorkMutation,
+    isLoading,
+    changeIgnoreAvailabilityMutation,
+  } = useEmployeesMutaion();
   const {
     data: userData,
     isLoading: userLoading,
@@ -29,7 +33,7 @@ const UnassignedEmployees = () => {
 
   useEffect(() => {
     if (userData) {
-      setIsAdmin(userData.isAdmin);
+      setIsAdmin(userData.isAdmin || userData.isModerator);
       setLoading(false);
     }
   }, [userData]);
@@ -41,6 +45,7 @@ const UnassignedEmployees = () => {
     position: string[];
     remoteWork: string[];
     permanentlyAssigned?: boolean;
+    ignoreAvailability?: boolean;
   }>({
     name: "",
     companyName: [],
@@ -48,6 +53,7 @@ const UnassignedEmployees = () => {
     position: [],
     remoteWork: [],
     permanentlyAssigned: undefined,
+    ignoreAvailability: undefined,
   });
 
   const handleFilterChange = (key: string, value: any) => {
@@ -93,7 +99,9 @@ const UnassignedEmployees = () => {
       (filters.remoteWork.length === 0 ||
         filters.remoteWork.includes(employee.availability)) &&
       (filters.permanentlyAssigned === undefined ||
-        filters.permanentlyAssigned === employee.permanentlyAssigned)
+        filters.permanentlyAssigned === employee.permanentlyAssigned) &&
+      (filters.ignoreAvailability === undefined ||
+        filters.ignoreAvailability === employee.ignoreAvailability)
     );
   });
 
@@ -102,6 +110,15 @@ const UnassignedEmployees = () => {
     whiteSpace: "normal",
     overflow: "visible",
   } as const;
+  const handleOverideHotdesk = async (id: number) => {
+    try {
+      await changeIgnoreAvailabilityMutation({
+        employeeID: id,
+      });
+    } catch (error) {
+      console.error("Error changing employee avability:", error);
+    }
+  };
   const handleAvailabilityChange = async (id: number, value: string) => {
     try {
       await changeRemoteWorkMutation({
@@ -109,7 +126,7 @@ const UnassignedEmployees = () => {
         availability: value,
       });
     } catch (error) {
-      console.error("Error changing project visibility:", error);
+      console.error("Error changing employee avability:", error);
     }
   };
   const columns: ColumnsType<UnassignedEmployee> = [
@@ -238,7 +255,9 @@ const UnassignedEmployees = () => {
           value={String(value)}
           onChange={(val) => handleAvailabilityChange(record.id, val)}
           style={{ width: "100%" }}
-          disabled={record.permanentlyAssigned === true}
+          disabled={
+            record.permanentlyAssigned === true || userData?.isAdmin === false
+          }
         >
           {remoteWorkOptions.map((opt) => (
             <Select.Option
@@ -252,6 +271,46 @@ const UnassignedEmployees = () => {
           ))}
         </Select>
       ),
+      width: 100,
+      ellipsis: true,
+    },
+    {
+      title: (
+        <div style={columnHeaderStyle}>
+          <div>{t("overrideHotdesk")}</div>
+          {/* <Select
+            size="small"
+            placeholder={t("fileterHotdeskOveride")}
+            value={filters.ignoreAvailability}
+            // onChange={(value) => handleFilterChange("overrideHotdesk", value)}
+            style={{ width: "100%", minWidth: 0 }}
+            allowClear
+          >
+            {permaOptions.map((pos) => (
+              <Option key={pos.key} value={pos.value}>
+                {pos.label}
+              </Option>
+            ))}
+          </Select> */}
+        </div>
+      ),
+      dataIndex: "ignoreAvailability",
+      render: (value: boolean, record: UnassignedEmployee) => (
+        <Select
+          size="small"
+          value={String(value)}
+          onChange={(val) => handleOverideHotdesk(record.id)}
+          style={{ width: "100%" }}
+          disabled={userData?.isAdmin === false}
+        >
+          {permaOptions.map((opt) => (
+            <Select.Option key={String(opt.value)} value={String(opt.value)}>
+              {opt.label}
+            </Select.Option>
+          ))}
+        </Select>
+      ),
+      key: "ignoreAvailability",
       width: 100,
       ellipsis: true,
     },

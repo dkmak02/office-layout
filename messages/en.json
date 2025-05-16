@@ -58,8 +58,9 @@
     "multipleProjectAssigment": "Project assignment",
     "multipleChoosenDesks": "Choosen desks",
     "hotdeskHasFutureReservation": "Delete all reservations to change project",
-    "remoteWork0Hotdesk": "Nie można przypisać pracownika z 3/5 dniami pracy w biurze do hotdesku",
-    "remoteWork1Desk": "Nie można przypisać pracownika z mniej niż 3/5 dniami pracy w biurze do biurka",
+    "remoteWork0Hotdesk": "Cannot assing wmployee to hotdesk that should have desk",
+    "remoteWork1Desk": "The employee cannot be assigned permanently because they have individual remote work arrangements",
+
     "dsa": ""
   },
   "ReservationCard": {
@@ -70,6 +71,7 @@
   },
   "UnassignedEmployee": {
     "filterPosition": "Filter by position",
+    "overrideHotdesk": "Override hotdesk",
     "filterName": "Filter by name",
     "filterCompany": "Filter by company",
     "filterDepartment": "Filter by department",
@@ -81,6 +83,7 @@
     "remoteWork": "Remote work",
     "filterRemoteWork": "Filter by remote work",
     "filterPermamentlyAssigned": "Filter by permanently assigned",
+    "fileterHotdeskOveride": "Filter by hotdesk override",
     "yes": "Yes",
     "no": "No"
   },

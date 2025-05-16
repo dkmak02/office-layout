@@ -33,19 +33,56 @@ const handleUpdateEmployeeRemoteWork = async ({
     throw error;
   }
 };
+const handleUpdateEmployeeIgnoreAvability = async ({
+  employeeID,
+}: {
+  employeeID: number;
+}) => {
+  try {
+    const response = await axios.put(`${API_URL}/IgnoreAvailability`, null, {
+      params: {
+        employeeID,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      withCredentials: true,
+    });
+
+    if (response.status !== 200) {
+      throw new Error("Failed to update project visibility");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error changing project visibility:", error);
+    throw error;
+  }
+};
 const useEmployeesMutaion = () => {
-    const queryClient = useQueryClient();
-    const changeRemoteWorkMutation = useMutation({
+  const queryClient = useQueryClient();
+  const changeRemoteWorkMutation = useMutation({
     mutationFn: handleUpdateEmployeeRemoteWork,
     onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["unassignedEmployees"],
-        });
-      },
-    });
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployees"],
+      });
+    },
+  });
+  const changeIgnoreAvailabilityMutation = useMutation({
+    mutationFn: handleUpdateEmployeeIgnoreAvability,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["unassignedEmployees"],
+      });
+    },
+  });
   return {
     changeRemoteWorkMutation: changeRemoteWorkMutation.mutateAsync,
     isLoading: changeRemoteWorkMutation.isPending,
+    changeIgnoreAvailabilityMutation:
+      changeIgnoreAvailabilityMutation.mutateAsync,
   };
 };
 
