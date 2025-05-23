@@ -1,9 +1,13 @@
+"use client";
 import { Menu } from "antd";
 import Link from "next/link";
 import { navTabs } from "@/util/nav-bar/nav-config";
+import { usePathname } from "next/navigation";
 const Navbar = () => {
   const tabs = navTabs["moderator"];
-  //get selected key from url
+  const pathname = usePathname();
+  const selectedKey =
+    tabs.find((tab) => pathname.startsWith(tab.href))?.key || tabs[0].key;
 
   return (
     <header
@@ -13,7 +17,7 @@ const Navbar = () => {
       <Menu
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={["floor7"]}
+        defaultSelectedKeys={[selectedKey]}
         style={{ width: "100%", height: "64px", lineHeight: "64px" }}
         items={tabs.map((tab) => ({
           key: tab.key,
