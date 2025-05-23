@@ -815,7 +815,7 @@ const Home = () => {
           id="path2-9-8"
         />
       </g>
-      <GenerateDesks />
+      <GenerateDesks floor="Floor 8" />
     </svg>
   );
 };

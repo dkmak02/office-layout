@@ -1150,7 +1150,7 @@ const Home = () => {
           className="separator"
         />
       </g>
-      <GenerateDesks />
+      <GenerateDesks floor="Floor 7" />
     </svg>
   );
 };

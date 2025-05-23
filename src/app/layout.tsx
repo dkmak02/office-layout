@@ -4,6 +4,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import Navbar from "@/components/navbar/Navbar";
+import { ReactQueryProvider } from "@/util/providers/ReactQueryProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,8 +33,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          <Navbar />
-          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          <ReactQueryProvider>
+            <Navbar />
+            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          </ReactQueryProvider>
         </NextIntlClientProvider>
       </body>
     </html>
