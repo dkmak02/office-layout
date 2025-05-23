@@ -44,7 +44,7 @@ const NavbarMenu = () => {
       ),
     },
   ];
-
+    console.log("floorsData", userData);
   if (userData?.isAdmin || userData?.isModerator) {
     floorsData.push({
       key: "employees",
