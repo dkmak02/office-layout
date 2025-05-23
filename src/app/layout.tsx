@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "DeskHub",
   description: "A simple office layout application",
   icons: {
-    icon: "/favicon.png",
+    icon: "/favicon2.svg",
   },
 };
 export default function RootLayout({

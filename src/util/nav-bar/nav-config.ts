@@ -1,15 +1,14 @@
 export type UserRole = "admin" | "moderator" | "employee";
 
 export const navTabs = {
-  admin: [
-    { key: "floor7", label: "Floor 7", href: "/dashboard" },
-    { key: "floor8", label: "Floor 8", href: "/users" },
-    { key: "employees", label: "Employeees", href: "/settings" },
-    { key: "project-info", label: "Project Info", href: "/settings" },
-  ],
   moderator: [
-    { key: "dashboard", label: "Dashboard", href: "/dashboard" },
-    { key: "team", label: "My Team", href: "/team" },
+    { key: "floor-7", label: "Floor 7", href: "/office/floor-7" },
+    { key: "floor-8", label: "Floor 8", href: "/office/floor-8" },
+    { key: "employees", label: "Employees", href: "/employees" },
+    { key: "project-info", label: "Project Info", href: "/project-info" },
   ],
-  employee: [{ key: "dashboard", label: "Dashboard", href: "/dashboard" }],
-} as const;
+  employee: [
+    { key: "floor7", label: "Floor 7", href: "/office/floor-7" },
+    { key: "floor8", label: "Floor 8", href: "/office/floor-8" },
+  ],
+};
