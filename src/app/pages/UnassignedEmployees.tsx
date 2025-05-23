@@ -56,8 +56,6 @@ const UnassignedEmployees = () => {
   });
 
   const handleFilterChange = (key: string, value: any) => {
-    console.log("key", key);
-    console.log("value", value);
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
