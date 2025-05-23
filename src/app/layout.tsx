@@ -17,8 +17,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "DeskHub",
   description: "A simple office layout application",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
