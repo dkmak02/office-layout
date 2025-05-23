@@ -2,7 +2,7 @@ import { Reservation } from "@/app/models/deskModel";
 import { User } from "@/app/models/userModel";
 
 export const allowDeleteReservation = (userData?:User, reservation?: Reservation, projectCode?:string) => {
-    if (userData?.isAdmin) return true;
+  if (userData?.isAdmin || userData?.isModerator) return true;
     if (
       reservation &&
       userData?.id === reservation?.userId &&

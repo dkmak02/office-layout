@@ -22,6 +22,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "DeskHub",
   description: "A simple office layout application",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -35,14 +38,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          <AppDataProvider>
-            <ReactQueryProvider>
+          <ReactQueryProvider>
+            <AppDataProvider>
               <Suspense fallback={<div>Loading...</div>}>
                 <NavbarMenu />
                 {children}
               </Suspense>
-            </ReactQueryProvider>
-          </AppDataProvider>
+            </AppDataProvider>
+          </ReactQueryProvider>
         </NextIntlClientProvider>
       </body>
     </html>

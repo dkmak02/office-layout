@@ -28,7 +28,6 @@ const UnassignedEmployees = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const { unassignedEmployees } = useEmployees({ isAdmin, date: selectedDate });
   const allData = unassignedEmployees.data || [];
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -57,6 +56,8 @@ const UnassignedEmployees = () => {
   });
 
   const handleFilterChange = (key: string, value: any) => {
+    console.log("key", key);
+    console.log("value", value);
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -278,11 +279,13 @@ const UnassignedEmployees = () => {
       title: (
         <div style={columnHeaderStyle}>
           <div>{t("overrideHotdesk")}</div>
-          {/* <Select
+          <Select
             size="small"
             placeholder={t("fileterHotdeskOveride")}
             value={filters.ignoreAvailability}
-            // onChange={(value) => handleFilterChange("overrideHotdesk", value)}
+            onChange={(value) =>
+              handleFilterChange("ignoreAvailability", value)
+            }
             style={{ width: "100%", minWidth: 0 }}
             allowClear
           >
@@ -291,7 +294,7 @@ const UnassignedEmployees = () => {
                 {pos.label}
               </Option>
             ))}
-          </Select> */}
+          </Select>
         </div>
       ),
       dataIndex: "ignoreAvailability",
@@ -301,7 +304,12 @@ const UnassignedEmployees = () => {
           value={String(value)}
           onChange={(val) => handleOverideHotdesk(record.id)}
           style={{ width: "100%" }}
-          disabled={userData?.isAdmin === false}
+          disabled={
+            userData?.isAdmin === false ||
+            record.hotdeskReservation ||
+            record.permanentlyAssigned ||
+            record.availability === "0"
+          }
         >
           {permaOptions.map((opt) => (
             <Select.Option key={String(opt.value)} value={String(opt.value)}>

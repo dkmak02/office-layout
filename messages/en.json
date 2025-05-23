@@ -45,7 +45,7 @@
     "noReservationFoundDelete": "No reservation found to delete",
     "showAll": "Show all reservations",
     "personAssigned": "Person assigned",
-    "choosePerson": "Choose person",
+    "choosePerson": "None",
     "projectAssigned": "Project assigned",
     "chooseProject": "Choose project",
     "confirmButton": "Confirm",
@@ -58,7 +58,7 @@
     "multipleProjectAssigment": "Project assignment",
     "multipleChoosenDesks": "Choosen desks",
     "hotdeskHasFutureReservation": "Delete all reservations to change project",
-    "remoteWork0Hotdesk": "Cannot assing wmployee to hotdesk that should have desk",
+    "remoteWork0Hotdesk": "Cannot assing employee to hotdesk that should have desk",
     "remoteWork1Desk": "The employee cannot be assigned permanently because they have individual remote work arrangements",
 
     "dsa": ""
