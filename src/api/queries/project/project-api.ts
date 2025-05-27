@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const fetchProjects = async ({
+const getProjectsFloorDate = async ({
   queryKey,
 }: {
   queryKey: QueryKey;
@@ -54,7 +54,7 @@ const useProjects = (selectedFloor: string, selectedDate: string) => {
   const queryClient = useQueryClient();
   const projectQuery = useQuery<Project[]>({
     queryKey: ["projects", selectedFloor, selectedDate],
-    queryFn: fetchProjects,
+    queryFn: getProjectsFloorDate,
   });
 
   return {
@@ -62,4 +62,49 @@ const useProjects = (selectedFloor: string, selectedDate: string) => {
   };
 };
 
+const getProjectOptionValues = async () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  try {
+    const response = await axios.get(`${API_URL}/Availability`, {
+      withCredentials: true,
+    });
+    if (response.status !== 200) {
+      throw new Error("Error fetching project option values");
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching project option values:", error);
+    throw error;
+  }
+};
+
+export const useProjectOptionValues = () => {
+  return useQuery({
+    queryKey: ["project-option-values"],
+    queryFn: getProjectOptionValues,
+  });
+};
+const getProjectInfo = async () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  try {
+    const response = await axios.get(`${API_URL}/projects/all`, {
+      withCredentials: true,
+    });
+    if (response.status !== 200) {
+      throw new Error("Error fetching project info");
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching project info:", error);
+    throw error;
+  }
+};
+
+export const useProjectInfo = () => {
+  return useQuery({
+    queryKey: ["project-info"],
+    queryFn: getProjectInfo,
+  });
+};
+  
 export default useProjects;

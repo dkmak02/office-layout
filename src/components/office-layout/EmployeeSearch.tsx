@@ -1,6 +1,9 @@
+"use client";
 import { Select } from "antd";
 import { useTranslations } from "next-intl";
+import useEmployees from "@/api/queries/employees/employee-api";
 const EmployeeSearch = () => {
+  const { searchBarEmployees } = useEmployees();
   const t = useTranslations("HomePage");
   return (
     <Select
@@ -10,10 +13,10 @@ const EmployeeSearch = () => {
       optionFilterProp="label"
       allowClear
       className="mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md overflow-y-auto"
-      // options={allEmployees.data?.map((emp: any) => ({
-      //   value: emp.id,
-      //   label: emp.name + " " + emp.surname,
-      // }))}
+      options={searchBarEmployees.data?.map((emp: any) => ({
+        value: emp.id,
+        label: emp.name + " " + emp.surname,
+      }))}
       style={{
         minWidth: 250,
         flex: 1,

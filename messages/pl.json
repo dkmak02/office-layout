@@ -67,7 +67,7 @@
     "deleteReservationButton": "Usuń rezerwację",
     "dsa": "DSA"
   },
-  "UnassignedEmployee": {
+  "EmployeesInfo": {
     "filterPosition": "Filtruj według stanowiska",
     "filterName": "Filtruj według imienia i nazwiska",
     "filterCompany": "Filtruj według firmy",

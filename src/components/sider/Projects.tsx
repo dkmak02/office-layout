@@ -1,5 +1,5 @@
 "use client";
-import useProjects from "@/api/project/project-api";
+import useProjects from "@/api/queries/project/project-api";
 import ProjectCard from "./ProjectCard";
 import { useState } from "react";
 import { usePathname,useSearchParams } from "next/navigation";

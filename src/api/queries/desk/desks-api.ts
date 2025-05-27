@@ -7,7 +7,7 @@ import { Desk } from "@/models/Desk";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-async function fetchDesks(floor: string, date: string): Promise<Desk[]> {
+async function getDesksFloorDate(floor: string, date: string): Promise<Desk[]> {
   const res = await axios.get(
     `${API_URL}/desks?floor=${floor}&pointInTime=${date}`,
     { withCredentials: true }
@@ -23,6 +23,6 @@ async function fetchDesks(floor: string, date: string): Promise<Desk[]> {
 export function useDesks(floor: string, date: string) {
   return useQuery({
     queryKey: ["desks", floor, date],
-    queryFn: () => fetchDesks(floor, date),
+    queryFn: () => getDesksFloorDate(floor, date),
   });
 }

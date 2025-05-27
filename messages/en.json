@@ -69,7 +69,7 @@
     "deleteReservationButton": "Delete reservation",
     "dsa": "DSA"
   },
-  "UnassignedEmployee": {
+  "EmployeesInfo": {
     "filterPosition": "Filter by position",
     "overrideHotdesk": "Override hotdesk",
     "filterName": "Filter by name",

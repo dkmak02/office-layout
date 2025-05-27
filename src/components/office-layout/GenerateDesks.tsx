@@ -1,5 +1,5 @@
 "use client";
-import { useDesks } from "@/api/desk/desks-api";
+import { useDesks } from "@/api/queries/desk/desks-api";
 import { Desk } from "@/models/Desk";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
