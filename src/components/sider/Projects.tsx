@@ -1,5 +1,5 @@
 "use client";
-import useProjects from "@/api/queries/project/project-api";
+import useProjects from "@/api/queries/project/project-api-floor-date";
 import ProjectCard from "./ProjectCard";
 import { useState } from "react";
 import { usePathname,useSearchParams } from "next/navigation";
@@ -8,9 +8,8 @@ const Projects = () => {
     const pathname = usePathname();
     const floor = pathname.split("/").pop() === "floor-7" ? "Floor 7" : "Floor 8";
     const searchParams = useSearchParams();
-    const date = searchParams.get("date");
+    const date = searchParams.get("date") ? searchParams.get("date") : dayjs().format("YYYY-MM-DD");
     const formattedDate = dayjs(date)
-        .add(1, "hour")
         .format("YYYY-MM-DDTHH:mm:ss");
     const [choosenProjects, setChoosenProjects] = useState<string[]>([]);
     const projects = useProjects(floor, formattedDate).data || [];

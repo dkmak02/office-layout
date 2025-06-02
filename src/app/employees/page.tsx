@@ -4,13 +4,13 @@ import { SearchOutlined } from "@ant-design/icons";
 import React, { useRef, useState } from "react";
 import type { ColumnType, ColumnsType } from "antd/es/table";
 import type { InputRef } from "antd";
-import { useEmployeesInfo } from "@/api/queries/employees/employee-api";
-import { useProjectOptionValues } from "@/api/queries/project/project-api";
-import type { EmployeeInfo } from "@/models/Employee";
-import type { Key } from "react";
+import {useEmployees} from "@/api/queries/employees/employee-api";
+import { useProjectOptionValues } from "@/api/queries/project/project-api-floor-date";
+import type { Employee } from "@/models/Employee";
 import { useTranslations } from "next-intl";
+import RoleGuard  from "@/components/auth/RoleGuard";
 
-type DataIndex = keyof EmployeeInfo;
+type DataIndex = keyof Employee;
 
 const getColumnSearchProps = (
   dataIndex: DataIndex,
@@ -19,7 +19,7 @@ const getColumnSearchProps = (
   setSearchText: (text: string) => void,
   searchedColumn: string,
   setSearchedColumn: (col: string) => void
-): ColumnType<EmployeeInfo> => ({
+): ColumnType<Employee> => ({
   filterDropdown: ({
     setSelectedKeys,
     selectedKeys,
@@ -112,23 +112,23 @@ function handleReset(
 }
 
 export default function EmployeesPage() {
-  const { data, isLoading, isError, error } = useEmployeesInfo();
+  const { data, isLoading, isError, error } = useEmployees();
   const { data: availabilityOptions, isLoading: isLoadingAvailability } = useProjectOptionValues();
 
   const [filters, setFilters] = useState<{
     name: string;
-    companyName: string;
-    department: string;
-    position: string;
+    companyName: string[];
+    department: string[];
+    position: string[];
     permanentlyAssigned: string;
     availability: string;
     hotdeskReservation: string;
     ignoreAvailability: string;
   }>({
     name: "",
-    companyName: "",
-    department: "",
-    position: "",
+    companyName: [],
+    department: [],
+    position: [],
     permanentlyAssigned: "",
     availability: "",
     hotdeskReservation: "",
@@ -136,7 +136,7 @@ export default function EmployeesPage() {
   });
   const t = useTranslations ? useTranslations("EmployeesInfo") : (x: string) => x;
 
-  const handleFilterChange = (key: string, value: string) => {
+  const handleFilterChange = (key: string, value: string | string[]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -145,7 +145,7 @@ export default function EmployeesPage() {
   const departmentOptions = Array.from(new Set((data || []).map((r) => r.department))).filter(Boolean);
   const positionOptions = Array.from(new Set((data || []).map((r) => r.position))).filter(Boolean);
 
-  const columns: ColumnsType<EmployeeInfo> = [
+  const columns: ColumnsType<Employee> = [
     {
       title: (
         <div style={columnHeaderStyle}>
@@ -170,11 +170,12 @@ export default function EmployeesPage() {
           <div>{t("company")}</div>
           <Select
             size="small"
+            mode="multiple"
             allowClear
             showSearch
             placeholder={t("filterCompany")}
-            value={filters.companyName || undefined}
-            onChange={(value) => handleFilterChange("companyName", value || "")}
+            value={filters.companyName}
+            onChange={(value) => handleFilterChange("companyName", value)}
             style={{ width: "100%", minWidth: 0 }}
             options={companyOptions.map((opt) => ({ value: opt, label: opt }))}
             filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
@@ -190,11 +191,12 @@ export default function EmployeesPage() {
           <div>{t("department")}</div>
           <Select
             size="small"
+            mode="multiple"
             allowClear
             showSearch
             placeholder={t("filterDepartment")}
-            value={filters.department || undefined}
-            onChange={(value) => handleFilterChange("department", value || "")}
+            value={filters.department}
+            onChange={(value) => handleFilterChange("department", value)}
             style={{ width: "100%", minWidth: 0 }}
             options={departmentOptions.map((opt) => ({ value: opt, label: opt }))}
             filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
@@ -210,11 +212,12 @@ export default function EmployeesPage() {
           <div>{t("position")}</div>
           <Select
             size="small"
+            mode="multiple"
             allowClear
             showSearch
             placeholder={t("filterPosition")}
-            value={filters.position || undefined}
-            onChange={(value) => handleFilterChange("position", value || "")}
+            value={filters.position}
+            onChange={(value) => handleFilterChange("position", value)}
             style={{ width: "100%", minWidth: 0 }}
             options={positionOptions.map((opt) => ({ value: opt, label: opt }))}
             filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
@@ -310,13 +313,13 @@ export default function EmployeesPage() {
     if (nameFilter && !(`${record.name} ${record.surname}`.toLowerCase().includes(nameFilter))) {
       return false;
     }
-    if (filters.companyName && record.companyName !== filters.companyName) {
+    if (filters.companyName.length > 0 && !filters.companyName.includes(record.companyName)) {
       return false;
     }
-    if (filters.department && record.department !== filters.department) {
+    if (filters.department.length > 0 && !filters.department.includes(record.department)) {
       return false;
     }
-    if (filters.position && record.position !== filters.position) {
+    if (filters.position.length > 0 && !filters.position.includes(record.position)) {
       return false;
     }
     if (filters.permanentlyAssigned) {
@@ -355,8 +358,10 @@ export default function EmployeesPage() {
   }
 
   return (
-    <div style={{ padding: 24 }}>
-      <Table columns={columns} dataSource={filteredData} rowKey="id" bordered  pagination={false}/>
-    </div>
+    <RoleGuard allowedRoles={["admin", "moderator"]}>
+      <div style={{ padding: 24 }}>
+        <Table columns={columns} dataSource={filteredData} rowKey="id" bordered  pagination={false}/>
+      </div>
+    </RoleGuard>
   );
 }

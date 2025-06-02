@@ -1,24 +1,15 @@
+"use client";
 import { Table, Spin, Alert, Layout } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Content } from "antd/es/layout/layout";
-import useProjects from "../util/api/ProjectApi";
-import { Project } from "@/app/models/projectModel";
-import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useDataContext } from "../util/providers/AppDataContext";
+import { Project } from "@/models/Project";
+import {useProjectInfo} from "@/api/queries/project/project-api-page";
+import RoleGuard from "@/components/auth/RoleGuard";
 
 const ProjectInfo = () => {
   const t = useTranslations("ProjectInfo");
-  const params = useSearchParams();
-  const selectedFloor = params.get("floor")?.includes("8")
-    ? "Floor 8"
-    : "Floor 7";
-  const { selectedDate } = useDataContext();
-  const {
-    allProjects,
-    isLoading: projectsLoading,
-    isError: projectsError,
-  } = useProjects(selectedFloor, selectedDate);
+  const { data: allProjects, isLoading: projectsLoading, isError: projectsError } = useProjectInfo();
 
   const columns: ColumnsType<Project> = [
     {
@@ -79,24 +70,26 @@ const ProjectInfo = () => {
   }
 
   return (
-    <Layout className="min-h-screen bg-gray-100">
-      <Content className="p-8 flex flex-col h-full">
-        <div className="flex flex-col flex-grow bg-white p-6 rounded-lg shadow-md min-h-[calc(100vh-64px-4rem)]">
-          <div className="flex-grow">
-            <Table
-              columns={columns}
-              dataSource={allProjects}
-              rowKey="id"
-              bordered
-              pagination={false}
-              scroll={{ x: "100%" }}
-              tableLayout="fixed"
-              className="rounded-lg"
-            />
+    <RoleGuard allowedRoles={["admin", "moderator"]}>
+      <Layout className="min-h-screen bg-gray-100">
+        <Content className="p-8 flex flex-col h-full">
+          <div className="flex flex-col flex-grow bg-white p-6 rounded-lg shadow-md min-h-[calc(100vh-64px-4rem)]">
+            <div className="flex-grow">
+              <Table
+                columns={columns}
+                dataSource={allProjects}
+                rowKey="id"
+                bordered
+                pagination={false}
+                scroll={{ x: "100%" }}
+                tableLayout="fixed"
+                className="rounded-lg"
+              />
+            </div>
           </div>
-        </div>
-      </Content>
-    </Layout>
+        </Content>
+      </Layout>
+    </RoleGuard>
   );
 };
 

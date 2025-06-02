@@ -5,6 +5,9 @@ import { Suspense } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import Navbar from "@/components/navbar/Navbar";
 import { ReactQueryProvider } from "@/util/providers/ReactQueryProvider";
+import ClientAuthGuard from "@/components/auth/ClientAuthGuard";
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,6 +25,7 @@ export const metadata: Metadata = {
     icon: "/favicon2.svg",
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,13 +33,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider>
           <ReactQueryProvider>
+            
+            <ClientAuthGuard>
             <Navbar />
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            </ClientAuthGuard>
           </ReactQueryProvider>
         </NextIntlClientProvider>
       </body>

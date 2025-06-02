@@ -33,7 +33,7 @@ const OfficeDatePicker = () => {
         className="ml-2 w-50"
         allowClear={false}
         format="YYYY-MM-DD"
-        disabledDate={(current) => current < dayjs().startOf("day")}
+        disabledDate={(current) => current < dayjs().startOf("day") || current > dayjs().add(21, "day").endOf("day")}
       />
     </div>
   );

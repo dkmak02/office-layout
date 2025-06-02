@@ -1,10 +1,10 @@
-import { Employee, EmployeeInfo } from "@/models/Employee";
+import { Employee } from "@/models/Employee";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const getEmployeesForSearching = async () => {
+const getEmployees = async () => {
   try {
-    const response = await axios.get(`${API_URL}/employees`, {
+    const response = await axios.get(`${API_URL}/Employees`, {
       withCredentials: true,
     });
     if (response.status !== 200) {
@@ -17,37 +17,10 @@ const getEmployeesForSearching = async () => {
   }
 };
 
-const useEmployees = () => {
-  const searchBarEmployees = useQuery<Employee[]>({
+export const useEmployees = () => {
+  return useQuery<Employee[]>({
     queryKey: ["employees"],
-    queryFn: getEmployeesForSearching,
-  });
-
-  return {
-    searchBarEmployees,
-  };
-};
-
-const getEmployeesInfo = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/UnassignedEmployees`, {
-      withCredentials: true,
-    });
-    if (response.status !== 200) {
-      throw new Error("Error fetching employees info");
-    }
-    return response.data as EmployeeInfo[];
-  } catch (error) {
-    console.error("Error fetching employees info:", error);
-    throw error;
-  }
-};
-
-export const useEmployeesInfo = () => {
-  return useQuery<EmployeeInfo[]>({
-    queryKey: ["employees-info"],
-    queryFn: getEmployeesInfo,
+    queryFn: getEmployees,
   });
 };
 
-export default useEmployees;

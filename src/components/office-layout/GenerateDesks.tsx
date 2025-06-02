@@ -8,9 +8,8 @@ type GenerateDesksProps = {
 };
 const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
   const searchParams = useSearchParams();
-  const date = searchParams.get("date");
+  const date = searchParams.get("date") ? searchParams.get("date") : dayjs().format("YYYY-MM-DD");
   const formattedDate = dayjs(date)
-    .add(1, "hour")
     .format("YYYY-MM-DDTHH:mm:ss");
 
   const { data: desks, isLoading, isError } = useDesks(floor, formattedDate);
