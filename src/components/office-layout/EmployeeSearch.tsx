@@ -2,9 +2,14 @@
 import { Select } from "antd";
 import { useTranslations } from "next-intl";
 import {useEmployees} from "@/api/queries/employees/employee-api";
+import { useEmployeeSearchContext } from "@/util/providers/EmployeeSearchContext";
 const EmployeeSearch = () => {
   const { data: employees } = useEmployees();
   const t = useTranslations("HomePage");
+  const { setSelectedEmployees } = useEmployeeSearchContext();
+  const handleChange = (value: number[]) => {
+    setSelectedEmployees(value);
+  };
   return (
     <Select
       mode="multiple"
@@ -24,6 +29,7 @@ const EmployeeSearch = () => {
       }}
       maxTagCount={4}
       maxTagTextLength={10}
+      onChange={handleChange}
     />
   );
 };

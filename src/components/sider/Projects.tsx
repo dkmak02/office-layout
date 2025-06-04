@@ -1,31 +1,31 @@
 "use client";
 import useProjects from "@/api/queries/project/project-api-floor-date";
 import ProjectCard from "./ProjectCard";
-import { useState } from "react";
 import { usePathname,useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
+import { useEmployeeSearchContext } from "@/util/providers/EmployeeSearchContext";
 const Projects = () => {
+    const { selectedProjects, setSelectedProjects } = useEmployeeSearchContext();
     const pathname = usePathname();
     const floor = pathname.split("/").pop() === "floor-7" ? "Floor 7" : "Floor 8";
     const searchParams = useSearchParams();
     const date = searchParams.get("date") ? searchParams.get("date") : dayjs().format("YYYY-MM-DD");
     const formattedDate = dayjs(date)
         .format("YYYY-MM-DDTHH:mm:ss");
-    const [choosenProjects, setChoosenProjects] = useState<string[]>([]);
     const projects = useProjects(floor, formattedDate).data || [];
     const handleSelect = (code: string) => {
-        setChoosenProjects((prev) =>
+        setSelectedProjects((prev: string[]) =>
         prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
         );
     };
     
     return (
         <div>
-        {projects.map((project) => (
+        {projects.filter((project) => project.visibility).map((project) => (
             <ProjectCard
             key={project.code}
             project={project}
-            choosenProjects={choosenProjects}
+            choosenProjects={selectedProjects}
             onSelect={handleSelect}
             />
         ))}

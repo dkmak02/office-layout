@@ -1,3 +1,5 @@
+import { Reservation } from "./Reservation";
+
 export type Desk = {
   deskId: string;
   name: string;
@@ -8,5 +10,12 @@ export type Desk = {
   rotation: number;
   opacity: number;
   color?: string;
-  currentReservationID?: string;
+  currentReservationID?: number;
+  reservations?: Reservation[];
+  project: {
+    projectName: string;
+    code: string;
+  };
+  hotdesk: boolean;
+
 };
