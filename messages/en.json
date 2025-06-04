@@ -25,7 +25,7 @@
   "DaySwitcher": {
     "chooseDate": "Choose day"
   },
-  "DeskPopup": {
+  "Desk": {
     "personAssigned": "Person assigned",
     "projectAssigned": "Project assigned",
     "noneAssigned": "None"
