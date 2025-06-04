@@ -1,35 +1,33 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-interface SetProjectColorParams {
+interface SetProjectVisibilityParams {
   id: number;
-  color: string;
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const setProjectColor = async ({ id, color }: SetProjectColorParams) => {
-    const response = await axios.put(
-        `${API_URL}/Projects/${id}/Color`,
+const setProjectVisibility = async ({ id}: SetProjectVisibilityParams) => {
+    const response = await axios.patch(
+        `${API_URL}/Projects/${id}/Visibility`,
         null,
         {
           withCredentials: true,
-          params: { hexColor: color }
         }
       );
       
       
     if (response.status !== 200) {
-      throw new Error("Failed to set project color");
+      throw new Error("Failed to set project visibility");
     }
     return response.data;
   };
   
 
-export function useSetProjectColor() {
+export function useSetProjectVisibility() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: setProjectColor,
+        mutationFn: setProjectVisibility,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["project-info"] });
     },
