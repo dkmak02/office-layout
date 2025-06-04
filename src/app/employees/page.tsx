@@ -8,8 +8,12 @@ import type { Employee } from "@/models/Employee";
 import { useTranslations } from "next-intl";
 import RoleGuard  from "@/components/auth/RoleGuard";
 import { useUser } from "@/api/queries/auth/get-user";
+import { useSetEmployeeIgnoreAvailability } from "@/api/mutations/employees/set-employee-ignore-availbility";
+import { useSetEmployeeAvailability } from "@/api/mutations/employees/set-employee-availability";
 
 export default function EmployeesPage() {
+  const setEmployeeAvailabilityMutation = useSetEmployeeAvailability();
+  const setEmployeeIgnoreAvailabilityMutation = useSetEmployeeIgnoreAvailability();
   const { data, isLoading, isError, error } = useEmployees();
   const { data: availabilityOptions, isLoading: isLoadingAvailability } = useProjectOptionValues();
   const { data: user } = useUser();
@@ -46,7 +50,7 @@ export default function EmployeesPage() {
   const positionOptions = Array.from(new Set((data || []).map((r) => r.position))).filter(Boolean);
 
   const [availabilityMap, setAvailabilityMap] = useState<Record<number, string>>({});
-  const [hotdeskMap, setHotdeskMap] = useState<Record<number, string>>({});
+  const [ignoreAvailabilityMap, setIgnoreAvailabilityMap] = useState<Record<number, boolean>>({});
 
   const columns: ColumnsType<Employee> = [
     {
@@ -161,10 +165,15 @@ export default function EmployeesPage() {
       render: (value: string, record: Employee) => (
         <Select
           size="small"
-          showSearch
           disabled={!isAdmin || record.permanentlyAssigned}
           value={availabilityMap[record.id] !== undefined ? availabilityMap[record.id] : value}
-          onChange={(val) => setAvailabilityMap((prev) => ({ ...prev, [record.id]: val }))}
+          onChange={(val) => {
+            setAvailabilityMap((prev) => ({ ...prev, [record.id]: val }));
+            setEmployeeAvailabilityMutation.mutate({
+              employeeId: record.id,
+              availability: val
+            });
+          }}
           style={{ width: "100%" }}
           options={
             availabilityOptions
@@ -204,10 +213,14 @@ export default function EmployeesPage() {
       render: (value: boolean, record: Employee) => (
         <Select
           size="small"
-          showSearch
           disabled={!isAdmin || record.permanentlyAssigned || record.hotdeskReservation || record.availability === "0"}
-          value={hotdeskMap[record.id] !== undefined ? hotdeskMap[record.id] : String(value)}
-          onChange={(val) => setHotdeskMap((prev) => ({ ...prev, [record.id]: val }))}
+          value={ignoreAvailabilityMap[record.id] !== undefined ? String(ignoreAvailabilityMap[record.id]) : String(record.ignoreAvailability)}
+          onChange={(val) => {
+            setIgnoreAvailabilityMap((prev) => ({ ...prev, [record.id]: val === "true" }));
+            setEmployeeIgnoreAvailabilityMutation.mutate({
+              employeeId: record.id
+            });
+          }}
           style={{ width: "100%" }}
           options={[
             { value: "true", label: t("yes") },

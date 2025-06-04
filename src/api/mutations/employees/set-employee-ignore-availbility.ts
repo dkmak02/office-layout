@@ -8,6 +8,7 @@ interface SetEmployeeIgnoreAvailabilityParams {
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const setEmployeeIgnoreAvailability = async ({ employeeId }: SetEmployeeIgnoreAvailabilityParams) => {
+  console.log("employeeId", employeeId);
   const response = await axios.put(
     `${API_URL}/Employees/${employeeId}/IgnoreAvailability`,
     null,
