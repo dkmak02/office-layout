@@ -1,119 +1,19 @@
 "use client";
 import { Table, Input, Button, Space, Spin, Alert, Select } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import React, { useRef, useState } from "react";
-import type { ColumnType, ColumnsType } from "antd/es/table";
-import type { InputRef } from "antd";
+import React, { useState } from "react";
+import type { ColumnsType } from "antd/es/table";
 import {useEmployees} from "@/api/queries/employees/employee-api";
 import { useProjectOptionValues } from "@/api/queries/project/project-api-floor-date";
 import type { Employee } from "@/models/Employee";
 import { useTranslations } from "next-intl";
 import RoleGuard  from "@/components/auth/RoleGuard";
-
-type DataIndex = keyof Employee;
-
-const getColumnSearchProps = (
-  dataIndex: DataIndex,
-  searchInput: React.RefObject<InputRef | null>,
-  searchText: string,
-  setSearchText: (text: string) => void,
-  searchedColumn: string,
-  setSearchedColumn: (col: string) => void
-): ColumnType<Employee> => ({
-  filterDropdown: ({
-    setSelectedKeys,
-    selectedKeys,
-    confirm,
-    clearFilters,
-  }) => (
-    <div style={{ padding: 8 }}>
-      <Input
-        ref={searchInput}
-        placeholder={`Search ${dataIndex}`}
-        value={selectedKeys[0] as string}
-        onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-        onPressEnter={() =>
-          handleSearch(
-            selectedKeys as string[],
-            confirm,
-            dataIndex,
-            setSearchText,
-            setSearchedColumn
-          )
-        }
-        style={{ marginBottom: 8, display: "block" }}
-      />
-      <Space>
-        <Button
-          type="primary"
-          onClick={() =>
-            handleSearch(
-              selectedKeys as string[],
-              confirm,
-              dataIndex,
-              setSearchText,
-              setSearchedColumn
-            )
-          }
-          icon={<SearchOutlined />}
-          size="small"
-          style={{ width: 90 }}
-        >
-          Search
-        </Button>
-        <Button
-          onClick={() => handleReset(clearFilters, setSearchText)}
-          size="small"
-          style={{ width: 90 }}
-        >
-          Reset
-        </Button>
-      </Space>
-    </div>
-  ),
-  filterIcon: (filtered: boolean) => (
-    <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-  ),
-  onFilter: (value, record) =>
-    record[dataIndex]
-      ? record[dataIndex]!.toString().toLowerCase().includes((value as string).toLowerCase())
-      : false,
-  onFilterDropdownOpenChange: (visible) => {
-    if (visible) {
-      setTimeout(() => searchInput.current?.select(), 100);
-    }
-  },
-  render: (text: any) =>
-    searchedColumn === dataIndex ? (
-      <span style={{ backgroundColor: "#ffc069", padding: 0 }}>{text}</span>
-    ) : (
-      text
-    ),
-});
-
-function handleSearch(
-  selectedKeys: string[],
-  confirm: () => void,
-  dataIndex: string,
-  setSearchText: (text: string) => void,
-  setSearchedColumn: (col: string) => void
-) {
-  confirm();
-  setSearchText(selectedKeys[0] as string);
-  setSearchedColumn(dataIndex);
-}
-
-function handleReset(
-  clearFilters: (() => void) | undefined,
-  setSearchText: (text: string) => void
-) {
-  clearFilters && clearFilters();
-  setSearchText("");
-}
+import { useUser } from "@/api/queries/auth/get-user";
 
 export default function EmployeesPage() {
   const { data, isLoading, isError, error } = useEmployees();
   const { data: availabilityOptions, isLoading: isLoadingAvailability } = useProjectOptionValues();
+  const { data: user } = useUser();
+  const isAdmin = user?.isAdmin;
 
   const [filters, setFilters] = useState<{
     name: string;
@@ -144,6 +44,9 @@ export default function EmployeesPage() {
   const companyOptions = Array.from(new Set((data || []).map((r) => r.companyName))).filter(Boolean);
   const departmentOptions = Array.from(new Set((data || []).map((r) => r.department))).filter(Boolean);
   const positionOptions = Array.from(new Set((data || []).map((r) => r.position))).filter(Boolean);
+
+  const [availabilityMap, setAvailabilityMap] = useState<Record<number, string>>({});
+  const [hotdeskMap, setHotdeskMap] = useState<Record<number, string>>({});
 
   const columns: ColumnsType<Employee> = [
     {
@@ -234,6 +137,7 @@ export default function EmployeesPage() {
           <Select
             size="small"
             allowClear
+            showSearch
             placeholder={t("filterRemoteWork")}
             value={filters.availability || undefined}
             onChange={(value) => handleFilterChange("availability", value || "")}
@@ -254,8 +158,26 @@ export default function EmployeesPage() {
       key: "availability",
       ellipsis: true,
       width: 150,
-      render: (value: string) =>
-        !isNaN(Number(value)) && value.trim() !== '' ? `${value}%` : value,
+      render: (value: string, record: Employee) => (
+        <Select
+          size="small"
+          showSearch
+          disabled={!isAdmin || record.permanentlyAssigned}
+          value={availabilityMap[record.id] !== undefined ? availabilityMap[record.id] : value}
+          onChange={(val) => setAvailabilityMap((prev) => ({ ...prev, [record.id]: val }))}
+          style={{ width: "100%" }}
+          options={
+            availabilityOptions
+              ? availabilityOptions.map((opt: string) => ({
+                  value: opt,
+                  label: !isNaN(Number(opt)) && opt.trim() !== '' ? `${opt}%` : opt,
+                  disabled: opt === '0' && record.hotdeskReservation
+                }))
+              : []
+          }
+          loading={isLoadingAvailability}
+        />
+      ),
     },
     
     {
@@ -265,6 +187,7 @@ export default function EmployeesPage() {
           <Select
             size="small"
             allowClear
+            showSearch
             placeholder={t("fileterHotdeskOveride")}
             value={filters.hotdeskReservation || undefined}
             onChange={(value) => handleFilterChange("hotdeskReservation", value || "")}
@@ -278,7 +201,20 @@ export default function EmployeesPage() {
       ),
       dataIndex: "hotdeskReservation",
       key: "hotdeskReservation",
-      render: (value: boolean) => (value ? t("yes") : t("no")),
+      render: (value: boolean, record: Employee) => (
+        <Select
+          size="small"
+          showSearch
+          disabled={!isAdmin || record.permanentlyAssigned || record.hotdeskReservation || record.availability === "0"}
+          value={hotdeskMap[record.id] !== undefined ? hotdeskMap[record.id] : String(value)}
+          onChange={(val) => setHotdeskMap((prev) => ({ ...prev, [record.id]: val }))}
+          style={{ width: "100%" }}
+          options={[
+            { value: "true", label: t("yes") },
+            { value: "false", label: t("no") },
+          ]}
+        />
+      ),
       ellipsis: true,
       width: 150,
     },
