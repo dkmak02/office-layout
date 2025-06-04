@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useUser } from "@/api/queries/auth/get-user";
 import { UserRole } from "@/util/nav-bar/nav-config";
+import LocaleSwitcher from "./LocaleSwitcher";
 
 const Navbar = () => {
   const t = useTranslations("NavbarMenu");
@@ -47,6 +48,7 @@ const Navbar = () => {
             })}
           />
         </div>
+        <LocaleSwitcher />
         {user && (
           <Button
             type="primary"
