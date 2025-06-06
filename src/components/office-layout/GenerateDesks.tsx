@@ -66,7 +66,21 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
         const isSelected = (selectedEmployees.length > 0 && reservation && selectedEmployees.includes(Number(reservation)))
          || (selectedProjects.length > 0 && selectedProjects.includes(projectCode));
         const hasActiveFilters = selectedEmployees.length > 0 || selectedProjects.length > 0;
-        const opacity = hasActiveFilters ? (isSelected ? 1 : 0.5) : 1;
+        
+        // Calculate opacity based on filters and reservation status
+        let opacity = 1;
+        if (hasActiveFilters) {
+          if (isSelected) {
+            // Selected desks: different opacity based on reservation status
+            opacity = desk.currentReservationID ? 1 : 0.7;
+          } else {
+            // Non-selected desks when filters are active
+            opacity = 0.5;
+          }
+        } else {
+          // No filters active: opacity based on reservation status
+          opacity = desk.currentReservationID ? 1 : 0.7;
+        }
         return (
           <Tooltip
             key={desk.deskId}

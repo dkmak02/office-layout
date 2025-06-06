@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { config } from "process";
 
 interface ChangeDeskTypeParams {
   deskId: string;
@@ -18,36 +19,34 @@ interface ChangeProjectParams {
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const changeDeskType = async ({ deskId, deskType, floor, date }: ChangeDeskTypeParams) => {
-  const config = { withCredentials: true };
   
-  const response = await axios.post(
-    `${API_URL}/Desks/ChangeDeskType`,
+  const response = await axios.patch(
+    `${API_URL}/Desks/${deskId}/Type`,
+    null,
     {
-      deskId,
-      deskType,
-    },
-    config
+      withCredentials: true,
+      params: { type: deskType }
+    }
   );
   
-  if (response.status !== 200) {
+  if (response.status !== 200 && response.status !== 204) {
     throw new Error("Failed to change desk type");
   }
   return response.data;
 };
 
 const changeProject = async ({ deskId, projectId, floor, date }: ChangeProjectParams) => {
-  const config = { withCredentials: true };
-  
-  const response = await axios.post(
-    `${API_URL}/Desks/ChangeProject`,
+    
+  const response = await axios.patch(
+    `${API_URL}/Desks/${deskId}/Project`,
+    null,
     {
-      deskId,
-      projectId,
-    },
-    config
+      withCredentials: true,
+      params: { projectID: projectId }
+    }
   );
-  
-  if (response.status !== 200) {
+  console.log(response);
+  if (response.status !== 200 && response.status !== 204) {
     throw new Error("Failed to change project");
   }
   return response.data;
@@ -58,15 +57,30 @@ export function useChangeDeskType() {
   return useMutation({
     mutationFn: changeDeskType,
     onSuccess: (data, variables) => {
-      // Invalidate desks query with specific floor and date if provided
+      // Invalidate desks query with proper date formatting
       if (variables.floor && variables.date) {
+        // Convert the date to the formatted version used in the query
+        const formattedDate = variables.date.includes('T') 
+          ? variables.date 
+          : `${variables.date}T00:00:00`;
+          
         queryClient.invalidateQueries({ 
-          queryKey: ["desks", variables.floor, variables.date] 
+          queryKey: ["desks", variables.floor, formattedDate] 
+        });
+        
+        // Also invalidate projects query for the same floor and date
+        queryClient.invalidateQueries({ 
+          queryKey: ["projects", variables.floor, formattedDate] 
         });
       } else {
+        // Fallback to invalidate all related queries
         queryClient.invalidateQueries({ queryKey: ["desks"] });
+        queryClient.invalidateQueries({ queryKey: ["projects"] });
       }
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      
+      // Invalidate user and employees queries as desk changes may affect them
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
 }
@@ -76,15 +90,30 @@ export function useChangeProject() {
   return useMutation({
     mutationFn: changeProject,
     onSuccess: (data, variables) => {
-      // Invalidate desks query with specific floor and date if provided
+      // Invalidate desks query with proper date formatting
       if (variables.floor && variables.date) {
+        // Convert the date to the formatted version used in the query
+        const formattedDate = variables.date.includes('T') 
+          ? variables.date 
+          : `${variables.date}T00:00:00`;
+          
         queryClient.invalidateQueries({ 
-          queryKey: ["desks", variables.floor, variables.date] 
+          queryKey: ["desks", variables.floor, formattedDate] 
+        });
+        
+        // Also invalidate projects query for the same floor and date
+        queryClient.invalidateQueries({ 
+          queryKey: ["projects", variables.floor, formattedDate] 
         });
       } else {
+        // Fallback to invalidate all related queries
         queryClient.invalidateQueries({ queryKey: ["desks"] });
+        queryClient.invalidateQueries({ queryKey: ["projects"] });
       }
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      
+      // Invalidate user and employees queries as project changes may affect them
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
 } 

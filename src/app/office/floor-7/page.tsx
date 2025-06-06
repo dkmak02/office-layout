@@ -1,5 +1,8 @@
+"use client";
 import GenerateDesks from "@/components/office-layout/GenerateDesks";
+import { useEmployeeSearchContext } from "@/util/providers/EmployeeSearchContext";
 const Home = () => {
+  const { selectedEmployees, selectedProjects } = useEmployeeSearchContext();
   return (
     <svg
       viewBox="0 0 300 123"
@@ -21,8 +24,7 @@ const Home = () => {
           <stop offset="100%" stopColor="#aba" />
         </linearGradient>
       </defs>
-      {/* <g opacity={backgroundOpacity}> */}
-      <g>
+      <g opacity={selectedEmployees.length > 0 || selectedProjects.length > 0 ? 0.5 : 1}>
         <path
           d="M 25.935052,1.6686828 2.2283222,78.232398 200.44213,121.16914 296.55715,1.6686828 Z"
           id="wall01"

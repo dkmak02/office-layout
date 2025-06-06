@@ -56,10 +56,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   const deleteReservationMutation = useDeleteReservation();
 
   const isAdmin = user?.isAdmin || user?.isModerator;
+  const isTrueAdmin = user?.isAdmin || false; // Only true admins, not moderators
   const isHotdesk = desk?.hotdesk || false;
 
   // Determine current desk type based on selected project (for real-time UI updates)
-  const currentDeskType = isAdmin && selectedProjectId !== undefined 
+  const currentDeskType = isTrueAdmin && selectedProjectId !== undefined 
     ? (selectedProjectId === "hotdesk" ? "hotdesk" : "project")
     : (isHotdesk ? "hotdesk" : "project");
   const isCurrentlyHotdesk = currentDeskType === "hotdesk";
@@ -182,16 +183,16 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   React.useEffect(() => {
     if (!currentReservation && desk?.currentReservationID && deletedReservationIds.has(desk.currentReservationID)) {
       // Current reservation was deleted, reset the form for new assignment
-      if (isAdmin) {
+      if (isTrueAdmin) {
         setSelectedEmployeeId(undefined);
         form.setFieldValue('employeeId', undefined);
       }
     }
-  }, [currentReservation, desk?.currentReservationID, deletedReservationIds, isAdmin, form]);
+  }, [currentReservation, desk?.currentReservationID, deletedReservationIds, isTrueAdmin, form]);
 
   // Reset employee selection when desk type changes
   React.useEffect(() => {
-    if (isAdmin && selectedProjectId !== undefined) {
+    if (isTrueAdmin && selectedProjectId !== undefined) {
       const newAvailableEmployees = getAvailableEmployees();
       const currentEmployeeStillAvailable = newAvailableEmployees.find(emp => emp.id === selectedEmployeeId);
       
@@ -205,7 +206,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         setSelectedDates(null);
       }
     }
-  }, [selectedProjectId, isAdmin, isCurrentlyHotdesk]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedProjectId, isTrueAdmin, isCurrentlyHotdesk]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleEmployeeChange = (value: number) => {
     setSelectedEmployeeId(value);
@@ -223,9 +224,17 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     if (!canReserve && !isAdmin) return; // Safety check
     setLoading(true);
     try {
-      // Handle project change for any desk (admin only)
+      let deskTypeChanged = false;
+      let finalDeskType = isHotdesk ? "hotdesk" : "project";
+      
+      // Step 1: Handle project/desk type changes first (admin/moderator)
       if (isAdmin && selectedProjectId) {
         if (selectedProjectId === "hotdesk") {
+          // Only true admins can convert to hotdesk
+          if (!isTrueAdmin) {
+            message.error("Only administrators can convert desks to hotdesk. Moderators cannot perform this action.");
+            return;
+          }
           // Convert to hotdesk only if it's not already a hotdesk
           if (!isHotdesk) {
             await changeDeskTypeMutation.mutateAsync({
@@ -235,6 +244,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               date,
             });
             message.success("Desk converted to hotdesk successfully");
+            deskTypeChanged = true;
+            finalDeskType = "hotdesk";
+            
+            // Wait for backend to process the desk type change
+            await new Promise(resolve => setTimeout(resolve, 1000));
           }
         } else {
           // Check if project actually changes
@@ -250,6 +264,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               floor,
               date,
             });
+            deskTypeChanged = true;
+            finalDeskType = "project";
+            
+            // Wait for backend to process the desk type change
+            await new Promise(resolve => setTimeout(resolve, 1000));
           }
           
           // Only assign project if it actually changed
@@ -266,12 +285,12 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         }
       }
       
-      // Handle reservation creation (if user can reserve)
+      // Step 2: Handle reservation creation AFTER desk changes (if user can reserve and wants to)
       if (canReserve && selectedEmployeeId) {
         const useCurrentUserEndpoint = !isAdmin;
         
-        if (isHotdesk && selectedDates) {
-          // Create hotdesk reservation
+        if (finalDeskType === "hotdesk" && selectedDates) {
+          // Create hotdesk reservation (using final desk type)
           await createReservationMutation.mutateAsync({
             deskId: desk?.deskId!,
             employeeId: selectedEmployeeId,
@@ -283,8 +302,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
             date,
           });
           message.success("Hotdesk reservation created successfully");
-        } else if (!isHotdesk) {
-          // Create project desk assignment
+        } else if (finalDeskType === "project") {
+          // Create project desk assignment (using final desk type)
           await createReservationMutation.mutateAsync({
             deskId: desk?.deskId!,
             employeeId: selectedEmployeeId,
@@ -301,8 +320,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       onClose();
       form.resetFields();
     } catch (error) {
-      console.error("Error creating reservation:", error);
-      message.error("Failed to create reservation. Please try again.");
+      console.error("Error in submission:", error);
+      message.error("Failed to complete operation. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -465,7 +484,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                 optionFilterProp="label"
                 onChange={handleProjectChange}
                 options={[
-                  ...(isHotdesk ? [{ label: "Hotdesk", value: "hotdesk" }] : []),
+                  ...(isTrueAdmin ? [{ label: "Hotdesk", value: "hotdesk" }] : []),
                   ...availableProjects.map((project: Project) => ({
                     label: project.name,
                     value: project.id,
@@ -492,13 +511,16 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
           {/* Action Buttons */}
           <div style={{ display: "flex", gap: "8px" }}>
-            {canReserve && (
+            {(canReserve || (isAdmin && selectedProjectId)) && (
               <Button
                 color="primary"
                 variant="outlined"
                 onClick={handleSubmit}
                 loading={loading}
-                disabled={isCurrentlyHotdesk && (!selectedDates || !selectedEmployeeId)}
+                disabled={
+                  // Only disable for non-admin users making hotdesk reservations
+                  (!isAdmin && canReserve && isCurrentlyHotdesk && (!selectedDates || !selectedEmployeeId))
+                }
               >
                 Confirm
               </Button>
