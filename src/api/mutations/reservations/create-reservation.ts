@@ -25,13 +25,6 @@ const createReservation = async ({
   date
 }: CreateReservationParams) => {
   const config = { withCredentials: true };
-  console.log("Creating reservation:", {
-    deskId,
-    employeeId,
-    startDate,
-    endDate,
-    isHotdesk,
-  });
   if (isHotdesk) {
     // Hotdesk reservation
     const endpoint = useCurrentUserEndpoint 

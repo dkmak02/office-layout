@@ -9,6 +9,7 @@ import { useEmployeeSearchContext } from "@/util/providers/EmployeeSearchContext
 import { useState } from "react";
 import ReservationModal from "@/components/modals/ReservationModal";
 import { useEmployees } from "@/api/queries/employees/employee-api";
+import { useUser } from "@/api/queries/auth/get-user";
 
 type GenerateDesksProps = {
   floor: string;
@@ -19,6 +20,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
   const t = useTranslations("Desk");
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDesk, setSelectedDesk] = useState<Desk | null>(null);
+  const { data: user } = useUser();
   
   const date = searchParams.get("date") ? searchParams.get("date") : dayjs().format("YYYY-MM-DD");
   const formattedDate = dayjs(date)
@@ -38,6 +40,13 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
   }
   
   const handleDeskClick = (desk: Desk) => {
+    // Check if user is a regular employee (not admin or moderator) and desk is a project desk
+    const isAdmin = user?.isAdmin || user?.isModerator;
+    if (!isAdmin && !desk.hotdesk) {
+      // Regular employees cannot click on project desks
+      return;
+    }
+    
     setSelectedDesk(desk);
     setModalVisible(true);
   };
@@ -81,6 +90,11 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
           // No filters active: opacity based on reservation status
           opacity = desk.currentReservationID ? 1 : 0.7;
         }
+
+        // Check if desk is clickable for current user
+        const isAdmin = user?.isAdmin || user?.isModerator;
+        const isClickable = isAdmin || desk.hotdesk;
+        
         return (
           <Tooltip
             key={desk.deskId}
@@ -107,9 +121,12 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
               x={desk.x}
               y={desk.y}
               className="desk"
-              style={{ transform: `rotate(${desk.rotation}deg)` }}
+              style={{ 
+                transform: `rotate(${desk.rotation}deg)`,
+                cursor: isClickable ? 'pointer' : 'not-allowed'
+              }}
               opacity={opacity}
-              onClick={() => handleDeskClick(desk)}
+              onClick={isClickable ? () => handleDeskClick(desk) : undefined}
               fill={desk.color || "#e0e0e0"}
             />
           </Tooltip>

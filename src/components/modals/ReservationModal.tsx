@@ -220,6 +220,58 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     setSelectedDates(dates);
   };
 
+  // Function to check if a date is disabled due to existing reservations
+  const isDateDisabled = (current: dayjs.Dayjs) => {
+    // Disable past dates
+    if (current && current < dayjs().startOf('day')) {
+      return true;
+    }
+
+    // Disable dates more than 21 days in the future
+    if (current && current > dayjs().add(21, 'days').endOf('day')) {
+      return true;
+    }
+
+    if (!current) return false;
+
+    const currentDate = current.format("YYYY-MM-DD");
+
+    // Check if desk has reservations on this date (excluding deleted ones)
+    const deskReservations = (desk?.reservations || []).filter(r => 
+      !deletedReservationIds.has(r.reservationID)
+    );
+
+    for (const reservation of deskReservations) {
+      const startDate = dayjs(reservation.startTime).format("YYYY-MM-DD");
+      const endDate = reservation.endTime ? dayjs(reservation.endTime).format("YYYY-MM-DD") : startDate;
+      
+      // Check if current date falls within this reservation period
+      if (current.isSame(startDate, 'day') || current.isSame(endDate, 'day') || 
+          (current.isAfter(startDate, 'day') && current.isBefore(endDate, 'day'))) {
+        return true;
+      }
+    }
+
+    // Check if current user has reservations on other desks on this date (for non-admins)
+    if (!isAdmin && user?.id && selectedEmployeeId === user.id && user.reservations) {
+      for (const userReservation of user.reservations) {
+        // Skip the current desk's reservations (already checked above)
+        if (userReservation.deskNo === desk?.name) continue;
+        
+        const startDate = dayjs(userReservation.startTime).format("YYYY-MM-DD");
+        const endDate = userReservation.endTime ? dayjs(userReservation.endTime).format("YYYY-MM-DD") : startDate;
+        
+        // Check if current date falls within this reservation period
+        if (current.isSame(startDate, 'day') || current.isSame(endDate, 'day') || 
+            (current.isAfter(startDate, 'day') && current.isBefore(endDate, 'day'))) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
   const handleSubmit = async () => {
     if (!canReserve && !isAdmin) return; // Safety check
     setLoading(true);
@@ -499,11 +551,10 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
           {/* Date Range for Hotdesk */}
           {isCurrentlyHotdesk && canReserve && selectedEmployeeId && (
             <div className="calendar-container">
-              <Descriptions title="Select dates:" />
               <RangePicker
                 value={selectedDates}
                 onChange={handleDateChange}
-                disabledDate={(current) => current && current < dayjs().startOf('day')}
+                disabledDate={isDateDisabled}
                 style={{ width: "100%" }}
               />
             </div>
