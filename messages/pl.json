@@ -65,6 +65,8 @@
     "reservationNoEndTime": "Brak daty zakończonia",
     "reservation": "Rezerwacja",
     "deleteReservationButton": "Usuń rezerwację",
+    "deleteReservation": "Usuń rezerwację",
+    "loginRequired": "Musisz być zalogowany",
     "dsa": "DSA"
   },
   "EmployeesInfo": {

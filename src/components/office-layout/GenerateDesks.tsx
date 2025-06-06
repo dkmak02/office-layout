@@ -6,6 +6,10 @@ import { useSearchParams } from "next/navigation";
 import { Tooltip } from "antd";
 import { useTranslations } from "next-intl";
 import { useEmployeeSearchContext } from "@/util/providers/EmployeeSearchContext";
+import { useState } from "react";
+import ReservationModal from "@/components/modals/ReservationModal";
+import { useEmployees } from "@/api/queries/employees/employee-api";
+
 type GenerateDesksProps = {
   floor: string;
 };
@@ -13,11 +17,16 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
   const { selectedEmployees, selectedProjects } = useEmployeeSearchContext();
   const searchParams = useSearchParams();
   const t = useTranslations("Desk");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDesk, setSelectedDesk] = useState<Desk | null>(null);
+  
   const date = searchParams.get("date") ? searchParams.get("date") : dayjs().format("YYYY-MM-DD");
   const formattedDate = dayjs(date)
     .format("YYYY-MM-DDTHH:mm:ss");
 
   const { data: desks, isLoading, isError } = useDesks(floor, formattedDate);
+  const { data: employees } = useEmployees();
+  
   if (isLoading) {
     return <text>Loading...</text>;
   }
@@ -27,9 +36,17 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
   if (!desks) {
     return <text>No desks found</text>;
   }
+  
   const handleDeskClick = (desk: Desk) => {
-    console.log("Desk clicked:", desk);
+    setSelectedDesk(desk);
+    setModalVisible(true);
   };
+  
+  const handleModalClose = () => {
+    setModalVisible(false);
+    setSelectedDesk(null);
+  };
+
   const getReservationInfo = (desk: Desk) => {
     const project = desk.hotdesk ? "Hotdesk" : desk.project?.projectName;
     if (!desk.currentReservationID) return { person: t("noneAssigned"), project};
@@ -41,6 +58,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
   };
 
   return (
+    <>
     <g>
       {desks.map((desk: Desk) => {
         const projectCode = desk.hotdesk ? "Hotdesk" : desk.project.code;
@@ -84,6 +102,16 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
         );
       })}
     </g>
+    
+    <ReservationModal
+      visible={modalVisible}
+      onClose={handleModalClose}
+      desk={selectedDesk}
+      employees={employees || []}
+      floor={floor}
+      date={date || undefined}
+    />
+    </>
   );
 };
 export default GenerateDesks;

@@ -4,4 +4,5 @@ export type Reservation = {
     endTime: string;
     userId: number;
     userName: string;
+    deskNo: string;
   };

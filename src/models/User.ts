@@ -1,9 +1,4 @@
-export type Reservation = {
-  reservationID: number;
-  startTime: string;
-  endTime: string | null;
-  deskNo: string;
-};
+import { Reservation } from "./Reservation";
 
 export type User = {
   id: number;

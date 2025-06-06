@@ -6,7 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import Navbar from "@/components/navbar/Navbar";
 import { ReactQueryProvider } from "@/util/providers/ReactQueryProvider";
 import ClientAuthGuard from "@/components/auth/ClientAuthGuard";
-
+import '@ant-design/v5-patch-for-react-19';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -20,7 +20,9 @@
     "floor7": "Floor 7",
     "floor8": "Floor 8",
     "employees": "Employees",
-    "projects": "Projects"
+    "projects": "Projects",
+    "deleteReservation": "Delete reservation",
+    "loginRequired": "You must be logged in"
   },
   "DaySwitcher": {
     "chooseDate": "Choose day"

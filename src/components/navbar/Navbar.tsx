@@ -1,5 +1,5 @@
 "use client";
-import { Menu, Button } from "antd";
+import { Menu } from "antd";
 import Link from "next/link";
 import { navTabs } from "@/util/nav-bar/nav-config";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useUser } from "@/api/queries/auth/get-user";
 import { UserRole } from "@/util/nav-bar/nav-config";
 import LocaleSwitcher from "./LocaleSwitcher";
+import UserReservationsDropdown from "./UserReservationsDropdown";
 
 const Navbar = () => {
   const t = useTranslations("NavbarMenu");
@@ -50,12 +51,10 @@ const Navbar = () => {
         </div>
         <LocaleSwitcher />
         {user && (
-          <Button
-            type="primary"
-            style={{   height: "64px", lineHeight: "64px", borderRadius: "0px" }}
-          >
-            {user.name} {user.surname}
-          </Button>
+          <UserReservationsDropdown
+            userName={`${user.name} ${user.surname}`}
+            reservations={user.reservations || []}
+          />
         )}
       </div>
     </header>
