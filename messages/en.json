@@ -21,8 +21,7 @@
     "floor8": "Floor 8",
     "employees": "Employees",
     "projects": "Projects",
-    "deleteReservation": "Delete reservation",
-    "loginRequired": "You must be logged in"
+    "logs": "Logs"
   },
   "DaySwitcher": {
     "chooseDate": "Choose day"
@@ -99,5 +98,20 @@
     "filterVisibility": "Filter by visibility",
     "visible": "Visible",
     "hidden": "Hidden"
+  },
+  "Logs": {
+    "pageTitle": "Logs",
+    "pageDescription": "System logs with detailed information about operations and errors.",
+    "clientUsername": "Client Username",
+    "status": "Status",
+    "logCount": "Log Count",
+    "latestTimestamp": "Latest Timestamp",
+    "success": "Success",
+    "failed": "Failed",
+    "notAvailable": "N/A",
+    "accessDenied": "Access Denied",
+    "accessDeniedDescription": "You don't have permission to view logs. Only administrators and moderators can access this page.",
+    "errorLoadingLogs": "Error Loading Logs",
+    "errorLoadingDescription": "Failed to load logs. Please try again."
   }
 }

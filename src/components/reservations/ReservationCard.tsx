@@ -51,11 +51,6 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
               <Title level={5} className="!mb-0">
                 {reservation.deskNo || "Desk"}
               </Title>
-              {/* {reservation.isHotdesk && (
-                <span className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">
-                  Hotdesk
-                </span>
-              )} */}
             </div>
 
             {/* Person */}

@@ -20,7 +20,8 @@
     "floor7": "Piętro 7",
     "floor8": "Piętro 8",
     "employees": "Pracownicy",
-    "projects": "Projekty"
+    "projects": "Projekty",
+    "logs": "Logi"
   },
   "DaySwitcher": {
     "chooseDate": "Wybierz dzień"
@@ -97,5 +98,20 @@
     "filterVisibility": "Filtruj według widoczności",
     "visible": "Widoczny",
     "hidden": "Ukryty"
+  },
+  "Logs": {
+    "pageTitle": "Logi",
+    "pageDescription": "Logi systemowe z szczegółowymi informacjami o operacjach i błędach.",
+    "clientUsername": "Nazwa użytkownika",
+    "status": "Status",
+    "logCount": "Liczba logów",
+    "latestTimestamp": "Najnowszy znacznik czasu",
+    "success": "Sukces",
+    "failed": "Błąd",
+    "notAvailable": "Brak",
+    "accessDenied": "Odmowa dostępu",
+    "accessDeniedDescription": "Nie masz uprawnień do przeglądania logów. Tylko administratorzy i moderatorzy mogą uzyskać dostęp do tej strony.",
+    "errorLoadingLogs": "Błąd ładowania logów",
+    "errorLoadingDescription": "Nie udało się załadować logów. Spróbuj ponownie."
   }
 }

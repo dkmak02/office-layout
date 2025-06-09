@@ -5,6 +5,7 @@ export const navTabs = {
     { key: "floor-8", label: "floor8", href: "/office/floor-8" },
     { key: "employees", label: "employees", href: "/employees" },
     { key: "project-info", label: "projects", href: "/project-info" },
+    { key: "logs", label: "logs", href: "/logs" },
   ],
   employee: [
     { key: "floor7", label: "floor7", href: "/office/floor-7" },

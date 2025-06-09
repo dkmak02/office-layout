@@ -16,7 +16,7 @@ const getProjectsFloorDate = async ({
   const selectedFloor = queryKey[1] as string;
   const date = queryKey[2] as string;
   try {
-    const response = await axios.get(`${API_URL}/projects`, {
+    const response = await axios.get(`${API_URL}/Projects`, {
       params: { floor: selectedFloor, pointInTime: date },
       withCredentials: true,
     });
