@@ -19,8 +19,8 @@ const LogsPage: React.FC = () => {
 
   const { data: logs, isLoading: logsLoading, error } = useLogs(currentPage, pageSize);
 
-  // Check if user is admin or moderator
-  const isAuthorized = user?.isAdmin || user?.isModerator;
+  // Check if user is admin only (not moderators)
+  const isAuthorized = user?.isAdmin;
 
   if (userLoading) {
     return (

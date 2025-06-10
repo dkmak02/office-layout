@@ -8,7 +8,8 @@ import { useTranslations } from "next-intl";
 import { useEmployeeSearchContext } from "@/util/providers/EmployeeSearchContext";
 import { useState } from "react";
 import ReservationModal from "@/components/modals/ReservationModal";
-import { useEmployees } from "@/api/queries/employees/employee-api";
+import { useEmployees, useUnassignedEmployees } from "@/api/queries/employees/employee-api";
+
 import { useUser } from "@/api/queries/auth/get-user";
 
 type GenerateDesksProps = {
@@ -28,7 +29,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
 
   const { data: desks, isLoading, isError } = useDesks(floor, formattedDate);
   const { data: employees } = useEmployees();
-  
+  const { data: unassignedEmployees } = useUnassignedEmployees(formattedDate);
   if (isLoading) {
     return <text>Loading...</text>;
   }
@@ -100,6 +101,9 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
             key={desk.deskId}
             title={
               <div className="p-3 rounded-lg bg-white min-w-[240px]">
+                <div className="flex items-center font-bold text-blue-600 mb-2 border-b border-gray-200 pb-2">
+                  <span className="text-lg">{desk.name}</span>
+                </div>
                 <div className="flex items-center font-semibold text-gray-800 mb-1">
                   <span className="flex-shrink-0">{t("personAssigned")}:&nbsp;</span>
                   <span className="font-normal text-gray-600 flex-1 truncate overflow-hidden whitespace-nowrap max-w-[180px]">{getReservationInfo(desk).person}</span>
@@ -139,6 +143,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
       onClose={handleModalClose}
       desk={selectedDesk}
       employees={employees || []}
+      availableEmployees={unassignedEmployees || []}
       floor={floor}
       date={date || undefined}
     />

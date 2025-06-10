@@ -85,10 +85,14 @@ export function useCreateReservation() {
         queryClient.invalidateQueries({ 
           queryKey: ["projects", variables.floor, formattedDate] 
         });
+        
+        // Invalidate unassigned employees query with formatted date
+        queryClient.invalidateQueries({ queryKey: ["unassigned-employees", formattedDate] });
       } else {
         // Fallback to invalidate all related queries
         queryClient.invalidateQueries({ queryKey: ["desks"] });
         queryClient.invalidateQueries({ queryKey: ["projects"] });
+        queryClient.invalidateQueries({ queryKey: ["unassigned-employees"] });
       }
       
       // Invalidate employees query as it may contain availability data

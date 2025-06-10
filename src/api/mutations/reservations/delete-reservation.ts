@@ -18,7 +18,6 @@ const deleteReservation = async ({ reservationId, useHotdeskEndpoint = false, da
         `${API_URL}/Reservations/Hotdesk/CurrentUser?reservationID=${reservationId}`,
         config
       );
-      console.log("Employee delete response:", response.status);
       if (response.status !== 200 && response.status !== 204) {
         throw new Error(`Failed to delete reservation. Status: ${response.status}`);
       }
@@ -68,13 +67,13 @@ export function useDeleteReservation() {
         queryClient.invalidateQueries({ 
           queryKey: ["projects", variables.floor, formattedDate] 
         });
+        queryClient.invalidateQueries({ queryKey: ["unassigned-employees", formattedDate] });
       } else {
         // Fallback to invalidate all related queries
         queryClient.invalidateQueries({ queryKey: ["desks"] });
         queryClient.invalidateQueries({ queryKey: ["projects"] });
       }
       
-      // Invalidate employees query as it may contain availability data
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
