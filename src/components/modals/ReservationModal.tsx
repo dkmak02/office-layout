@@ -417,9 +417,14 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
       // Validation for admin project/desk type changes
       if (isAdmin && selectedProjectId) {
-        if (selectedProjectId === "Hotdesk" && !isTrueAdmin) {
-          message.error(tModal("adminOnlyHotdesk"));
-          return;
+        if (selectedProjectId === "Hotdesk") {
+          // Only true admins can convert a regular desk to hotdesk
+          // But moderators can make reservations on existing hotdesks
+          if (!isTrueAdmin && !isHotdesk) {
+            // This is trying to convert a regular desk to hotdesk - only true admins can do this
+            message.error(tModal("adminOnlyHotdesk"));
+            return;
+          }
         }
         
         // If converting to hotdesk and there's an employee selected, require dates
@@ -458,11 +463,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       // Step 1: Handle project/desk type changes first (admin/moderator)
       if (isAdmin && selectedProjectId) {
         if (selectedProjectId === "Hotdesk") {
-          // Only true admins can convert to hotdesk
-          if (!isTrueAdmin) {
-            message.error(tModal("adminOnlyHotdesk"));
-            return;
-          }
           // Convert to hotdesk only if it's not already a hotdesk
           if (!isHotdesk) {
             await changeDeskTypeMutation.mutateAsync({
