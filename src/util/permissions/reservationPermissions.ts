@@ -18,8 +18,15 @@ export const canDeleteReservation = (
   // Moderator can delete any reservation
   if (currentUser.isModerator) return true;
 
-  // User can delete their own reservation ONLY if it's a hotdesk reservation
-  if (reservation.userId === currentUser.id && reservation.endTime !== null) return true;
+  // User can only delete their own reservations
+  if (reservation.userId !== currentUser.id) return false;
+
+  // For the user's own reservations, allow deletion if:
+  // 1. It's a hotdesk reservation (has an endTime that's not empty/null)
+  // 2. Or if we're in the context where the user is viewing their own reservations
+  if (reservation.endTime && reservation.endTime.trim() !== "") {
+    return true; // This is likely a hotdesk reservation with a time limit
+  }
 
   return false;
 };
