@@ -126,6 +126,7 @@
     "reservationDeletedSuccess": "Rezerwacja została pomyślnie usunięta",
     "reservationDeleteFailed": "Nie udało się usunąć rezerwacji. Spróbuj ponownie.",
     "hotdeskDateRequired": "Proszę wybrać zakres dat dla rezerwacji hotdesku",
+    "hotdeskDatesUpdated": "Daty rezerwacji hotdesku zostały pomyślnie zaktualizowane",
     "employeeRequired": "Proszę wybrać pracownika",
     "projectRequired": "Proszę wybrać projekt",
     "validationErrorEmployeeAndProject": "Proszę wybrać pracownika i projekt",
@@ -149,6 +150,26 @@
     "close": "Zamknij",
     "allReservations": "Wszystkie rezerwacje",
     "open": "Otwórz",
-    "delete": "Usuń"
+    "delete": "Usuń",
+    
+    "InvalidAvailabilityException": "Ustawienia dostępności pracownika nie pozwalają na tę rezerwację.",
+    "InvalidHexColorFormat": "Podano nieprawidłowy format koloru.",
+    "DeskNotFoundException": "Wybrane biurko nie zostało znalezione.",
+    "DeskTypeDoesNotExistException": "Określony typ biurka nie istnieje.",
+    "DeskTypeNotAllowedForProjectAssociatonException": "Ten typ biurka nie jest dozwolony dla skojarzenia z projektem.",
+    "PendingReservationsException": "Istnieją oczekujące rezerwacje, które uniemożliwiają tę operację.",
+    "EmployeeIsNotEligibleForHotdeskException": "Ten pracownik nie jest uprawniony do rezerwacji hotdesku.",
+    "EmployeeIsNotEligibleForPermanentDeskException": "Ten pracownik nie jest uprawniony do stałego przypisania biurka.",
+    "EmployeeNotFoundException": "Wybrany pracownik nie został znaleziony.",
+    "IdentityNameNotFoundException": "Nazwa tożsamości użytkownika nie została znaleziona.",
+    "IdentityNotFoundException": "Tożsamość użytkownika nie została znaleziona.",
+    "ProjectNotFoundException": "Wybrany projekt nie został znaleziony.",
+    "DeskReservationOverlapException": "To biurko ma już rezerwację na wybrany okres.",
+    "EmployeeReservationOverlapException": "Ten pracownik ma już rezerwację, która koliduje z wybranymi datami.",
+    "InvalidHotdeskReservationException": "Rezerwacja hotdesku nie może przekraczać 21 dni od teraz.",
+    "InvalidDeskTypeException": "Określono nieprawidłowy typ biurka.",
+    "ReservationNotFoundException": "Rezerwacja nie została znaleziona.",
+    "StartDateCannotBeAfterEndDateException": "Data rozpoczęcia nie może być późniejsza niż data zakończenia.",
+    "StartDateCannotBeInThePastException": "Data rozpoczęcia nie może być z przeszłości."
   }
 }

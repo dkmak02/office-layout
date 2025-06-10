@@ -30,7 +30,6 @@ const getProjectsFloorDate = async ({
   }
 };
 const useProjects = (selectedFloor: string, selectedDate: string) => {
-  const queryClient = useQueryClient();
   const projectQuery = useQuery<Project[]>({
     queryKey: ["projects", selectedFloor, selectedDate],
     queryFn: getProjectsFloorDate,

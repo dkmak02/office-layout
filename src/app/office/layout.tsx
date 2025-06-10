@@ -1,5 +1,6 @@
 import EmployeeSearch from "@/components/office-layout/EmployeeSearch";
 import OfficeDatePicker from "@/components/office-layout/OfficeDatePicker";
+import ProjectSyncButton from "@/components/office-layout/ProjectSyncButton";
 import Projects from "@/components/sider/Projects";
 import { EmployeeSearchProvider } from "@/util/providers/EmployeeSearchContext";
 
@@ -25,6 +26,7 @@ export default function OfficeLayout({
       <main className="flex-1 p-6 bg-gray-50">
         <div className="flex justify-between items-center gap-4 mt-4 mb-2">
           <EmployeeSearch />
+          <ProjectSyncButton />
           <OfficeDatePicker />
         </div>
         <div

@@ -45,7 +45,6 @@ const changeProject = async ({ deskId, projectId, floor, date }: ChangeProjectPa
       params: { projectID: projectId }
     }
   );
-  console.log(response);
   if (response.status !== 200 && response.status !== 204) {
     throw new Error("Failed to change project");
   }

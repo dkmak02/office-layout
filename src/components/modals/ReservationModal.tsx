@@ -10,6 +10,7 @@ import { Project } from "@/models/Project";
 import { useCreateReservation } from "@/api/mutations/reservations/create-reservation";
 import { useChangeDeskType, useChangeProject } from "@/api/mutations/project/change-desk-type";
 import { useDeleteReservation } from "@/api/mutations/reservations/delete-reservation";
+import { useTranslations } from "next-intl";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -19,6 +20,7 @@ interface ReservationModalProps {
   onClose: () => void;
   desk: Desk | null;
   employees: Employee[];
+  availableEmployees: Employee[];
   floor?: string;
   date?: string;
 }
@@ -36,11 +38,13 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   onClose,
   desk,
   employees,
+  availableEmployees,
   floor,
   date
 }) => {
   const { data: user } = useUser();
   const { data: projects } = useProjectInfo();
+  const tModal = useTranslations("ReservationModal");
   const [form] = Form.useForm<ReservationFormData>();
   const [loading, setLoading] = useState(false);
   const [showAllReservations, setShowAllReservations] = useState(false);
@@ -61,9 +65,9 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
   // Determine current desk type based on selected project (for real-time UI updates)
   const currentDeskType = isTrueAdmin && selectedProjectId !== undefined 
-    ? (selectedProjectId === "hotdesk" ? "hotdesk" : "project")
-    : (isHotdesk ? "hotdesk" : "project");
-  const isCurrentlyHotdesk = currentDeskType === "hotdesk";
+    ? (selectedProjectId === "Hotdesk" ? "Hotdesk" : "Project")
+    : (isHotdesk ? "Hotdesk" : "Project");
+  const isCurrentlyHotdesk = currentDeskType === "Hotdesk";
 
   // Get current user's employee data to check availability
   const currentEmployee = employees.find(emp => emp.id === user?.id);
@@ -76,7 +80,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     r.reservationID === desk.currentReservationID && 
     !deletedReservationIds.has(r.reservationID)
   );
-
   // Determine if user can make reservations
   const canMakeReservation = () => {
     if (isAdmin) return true; // Admin/moderator can always reserve
@@ -119,20 +122,54 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
     if (isCurrentlyHotdesk) {
       // For hotdesk: only employees who can reserve hotdesk (availability != "0" and !ignoreAvailability)
-      return employees.filter(emp => 
+      return availableEmployees.filter(emp => 
         !emp.permanentlyAssigned && 
         emp.availability !== "0" && 
         !emp.ignoreAvailability
       );
     } else {
       // For regular desk: only employees who CANNOT reserve hotdesk (availability == "0" or ignoreAvailability == true)
-      return employees.filter(emp => 
+      return availableEmployees.filter(emp => 
         emp.availability === "0" || emp.ignoreAvailability === true
       );
     }
   };
 
-  const availableEmployees = getAvailableEmployees();
+  const availableEmployeesByDeskType = getAvailableEmployees();
+
+  // Get employee options including currently assigned employee
+  const getEmployeeOptions = () => {
+    let options = availableEmployeesByDeskType.map((person) => ({
+      label: person.name + " " + person.surname,
+      value: person.id,
+    }));
+    // Always include the current reservation's employee if there is one
+    const currentReservationUserId = currentReservation?.userId;
+    if (currentReservationUserId && !availableEmployeesByDeskType.find(emp => emp.id === currentReservationUserId)) {
+      const currentEmployee = employees.find(emp => emp.id === currentReservationUserId);
+      if (currentEmployee) {
+        options.unshift({
+          label: `${currentEmployee.name} ${currentEmployee.surname} (Current)`,
+          value: currentEmployee.id,
+        });
+      }
+    }
+
+    // Also include selectedEmployeeId if it's different from current reservation and not in available list
+    if (selectedEmployeeId && 
+        selectedEmployeeId !== currentReservationUserId && 
+        !availableEmployeesByDeskType.find(emp => emp.id === selectedEmployeeId)) {
+      const selectedEmployee = employees.find(emp => emp.id === selectedEmployeeId);
+      if (selectedEmployee) {
+        options.unshift({
+          label: `${selectedEmployee.name} ${selectedEmployee.surname}`,
+          value: selectedEmployee.id,
+        });
+      }
+    }
+
+    return options;
+  };
 
   // Initialize form values
   React.useEffect(() => {
@@ -152,8 +189,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       // Initialize project ID
       let initialProjectId;
       if (isHotdesk) {
-        // For hotdesk, use the special "hotdesk" value
-        initialProjectId = "hotdesk";
+        // For hotdesk, use the special "Hotdesk" value
+        initialProjectId = "Hotdesk";
       } else if (desk.project?.code) {
         // For regular desk, find the project by code
         const foundProject = projects?.find((p: Project) => p.code === desk.project?.code);
@@ -172,10 +209,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     }
   }, [desk, user, projects, isAdmin, canReserve, currentReservation, isHotdesk]);
 
-  // Reset deleted reservations when modal opens or desk changes
+  // Reset deleted reservations and dates when modal opens or desk changes
   React.useEffect(() => {
     if (visible) {
       setDeletedReservationIds(new Set());
+      setSelectedDates(null); // Clear dates when modal opens
     }
   }, [visible, desk?.deskId]);
 
@@ -276,15 +314,153 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     if (!canReserve && !isAdmin) return; // Safety check
     setLoading(true);
     try {
+      // Step 0: Comprehensive validation
+      const employeeChanged = selectedEmployeeId !== currentReservation?.userId;
+      
+      // Check if dates have changed for hotdesk reservations
+      const datesChanged = isCurrentlyHotdesk && currentReservation && selectedDates && (() => {
+        const currentStartDate = dayjs(currentReservation.startTime).format("YYYY-MM-DD");
+        const currentEndDate = currentReservation.endTime ? dayjs(currentReservation.endTime).format("YYYY-MM-DD") : currentStartDate;
+        const selectedStartDate = selectedDates[0].format("YYYY-MM-DD");
+        const selectedEndDate = selectedDates[1].format("YYYY-MM-DD");
+        
+        return currentStartDate !== selectedStartDate || currentEndDate !== selectedEndDate;
+      })();
+      
+      const needsNewReservation = canReserve && selectedEmployeeId && (employeeChanged || !currentReservation || datesChanged);
+      
+      // Note: needsNewReservation now includes date changes for hotdesk reservations,
+      // allowing users to update reservation dates for the same employee
+
+      // Determine final desk type after potential changes
+      let finalDeskType = isHotdesk ? "Hotdesk" : "Project";          
+      if (isAdmin && selectedProjectId) {
+        finalDeskType = selectedProjectId === "Hotdesk" ? "Hotdesk" : "Project";
+      }
+
+      // Validation for reservation creation
+      if (needsNewReservation) {
+        // Check if employee is selected
+        if (!selectedEmployeeId) {
+          message.error(tModal("employeeRequired"));
+          return;
+        }
+
+        // Check if dates are selected for hotdesk reservations
+        if (finalDeskType === "Hotdesk" && !selectedDates) {
+          message.error(tModal("hotdeskDateRequired"));
+          return;
+        }
+
+        // Additional date validations for hotdesk
+        if (finalDeskType === "Hotdesk" && selectedDates) {
+          const startDate = selectedDates[0];
+          const endDate = selectedDates[1];
+          
+          // Check if dates are in the past
+          if (startDate.isBefore(dayjs().startOf('day'))) {
+            message.error(tModal("pastDateSelected"));
+            return;
+          }
+          
+          // Check if date range is too long (more than 21 days)
+          if (endDate.diff(startDate, 'days') > 21) {
+            message.error(tModal("dateRangeTooLong"));
+            return;
+          }
+          
+          // Check if start date is after end date
+          if (startDate.isAfter(endDate)) {
+            message.error(tModal("invalidDateRange"));
+            return;
+          }
+        }
+
+        // Check for project desk requirements
+        if (finalDeskType === "Project") {
+          // For project desks, ensure project is selected (admin only)
+          if (isAdmin && !selectedProjectId) {
+            message.error(tModal("projectRequired"));
+            return;
+          }
+        }
+
+        // Check if user has conflicting reservations (for non-admins)
+        if (!isAdmin && finalDeskType === "Hotdesk" && selectedDates && user?.reservations) {
+          const startDate = selectedDates[0].format("YYYY-MM-DD");
+          const endDate = selectedDates[1].format("YYYY-MM-DD");
+          
+          for (const userReservation of user.reservations) {
+            // Skip the current desk's reservations
+            if (userReservation.deskNo === desk?.name) continue;
+            
+            const reservationStart = dayjs(userReservation.startTime).format("YYYY-MM-DD");
+            const reservationEnd = userReservation.endTime ? dayjs(userReservation.endTime).format("YYYY-MM-DD") : reservationStart;
+            
+            // Check for date overlap
+            const selectedStart = dayjs(startDate);
+            const selectedEnd = dayjs(endDate);
+            const existingStart = dayjs(reservationStart);
+            const existingEnd = dayjs(reservationEnd);
+            
+            if (selectedStart.isSame(existingStart, 'day') || selectedStart.isSame(existingEnd, 'day') ||
+                selectedEnd.isSame(existingStart, 'day') || selectedEnd.isSame(existingEnd, 'day') ||
+                (selectedStart.isAfter(existingStart, 'day') && selectedStart.isBefore(existingEnd, 'day')) ||
+                (selectedEnd.isAfter(existingStart, 'day') && selectedEnd.isBefore(existingEnd, 'day')) ||
+                (existingStart.isAfter(selectedStart, 'day') && existingStart.isBefore(selectedEnd, 'day'))) {
+              message.error(tModal("dateConflict"));
+              return;
+            }
+          }
+        }
+      }
+
+      // Validation for admin project/desk type changes
+      if (isAdmin && selectedProjectId) {
+        if (selectedProjectId === "Hotdesk" && !isTrueAdmin) {
+          message.error(tModal("adminOnlyHotdesk"));
+          return;
+        }
+        
+        // If converting to hotdesk and there's an employee selected, require dates
+        if (selectedProjectId === "Hotdesk" && selectedEmployeeId && !selectedDates) {
+          message.error(tModal("hotdeskDateRequired"));
+          return;
+        }
+        
+        // If converting to hotdesk and dates are selected, validate them
+        if (selectedProjectId === "Hotdesk" && selectedDates) {
+          const startDate = selectedDates[0];
+          const endDate = selectedDates[1];
+          
+          // Check if dates are in the past
+          if (startDate.isBefore(dayjs().startOf('day'))) {
+            message.error(tModal("pastDateSelected"));
+            return;
+          }
+          
+          // Check if date range is too long (more than 21 days)
+          if (endDate.diff(startDate, 'days') > 21) {
+            message.error(tModal("dateRangeTooLong"));
+            return;
+          }
+          
+          // Check if start date is after end date
+          if (startDate.isAfter(endDate)) {
+            message.error(tModal("invalidDateRange"));
+            return;
+          }
+        }
+      }
+
       let deskTypeChanged = false;
-      let finalDeskType = isHotdesk ? "hotdesk" : "project";
       
       // Step 1: Handle project/desk type changes first (admin/moderator)
       if (isAdmin && selectedProjectId) {
-        if (selectedProjectId === "hotdesk") {
+        if (selectedProjectId === "Hotdesk") {
           // Only true admins can convert to hotdesk
           if (!isTrueAdmin) {
-            message.error("Only administrators can convert desks to hotdesk. Moderators cannot perform this action.");
+            message.error(tModal("adminOnlyHotdesk"));
             return;
           }
           // Convert to hotdesk only if it's not already a hotdesk
@@ -295,11 +471,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               floor,
               date,
             });
-            message.success("Desk converted to hotdesk successfully");
+            message.success(tModal("deskConvertedToHotdesk"));
             deskTypeChanged = true;
-            finalDeskType = "hotdesk";
+            finalDeskType = "Hotdesk";
             
-            // Wait for backend to process the desk type change
+            
             await new Promise(resolve => setTimeout(resolve, 1000));
           }
         } else {
@@ -331,18 +507,18 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               floor,
               date,
             });
+            message.success(tModal("projectAssignedSuccess"));
           }
           
-          message.success(isHotdesk ? "Desk converted to project successfully" : projectChanged ? "Project assigned successfully" : "No changes made");
         }
       }
       
-      // Step 2: Handle reservation creation AFTER desk changes (if user can reserve and wants to)
-      if (canReserve && selectedEmployeeId) {
+      // Step 2: Handle reservation creation ONLY if employee has changed or there's no current reservation
+      if (needsNewReservation) {
         const useCurrentUserEndpoint = !isAdmin;
-        
-        if (finalDeskType === "hotdesk" && selectedDates) {
+        if (finalDeskType === "Hotdesk" && selectedDates) {
           // Create hotdesk reservation (using final desk type)
+
           await createReservationMutation.mutateAsync({
             deskId: desk?.deskId!,
             employeeId: selectedEmployeeId,
@@ -353,8 +529,14 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
             floor,
             date,
           });
-          message.success("Hotdesk reservation created successfully");
-        } else if (finalDeskType === "project") {
+          
+          // Show appropriate success message based on whether it's a date change or new reservation
+          if (datesChanged && !employeeChanged) {
+            message.success(tModal("hotdeskDatesUpdated"));
+          } else {
+            message.success(tModal("hotdeskReservationCreated"));
+          }
+        } else if (finalDeskType === "Project") {
           // Create project desk assignment (using final desk type)
           await createReservationMutation.mutateAsync({
             deskId: desk?.deskId!,
@@ -364,16 +546,23 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
             floor,
             date,
           });
-          message.success("Desk assignment created successfully");
+          message.success(tModal("deskAssignmentCreated"));
         }
       }
       
       // Close modal on success
       onClose();
       form.resetFields();
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error in submission:", error);
-      message.error("Failed to complete operation. Please try again.");
+      console.log(error.response?.data.messageCode);
+      // Use specific error message based on messageCode if available
+      const messageCode = error.response?.data?.messageCode;
+      if (messageCode && tModal(messageCode) !== messageCode) {
+        message.error(tModal(messageCode));
+      } else {
+        message.error(tModal("operationFailed"));
+      }
     } finally {
       setLoading(false);
     }
@@ -392,11 +581,17 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         date,
       });
       
-      message.success("Reservation deleted successfully");
+      message.success(tModal("reservationDeletedSuccess"));
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting reservation:", error);
-      message.error("Failed to delete reservation. Please try again.");
+      // Use specific error message based on messageCode if available
+      const messageCode = error.response?.data?.messageCode;
+      if (messageCode && tModal(messageCode) !== messageCode) {
+        message.error(tModal(messageCode));
+      } else {
+        message.error(tModal("reservationDeleteFailed"));
+      }
     } finally {
       setLoading(false);
     }
@@ -425,10 +620,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       setLoading(true);
       const useHotdeskEndpoint = !isAdmin && isHotdesk && user?.id === userId;
       
-      console.log("Deleting reservation:", {
-        reservationId,
-        useHotdeskEndpoint,
-      });
       await deleteReservationMutation.mutateAsync({
         reservationId,
         useHotdeskEndpoint,
@@ -439,13 +630,25 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       // Add to deleted reservations set for immediate UI update
       setDeletedReservationIds(prev => new Set([...prev, reservationId]));
       
-      message.success("Reservation deleted successfully");
-    } catch (error) {
+      message.success(tModal("reservationDeletedSuccess"));
+    } catch (error: any) {
       console.error("Error deleting reservation:", error);
-      message.error("Failed to delete reservation. Please try again.");
+      // Use specific error message based on messageCode if available
+      const messageCode = error.response?.data?.messageCode;
+      if (messageCode && tModal(messageCode) !== messageCode) {
+        message.error(tModal(messageCode));
+      } else {
+        message.error(tModal("reservationDeleteFailed"));
+      }
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper function to get employee name by ID
+  const getEmployeeName = (userId: number) => {
+    const employee = employees.find(emp => emp.id === userId);
+    return employee ? `${employee.name} ${employee.surname}` : `Employee ID: ${userId}`;
   };
 
   const isProjectDisabled = (!isAdmin) || (isHotdesk && user?.isModerator && !user?.isAdmin);
@@ -457,7 +660,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       <Modal
         title={
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-            <span>{desk.name}</span>
+            <div>
+              <Text strong style={{ fontSize: "18px", color: "#1890ff" }}>
+                {desk.name}
+              </Text>
+            </div>
             {isHotdesk && desk.reservations && desk.reservations.filter(r => !deletedReservationIds.has(r.reservationID)).length > 0 && (
               <Button
                 color="primary"
@@ -481,24 +688,24 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
           {/* Alerts based on user permissions */}
           {!isAdmin && !isCurrentlyHotdesk && (
             <Alert
-              message="Regular Desk - View Only"
-              description="You can only view information about regular desks. Only admins can make reservations for regular desks."
+              message={tModal("regularDeskViewOnly")}
+              description={tModal("regularDeskViewOnlyDescription")}
               type="info"
             />
           )}
           
           {!isAdmin && isCurrentlyHotdesk && currentEmployee?.availability === "0" && (
             <Alert
-              message="Hotdesk Unavailable"
-              description="You cannot reserve hotdesks because your availability is set to 0%."
+              message={tModal("hotdeskUnavailable")}
+              description={tModal("hotdeskUnavailableAvailability")}
               type="warning"
             />
           )}
           
           {!isAdmin && isCurrentlyHotdesk && currentEmployee?.ignoreAvailability === true && (
             <Alert
-              message="Hotdesk Unavailable"
-              description="You cannot reserve hotdesks because you have ignore availability enabled."
+              message={tModal("hotdeskUnavailable")}
+              description={tModal("hotdeskUnavailableIgnore")}
               type="warning"
             />
           )}
@@ -506,19 +713,16 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
           {/* Person Assignment Section */}
           {(canReserve || isAdmin) && (
             <div>
-              <Descriptions title="Person Assigned:" />
+              <Descriptions title={tModal("personAssigned")} />
               <Select
                 style={{ width: "100%" }}
                 showSearch
-                placeholder="Choose person"
+                placeholder={tModal("choosePerson")}
                 optionFilterProp="label"
-                value={selectedEmployeeId}
+                value={selectedEmployeeId || currentReservation?.userId}
                 disabled={!isAdmin}
                 onChange={handleEmployeeChange}
-                options={availableEmployees.map((person) => ({
-                  label: person.name + " " + person.surname,
-                  value: person.id,
-                }))}
+                options={getEmployeeOptions()}
                 className={`w-full ${!isAdmin ? "pointer-events-none" : ""} [&_.ant-select-selector]:!text-black [&_.ant-select-selector]:!bg-gray-100 [&_.ant-select-selector]:!opacity-100`}
               />
             </div>
@@ -527,16 +731,16 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
           {/* Project Assignment Section */}
           {isAdmin && (
             <div>
-              <Descriptions title="Project Assigned:" />
+              <Descriptions title={tModal("projectAssigned")} />
               <Select
                 showSearch
-                placeholder={isHotdesk ? "Select project to convert hotdesk" : "Choose project"}
+                placeholder={isHotdesk ? tModal("selectProjectToConvertHotdesk") : tModal("chooseProject")}
                 value={selectedProjectId}
                 disabled={isProjectDisabled}
                 optionFilterProp="label"
                 onChange={handleProjectChange}
                 options={[
-                  ...(isTrueAdmin ? [{ label: "Hotdesk", value: "hotdesk" }] : []),
+                  ...(isTrueAdmin || isHotdesk ? [{ label: "Hotdesk", value: "Hotdesk" }] : []),
                   ...availableProjects.map((project: Project) => ({
                     label: project.name,
                     value: project.id,
@@ -573,7 +777,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                   (!isAdmin && canReserve && isCurrentlyHotdesk && (!selectedDates || !selectedEmployeeId))
                 }
               >
-                Confirm
+                {tModal("confirm")}
               </Button>
             )}
             
@@ -584,12 +788,12 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                 style={{ color: "orange", borderColor: "orange" }}
                 variant="outlined"
               >
-                Delete Reservation
+                {tModal("deleteReservation")}
               </Button>
             )}
             
             <Button danger onClick={onClose}>
-              {canReserve ? "Cancel" : "Close"}
+              {canReserve ? tModal("cancel") : tModal("close")}
             </Button>
           </div>
         </div>
@@ -598,7 +802,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       {/* All Reservations Modal */}
       {showAllReservations && (
         <Modal
-          title="All Reservations"
+          title={tModal("allReservations")}
           open={showAllReservations}
           onCancel={() => setShowAllReservations(false)}
           okButtonProps={{ style: { display: "none" } }}
@@ -613,11 +817,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               <List.Item>
                 <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
-                    <Text strong>{reservation.userName}</Text>
+                    <Text strong>{getEmployeeName(reservation.userId)}</Text>
                     <br />
                     <Text type="secondary">
                       {dayjs(reservation.startTime).format("MMM DD, YYYY")} - {
-                        reservation.endTime ? dayjs(reservation.endTime).format("MMM DD, YYYY") : "Open"
+                        reservation.endTime ? dayjs(reservation.endTime).format("MMM DD, YYYY") : tModal("open")
                       }
                     </Text>
                   </div>
@@ -629,7 +833,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                       onClick={() => handleDeleteFromList(reservation.reservationID, reservation.userId)}
                       style={{ marginLeft: "12px" }}
                     >
-                      Delete
+                      {tModal("delete")}
                     </Button>
                   )}
                 </div>

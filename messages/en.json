@@ -126,6 +126,7 @@
     "reservationDeletedSuccess": "Reservation deleted successfully",
     "reservationDeleteFailed": "Failed to delete reservation. Please try again.",
     "hotdeskDateRequired": "Please select a date range for hotdesk reservation",
+    "hotdeskDatesUpdated": "Hotdesk reservation dates updated successfully",
     "employeeRequired": "Please select an employee",
     "projectRequired": "Please select a project",
     "validationErrorEmployeeAndProject": "Please select an employee and a project",
@@ -149,6 +150,26 @@
     "close": "Close",
     "allReservations": "All Reservations",
     "open": "Open",
-    "delete": "Delete"
+    "delete": "Delete",
+    
+    "InvalidAvailabilityException": "Employee availability settings don't allow this reservation.",
+    "InvalidHexColorFormat": "Invalid color format provided.",
+    "DeskNotFoundException": "The selected desk could not be found.",
+    "DeskTypeDoesNotExistException": "The specified desk type does not exist.",
+    "DeskTypeNotAllowedForProjectAssociatonException": "This desk type is not allowed for project association.",
+    "PendingReservationsException": "There are pending reservations that prevent this operation.",
+    "EmployeeIsNotEligibleForHotdeskException": "This employee is not eligible for hotdesk reservations.",
+    "EmployeeIsNotEligibleForPermanentDeskException": "This employee is not eligible for permanent desk assignment.",
+    "EmployeeNotFoundException": "The selected employee could not be found.",
+    "IdentityNameNotFoundException": "User identity name not found.",
+    "IdentityNotFoundException": "User identity not found.",
+    "ProjectNotFoundException": "The selected project could not be found.",
+    "DeskReservationOverlapException": "This desk already has a reservation for the selected time period.",
+    "EmployeeReservationOverlapException": "This employee already has a reservation that conflicts with the selected dates.",
+    "InvalidHotdeskReservationException": "Hotdesk reservation cannot extend beyond 21 days from now.",
+    "InvalidDeskTypeException": "Invalid desk type specified.",
+    "ReservationNotFoundException": "The reservation could not be found.",
+    "StartDateCannotBeAfterEndDateException": "Start date cannot be after the end date.",
+    "StartDateCannotBeInThePastException": "Start date cannot be in the past."
   }
 }
