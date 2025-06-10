@@ -1,6 +1,8 @@
 import React from "react";
-import { Dropdown, Button, Spin, Alert, Empty, Space } from "antd";
+import { Dropdown, Button, Spin, Alert, Empty, Space, message } from "antd";
 import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
+import { usePathname, useSearchParams } from "next/navigation";
+import dayjs from "dayjs";
 import ReservationCard from "@/components/reservations/ReservationCard";
 import { useTranslations } from "next-intl";
 import { Reservation } from "@/models/Reservation";
@@ -20,6 +22,12 @@ const UserReservationsDropdown: React.FC<UserReservationsDropdownProps> = ({
   const t = useTranslations("NavbarMenu");
   const { data: user } = useUser();
   const deleteReservationMutation = useDeleteReservation();
+  
+  // Get floor and date from URL params for cache invalidation
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const floor = pathname.split("/").pop() === "floor-7" ? "Floor 7" : "Floor 8";
+  const date = searchParams.get("date") ? searchParams.get("date")! : dayjs().format("YYYY-MM-DD");
 
   const handleDeleteReservation = (reservationId: number) => {
     const reservation = reservations.find(r => r.reservationID === reservationId);
@@ -27,7 +35,17 @@ const UserReservationsDropdown: React.FC<UserReservationsDropdownProps> = ({
     
     deleteReservationMutation.mutate({ 
       reservationId,
-      useHotdeskEndpoint: useHotdesk
+      useHotdeskEndpoint: useHotdesk,
+      floor,
+      date
+    }, {
+      onSuccess: () => {
+        message.success(t("unreserveSuccess"));
+      },
+      onError: (error: any) => {
+        console.error("Error deleting reservation:", error);
+        message.error(t("unreserveError"));
+      }
     });
   };
 
