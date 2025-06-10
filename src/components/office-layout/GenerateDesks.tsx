@@ -127,7 +127,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
               className="desk"
               style={{ 
                 transform: `rotate(${desk.rotation}deg)`,
-                cursor: isClickable ? 'pointer' : 'not-allowed'
+                cursor: isClickable ? 'pointer' : 'default'
               }}
               opacity={opacity}
               onClick={isClickable ? () => handleDeskClick(desk) : undefined}

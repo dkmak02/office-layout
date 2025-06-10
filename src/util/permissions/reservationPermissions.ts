@@ -19,16 +19,19 @@ export const canDeleteReservation = (
   if (currentUser.isModerator) return true;
 
   // User can only delete their own reservations
-  if (reservation.userId !== currentUser.id) return false;
+  // Handle both string and number types for user IDs
+  const currentUserIdStr = String(currentUser.id);
+  const reservationUserIdStr = String(reservation.userId);
+  if (reservationUserIdStr !== currentUserIdStr) return false;
 
-  // For the user's own reservations, allow deletion if:
-  // 1. It's a hotdesk reservation (has an endTime that's not empty/null)
-  // 2. Or if we're in the context where the user is viewing their own reservations
-  if (reservation.endTime && reservation.endTime.trim() !== "") {
-    return true; // This is likely a hotdesk reservation with a time limit
-  }
+  // For the user's own reservations, check if it's a hotdesk reservation
+  // Hotdesk reservations have a valid endTime, permanent assignments have empty endTime
+  const hasValidEndTime = Boolean(reservation.endTime && 
+    reservation.endTime.trim() !== "" && 
+    reservation.endTime !== "0001-01-01T00:00:00" && // Check for default/null dates
+    !reservation.endTime.startsWith("0001-01-01"));
 
-  return false;
+  return hasValidEndTime;
 };
 
 export const getDeleteButtonTooltip = (

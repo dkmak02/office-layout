@@ -31,7 +31,17 @@ const UserReservationsDropdown: React.FC<UserReservationsDropdownProps> = ({
 
   const handleDeleteReservation = (reservationId: number) => {
     const reservation = reservations.find(r => r.reservationID === reservationId);
-    const useHotdesk = reservation ? shouldUseHotdeskEndpoint(reservation, user) : false;
+    if (!reservation) return;
+    
+    // Determine if this is a hotdesk reservation based on endTime
+    const isHotdesk = Boolean(reservation.endTime && 
+      reservation.endTime.trim() !== "" && 
+      reservation.endTime !== "0001-01-01T00:00:00" && 
+      !reservation.endTime.startsWith("0001-01-01"));
+    
+    // Create extended reservation object with isHotdesk field
+    const extendedReservation = { ...reservation, isHotdesk };
+    const useHotdesk = shouldUseHotdeskEndpoint(extendedReservation, user);
     
     deleteReservationMutation.mutate({ 
       reservationId,
@@ -67,14 +77,24 @@ const UserReservationsDropdown: React.FC<UserReservationsDropdownProps> = ({
       
       {reservations.length > 0 && (
         <Space direction="vertical" className="w-full">
-          {reservations.map((reservation) => (
-            <ReservationCard
-              key={reservation.reservationID}
-              reservation={reservation}
-              onDelete={handleDeleteReservation}
-              loading={deleteReservationMutation.isPending && deleteReservationMutation.variables?.reservationId === reservation.reservationID}
-            />
-          ))}
+          {reservations.map((reservation) => {
+            // Add the current user's ID to the reservation since API doesn't include it
+            // but we know these are the current user's reservations
+            const enrichedReservation = {
+              ...reservation,
+              userId: user?.id || 0,
+              userName: user ? `${user.name} ${user.surname}` : ''
+            };
+            
+            return (
+              <ReservationCard
+                key={reservation.reservationID}
+                reservation={enrichedReservation}
+                onDelete={handleDeleteReservation}
+                loading={deleteReservationMutation.isPending && deleteReservationMutation.variables?.reservationId === reservation.reservationID}
+              />
+            );
+          })}
         </Space>
       )}
     </div>

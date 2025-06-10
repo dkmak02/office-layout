@@ -13,8 +13,11 @@ const Navbar = () => {
   const t = useTranslations("NavbarMenu");
   const { data: user } = useUser();
   let role: UserRole = "employee";
-  if (user?.isAdmin || user?.isModerator) {
+  if (user?.isModerator) {
     role = "moderator";
+  }
+  if (user?.isAdmin) {
+    role = "admin";
   }
   const tabs = navTabs[role];
   const pathname = usePathname();
