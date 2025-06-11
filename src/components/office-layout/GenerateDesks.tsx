@@ -69,7 +69,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
 
   return (
     <>
-    <g>
+    <g data-testid="desks-container">
       {desks.map((desk: Desk) => {
         const projectCode = desk.hotdesk ? "Hotdesk" : desk.project.code;
         const reservation = desk.reservations?.find(r => r.reservationID === desk.currentReservationID)?.userId;
@@ -132,6 +132,8 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
               opacity={opacity}
               onClick={isClickable ? () => handleDeskClick(desk) : undefined}
               fill={desk.color || "#e0e0e0"}
+              data-testid={`desk-${desk.name}`}
+              data-desk-type={desk.hotdesk ? "hotdesk" : "project"}
             />
           </Tooltip>
         );

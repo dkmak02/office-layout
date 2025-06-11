@@ -20,7 +20,7 @@ const Projects = () => {
     };
     
     return (
-        <div>
+        <div data-testid="projects-list">
         {projects.filter((project) => project.visibility).map((project) => (
             <ProjectCard
             key={project.code}

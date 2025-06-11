@@ -33,6 +33,7 @@ export default function LocaleSwitcherSelect({
         loading={isPending}
         style={{ width: 120, marginRight: 20 }}
         aria-label={label}
+        data-testid="locale-switcher"
       >
         {items.map((item) => (
           <Select.Option key={item.value} value={item.value}>

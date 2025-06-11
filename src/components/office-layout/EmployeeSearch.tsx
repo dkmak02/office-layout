@@ -30,6 +30,7 @@ const EmployeeSearch = () => {
       maxTagCount={4}
       maxTagTextLength={10}
       onChange={handleChange}
+      data-testid="employee-search"
     />
   );
 };

@@ -1,0 +1,705 @@
+{
+  "desks": [
+    {
+      "deskId": 2,
+      "name": "DSK7006",
+      "project": {
+        "projectName": "Hexcel Corporation",
+        "code": "HEXC"
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#1086da",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 95.6337,
+      "y": 13.6951,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 3,
+      "name": "DSK7009",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 85.0355,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 4,
+      "name": "DSK7012",
+      "project": {
+        "projectName": "Administration",
+        "code": "ADM"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#96959b",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 79.9364,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 7,
+      "name": "DSK7021",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 53.7273,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 8,
+      "name": "DSK7024",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 48.6281,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 13,
+      "name": "DSK7008",
+      "project": {
+        "projectName": "Administration",
+        "code": "ADM"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#96959b",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 85.0355,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 14,
+      "name": "DSK7011",
+      "project": {
+        "projectName": "Brak projektu",
+        "code": "BPR"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#53f9ab",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 79.9364,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 1,
+      "name": "DSK7003",
+      "project": {
+        "projectName": "Hexcel Corporation",
+        "code": "HEXC"
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#1086da",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 100.7328,
+      "y": 13.6951,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 17,
+      "name": "DSK7020",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 53.7273,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 18,
+      "name": "DSK7023",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 48.6281,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 19,
+      "name": "DSK7026",
+      "project": {
+        "projectName": "Administration",
+        "code": "ADM"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#96959b",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 38.1369,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 16,
+      "name": "DSK7017",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [
+        {
+          "reservationID": 2470,
+          "startTime": "2025-06-12T00:00:01",
+          "endTime": "2025-06-12T23:59:00",
+          "userId": 11364,
+          "userName": "Konrad Bałabuszek"
+        }
+      ],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 64.3421,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 21,
+      "name": "DSK7001",
+      "project": {
+        "projectName": "Hexcel Corporation",
+        "code": "HEXC"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#1086da",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 100.7328,
+      "y": 1.6152,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 23,
+      "name": "DSK7007",
+      "project": {
+        "projectName": "Cenergy Holdings SA",
+        "code": "CENER"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#2b1a7f",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 85.0355,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 24,
+      "name": "DSK7010",
+      "project": {
+        "projectName": "APS Services",
+        "code": "SRVAPS"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#bd45bf",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 79.9364,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 25,
+      "name": "DSK7013",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [
+        {
+          "reservationID": 2467,
+          "startTime": "2025-06-30T00:00:01",
+          "endTime": "2025-06-30T23:59:00",
+          "userId": 2200,
+          "userName": "Izabela Bąk"
+        }
+      ],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 69.4412,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 26,
+      "name": "DSK7016",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 64.3421,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 27,
+      "name": "DSK7019",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 53.7273,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 28,
+      "name": "DSK7022",
+      "project": {
+        "projectName": "APS Services",
+        "code": "SRVAPS"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#bd45bf",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 48.6281,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 29,
+      "name": "DSK7025",
+      "project": {
+        "projectName": "APS Services",
+        "code": "SRVAPS"
+      },
+      "hotdesk": false,
+      "reservations": [
+        {
+          "reservationID": 1386,
+          "startTime": "2025-05-15T00:00:00",
+          "endTime": null,
+          "userId": 1169,
+          "userName": "Damian Banaś"
+        }
+      ],
+      "color": "#bd45bf",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 38.1369,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": 1386
+    },
+    {
+      "deskId": 30,
+      "name": "DSK7028",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 33.0378,
+      "y": 1.6687,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 31,
+      "name": "DSK7032",
+      "project": {
+        "projectName": "Brak projektu",
+        "code": "BPR"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#53f9ab",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": -21.6696,
+      "y": 31.3081,
+      "rotation": -72.7957,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 32,
+      "name": "DSK7031",
+      "project": {
+        "projectName": "Brak projektu",
+        "code": "BPR"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#53f9ab",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": -21.6696,
+      "y": 25.2682,
+      "rotation": -72.7957,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 33,
+      "name": "DSK7034",
+      "project": {
+        "projectName": "Trane Technologies",
+        "code": "TT"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#340e28",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": -26.7687,
+      "y": 31.3081,
+      "rotation": -72.7957,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 34,
+      "name": "DSK7033",
+      "project": {
+        "projectName": "Trane Technologies",
+        "code": "TT"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#340e28",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": -26.7687,
+      "y": 25.2682,
+      "rotation": -72.7957,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 36,
+      "name": "DSK7036",
+      "project": {
+        "projectName": "Trane Technologies",
+        "code": "TT"
+      },
+      "hotdesk": false,
+      "reservations": [
+        {
+          "reservationID": 1316,
+          "startTime": "2025-05-09T00:00:00",
+          "endTime": null,
+          "userId": 1165,
+          "userName": "Michał Słowikowski"
+        }
+      ],
+      "color": "#340e28",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": -46.5422,
+      "y": 31.3081,
+      "rotation": -72.7957,
+      "currentReservationID": 1316
+    },
+    {
+      "deskId": 15,
+      "name": "DSK7014",
+      "project": {
+        "projectName": "Administration",
+        "code": "ADM"
+      },
+      "hotdesk": false,
+      "reservations": [],
+      "color": "#96959b",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 69.4412,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 10,
+      "name": "DSK7030",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 33.0378,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 40,
+      "name": "DSK7038",
+      "project": {
+        "projectName": "Trane Technologies",
+        "code": "TT"
+      },
+      "hotdesk": false,
+      "reservations": [
+        {
+          "reservationID": 1136,
+          "startTime": "2025-04-17T12:17:10.56",
+          "endTime": null,
+          "userId": 1166,
+          "userName": "Mateusz Ziomek"
+        }
+      ],
+      "color": "#340e28",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": -51.6413,
+      "y": 25.2682,
+      "rotation": -72.7957,
+      "currentReservationID": 1136
+    },
+    {
+      "deskId": 41,
+      "name": "DSK7043",
+      "project": {
+        "projectName": "Trane Technologies",
+        "code": "TT"
+      },
+      "hotdesk": false,
+      "reservations": [
+        {
+          "reservationID": 1135,
+          "startTime": "2025-04-17T12:16:45.6766667",
+          "endTime": null,
+          "userId": 11367,
+          "userName": "Joanna Papros"
+        }
+      ],
+      "color": "#340e28",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": -60.5837,
+      "y": 37.348,
+      "rotation": -72.7957,
+      "currentReservationID": 1135
+    },
+    {
+      "deskId": 9,
+      "name": "DSK7027",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 38.1369,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 6,
+      "name": "DSK7018",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 64.3421,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 5,
+      "name": "DSK7015",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 69.4412,
+      "y": 13.7486,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 20,
+      "name": "DSK7029",
+      "project": {
+        "projectName": null,
+        "code": null
+      },
+      "hotdesk": true,
+      "reservations": [],
+      "color": "#D01515",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 33.0378,
+      "y": 7.7086,
+      "rotation": 0,
+      "currentReservationID": null
+    },
+    {
+      "deskId": 22,
+      "name": "DSK7004",
+      "project": {
+        "projectName": "Hexcel Corporation",
+        "code": "HEXC"
+      },
+      "hotdesk": false,
+      "reservations": [
+        {
+          "reservationID": 1321,
+          "startTime": "2025-05-09T00:00:00",
+          "endTime": null,
+          "userId": 5226,
+          "userName": "Radosław Sulikowski"
+        }
+      ],
+      "color": "#1086da",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 95.6337,
+      "y": 1.6152,
+      "rotation": 0,
+      "currentReservationID": 1321
+    },
+    {
+      "deskId": 12,
+      "name": "DSK7005",
+      "project": {
+        "projectName": "Hexcel Corporation",
+        "code": "HEXC"
+      },
+      "hotdesk": false,
+      "reservations": [
+        {
+          "reservationID": 1320,
+          "startTime": "2025-05-09T00:00:00",
+          "endTime": null,
+          "userId": 8241,
+          "userName": "Michał Szałajko"
+        }
+      ],
+      "color": "#1086da",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 95.6337,
+      "y": 7.6551,
+      "rotation": 0,
+      "currentReservationID": 1320
+    },
+    {
+      "deskId": 11,
+      "name": "DSK7002",
+      "project": {
+        "projectName": "Hexcel Corporation",
+        "code": "HEXC"
+      },
+      "hotdesk": false,
+      "reservations": [
+        {
+          "reservationID": 1319,
+          "startTime": "2025-05-09T00:00:00",
+          "endTime": null,
+          "userId": 11332,
+          "userName": "Damian Majchrowski"
+        }
+      ],
+      "color": "#1086da",
+      "width": 5.0991,
+      "height": 6.0399,
+      "x": 100.7328,
+      "y": 7.6551,
+      "rotation": 0,
+      "currentReservationID": 1319
+    }
+  ]
+}

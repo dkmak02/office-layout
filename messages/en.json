@@ -59,7 +59,7 @@
     "multipleProjectAssigment": "Project assignment",
     "multipleChoosenDesks": "Choosen desks",
     "hotdeskHasFutureReservation": "Delete all reservations to change project",
-    "remoteWork0Hotdesk": "Cannot assing wmployee to hotdesk that should have desk",
+    "remoteWork0Hotdesk": "Cannot assing employee to hotdesk that should have desk",
     "remoteWork1Desk": "The employee cannot be assigned permanently because they have individual remote work arrangements",
 
     "dsa": ""
@@ -138,7 +138,7 @@
     "regularDeskViewOnlyDescription": "You can only view information about regular desks. Only admins can make reservations for regular desks.",
     "hotdeskUnavailable": "Hotdesk Unavailable",
     "hotdeskUnavailableAvailability": "You cannot reserve hotdesks because your availability is set to 0%.",
-    "hotdeskUnavailableIgnore": "You cannot reserve hotdesks because you have ignore availability enabled.",
+    "hotdeskUnavailableIgnore": "Cannot assinn employee to hotdesk that should have desk.",
     "personAssigned": "Person Assigned:",
     "choosePerson": "Choose person",
     "projectAssigned": "Project Assigned:",

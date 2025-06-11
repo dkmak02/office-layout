@@ -1,0 +1,209 @@
+[
+  {
+    "id": -1,
+    "name": "Hotdesk",
+    "code": "Hotdesk",
+    "color": "#D01515",
+    "taken": 0,
+    "total": 22,
+    "visibility": true
+  },
+  {
+    "id": 1000008,
+    "name": "Administration",
+    "code": "ADM",
+    "color": "#96959b",
+    "taken": 0,
+    "total": 4,
+    "visibility": true
+  },
+  {
+    "id": 1000004,
+    "name": "APS Services",
+    "code": "SRVAPS",
+    "color": "#bd45bf",
+    "taken": 2,
+    "total": 4,
+    "visibility": true
+  },
+  {
+    "id": 4168,
+    "name": "Cenergy Holdings SA",
+    "code": "CENER",
+    "color": "#2b1a7f",
+    "taken": 0,
+    "total": 1,
+    "visibility": true
+  },
+  {
+    "id": 59,
+    "name": "Doosan Bobcat - USA",
+    "code": "DSN",
+    "color": "#56175e",
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1000006,
+    "name": "Finance & Compliance",
+    "code": "FNC",
+    "color": "#b91c1c",
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 42,
+    "name": "Hexcel Corporation",
+    "code": "HEXC",
+    "color": "#1086da",
+    "taken": 24,
+    "total": 32,
+    "visibility": true
+  },
+  {
+    "id": 1000009,
+    "name": "Human Resources",
+    "code": "HR",
+    "color": null,
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1000007,
+    "name": "IT",
+    "code": "IT",
+    "color": "#b91c1c",
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1069,
+    "name": "Loparex LLC",
+    "code": "LPRX",
+    "color": "#b0e17f",
+    "taken": 3,
+    "total": 4,
+    "visibility": true
+  },
+  {
+    "id": 1000002,
+    "name": "Maintenance",
+    "code": "MNT",
+    "color": "#d1f25a",
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1000010,
+    "name": "Management",
+    "code": "MGM",
+    "color": null,
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1000000,
+    "name": "Manufacturo Development",
+    "code": "DEVMNFRO",
+    "color": "#246628",
+    "taken": 1,
+    "total": 42,
+    "visibility": true
+  },
+  {
+    "id": 1000011,
+    "name": "Manufacturo Operations",
+    "code": "MFO",
+    "color": null,
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1000001,
+    "name": "Manufacturo Services",
+    "code": "SRVMNFRO",
+    "color": "#662e24",
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 4086,
+    "name": "Microstar Logistics LLC",
+    "code": "MSTAR",
+    "color": null,
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1000003,
+    "name": "Sales & Marketing",
+    "code": "SAL",
+    "color": "#452466",
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 1068,
+    "name": "Sierra Nevada Corporation",
+    "code": "SNC",
+    "color": "#e8c068",
+    "taken": 0,
+    "total": 0,
+    "visibility": true
+  },
+  {
+    "id": 4106,
+    "name": "Titanium Metals Corporation ",
+    "code": "TIMET",
+    "color": "#a50382",
+    "taken": 1,
+    "total": 1,
+    "visibility": true
+  },
+  {
+    "id": 4115,
+    "name": "Tokai COBEX",
+    "code": "TCX",
+    "color": "#ee9191",
+    "taken": 8,
+    "total": 9,
+    "visibility": true
+  },
+  {
+    "id": 2071,
+    "name": "Trane Technologies",
+    "code": "TT",
+    "color": "#340e28",
+    "taken": 12,
+    "total": 14,
+    "visibility": true
+  },
+  {
+    "id": 4142,
+    "name": "Wyman Gordon",
+    "code": "WGF",
+    "color": "#eaea00",
+    "taken": 6,
+    "total": 6,
+    "visibility": true
+  },
+  {
+    "id": 1000005,
+    "name": "Brak projektu",
+    "code": "BPR",
+    "color": "#53f9ab",
+    "taken": 4,
+    "total": 7,
+    "visibility": true
+  }
+]

@@ -110,6 +110,7 @@ const UserReservationsDropdown: React.FC<UserReservationsDropdownProps> = ({
         type="primary"
         icon={<UserOutlined />}
         style={{ height: "64px", lineHeight: "64px", borderRadius: "0px" }}
+        data-testid="user-reservations-dropdown"
       >
         {userName}
       </Button>

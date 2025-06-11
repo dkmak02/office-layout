@@ -20,7 +20,10 @@ const OfficeDatePicker = () => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-10 mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md h-[32px] max-w-[400px] w-full">
+    <div 
+      className="flex items-center justify-between gap-10 mt-1 mb-1 bg-white px-3 py-1 rounded-md shadow-md h-[32px] max-w-[400px] w-full"
+      data-testid="office-date-picker"
+    >
       <span className="text-sm text-gray-600 font-medium">{`${t(
         "chooseDate"
       )}:`}</span>

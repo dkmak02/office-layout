@@ -138,7 +138,7 @@
     "regularDeskViewOnlyDescription": "Możesz tylko przeglądać informacje o zwykłych biurkach. Tylko administratorzy mogą dokonywać rezerwacji zwykłych biurek.",
     "hotdeskUnavailable": "Hotdesk niedostępny",
     "hotdeskUnavailableAvailability": "Nie możesz zarezerwować hotdesku, ponieważ Twoja dostępność jest ustawiona na 0%.",
-    "hotdeskUnavailableIgnore": "Nie możesz zarezerwować hotdesku, ponieważ masz włączone ignorowanie dostępności.",
+    "hotdeskUnavailableIgnore": "Nie można przypisać do Hotdesku pracownika, któremu przysługuje stałe biurko.",
     "personAssigned": "Przypisana osoba:",
     "choosePerson": "Wybierz osobę",
     "projectAssigned": "Przypisany projekt:",

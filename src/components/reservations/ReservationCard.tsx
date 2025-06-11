@@ -86,6 +86,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
               onClick={handleDelete}
               loading={loading}
               className="ml-2"
+              data-testid="delete-reservation-button"
             />
           </Tooltip>
         )}
