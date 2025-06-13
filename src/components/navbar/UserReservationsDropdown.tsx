@@ -105,12 +105,13 @@ const UserReservationsDropdown: React.FC<UserReservationsDropdownProps> = ({
       dropdownRender={() => dropdownContent}
       trigger={["click"]}
       placement="bottomRight"
+      data-testid="user-reservations-dropdown"
     >
       <Button
         type="primary"
         icon={<UserOutlined />}
         style={{ height: "64px", lineHeight: "64px", borderRadius: "0px" }}
-        data-testid="user-reservations-dropdown"
+        data-testid="user-dropdown-button"
       >
         {userName}
       </Button>

@@ -682,12 +682,13 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         okButtonProps={{ style: { display: "none" } }}
         cancelButtonProps={{ style: { display: "none" } }}
         width={500}
+        data-testid="reservation-modal"
       >
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
           {/* Alerts based on user permissions */}
           {!isAdmin && !isCurrentlyHotdesk && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4" data-testid="view-only-alert">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0">
                   <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -760,6 +761,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                 onChange={handleEmployeeChange}
                 options={getEmployeeOptions()}
                 className={`w-full ${!isAdmin ? "pointer-events-none" : ""} [&_.ant-select-selector]:!text-black [&_.ant-select-selector]:!bg-gray-100 [&_.ant-select-selector]:!opacity-100`}
+                data-testid="employee-select"
               />
             </div>
           )}
@@ -784,13 +786,14 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                 ]}
                 style={{ width: "100%" }}
                 className={`w-full ${isProjectDisabled ? "pointer-events-none" : ""} [&_.ant-select-selector]:!text-black [&_.ant-select-selector]:!bg-gray-100 [&_.ant-select-selector]:!opacity-100`}
+                data-testid="project-select"
               />
             </div>
           )}
 
           {/* Date Range for Hotdesk */}
           {isCurrentlyHotdesk && canReserve && selectedEmployeeId && (
-            <div className="calendar-container">
+            <div className="calendar-container" data-testid="date-range-picker">
               <RangePicker
                 value={selectedDates}
                 onChange={handleDateChange}
@@ -812,6 +815,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                   // Only disable for non-admin users making hotdesk reservations
                   (!isAdmin && canReserve && isCurrentlyHotdesk && (!selectedDates || !selectedEmployeeId))
                 }
+                data-testid="confirm-button"
               >
                 {tModal("confirm")}
               </Button>
@@ -823,12 +827,13 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                 loading={loading}
                 style={{ color: "orange", borderColor: "orange" }}
                 variant="outlined"
+                data-testid="delete-reservation-button"
               >
                 {tModal("deleteReservation")}
               </Button>
             )}
             
-            <Button danger onClick={onClose}>
+            <Button danger onClick={onClose} data-testid="cancel-button">
               {canReserve ? tModal("cancel") : tModal("close")}
             </Button>
           </div>

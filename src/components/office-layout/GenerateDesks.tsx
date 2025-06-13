@@ -134,6 +134,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
               fill={desk.color || "#e0e0e0"}
               data-testid={`desk-${desk.name}`}
               data-desk-type={desk.hotdesk ? "hotdesk" : "project"}
+              data-desk-status={desk.currentReservationID ? 'reserved' : 'available'}
             />
           </Tooltip>
         );
