@@ -37,7 +37,7 @@ it("Should click already taken project desk and verify UI response without DB ch
     .click();
  
   // 5. Add assertions to verify UI response (optional example)
-  cy.contains('This desk is already reserved').should('exist');
+  cy.get('[data-testid="error-message"]').should('exist').contains('This desk already has a reservation for the selected time period.');
  
   // 6. (Optional) Assert that reservation did NOT persist to DB
   // You'd need an API call or DB check here if applicable.

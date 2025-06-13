@@ -559,7 +559,12 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       // Use specific error message based on messageCode if available
       const messageCode = error.response?.data?.messageCode;
       if (messageCode && tModal(messageCode) !== messageCode) {
-        message.error(tModal(messageCode));
+        message.open({
+          type: 'error',
+          content: <span data-testid="error-message">{tModal(messageCode)}</span>,
+          duration: 2,
+        });
+
       } else {
         message.error(tModal("operationFailed"));
       }

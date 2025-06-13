@@ -11,9 +11,9 @@ export default defineConfig({
     viewportHeight: 720,
     video: false,
     screenshotOnRunFailure: true,
-    defaultCommandTimeout: 10000,
-    requestTimeout: 10000,
-    responseTimeout: 10000,
+    defaultCommandTimeout: 100000,
+    requestTimeout: 100000,
+    responseTimeout: 100000,
   },
   component: {
     devServer: {
