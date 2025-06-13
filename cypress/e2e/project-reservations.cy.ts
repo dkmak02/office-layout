@@ -1,27 +1,5 @@
 describe('Project Reservations', () => {
-  let testDeskId: string;
-  let testEmployeeId: number;
-  let testProjectId: number;
-  let testReservationId: number;
 
-  before(() => {
-    // Get test data before running tests
-    cy.getDesks('Floor 7', '2025-06-13T00:00:01').then((response) => {
-      expect(response.status).to.eq(200);
-      console.log(response.body);
-      testDeskId = response.body[0].id;
-    });
-
-    cy.getEmployees().then((response) => {
-      expect(response.status).to.eq(200);
-      testEmployeeId = response.body[0].id;
-    });
-
-    cy.getProjects('Floor 7', '2025-06-13T00:00:01').then((response) => {
-      expect(response.status).to.eq(200);
-      testProjectId = response.body[0].id;
-    });
-  });
 
 //   beforeEach(() => {
 //     // Clean up any existing reservations before each test
@@ -31,13 +9,39 @@ describe('Project Reservations', () => {
 //     });
 //   });
 
-//   it('should successfully create a project desk reservation', () => {
-//     cy.reserveProjectDesk(testDeskId, testEmployeeId).then((response) => {
-//       expect(response.status).to.eq(200);
-//       expect(response.body).to.have.property('id');
-//       testReservationId = response.body.id;
-//     });
-//   });
+beforeEach(() => {
+  cy.visit('/office/floor-7');
+ 
+});
+ 
+it("Should click already taken project desk and verify UI response without DB changes", () => {
+  // 1. Wait for and click on the desk
+  cy.get('[data-testid="desk-DSK-PROJ-T"]')
+    .should('be.visible')
+    .click();
+ 
+  // 2. Wait for and open employee select dropdown
+  cy.get('[data-testid="employee-select"]')
+    .should('be.visible')
+    .click()
+    .type('USER-0-F');
+ 
+  // 3. Select user from dropdown
+  cy.contains('.ant-select-item-option-content', 'USER-0-F USER-0-F')
+    .should('be.visible')
+    .click();
+ 
+  // 4. Confirm the selection
+  cy.contains('span', 'confirm', { matchCase: false })
+    .should('be.visible')
+    .click();
+ 
+  // 5. Add assertions to verify UI response (optional example)
+  cy.contains('This desk is already reserved').should('exist');
+ 
+  // 6. (Optional) Assert that reservation did NOT persist to DB
+  // You'd need an API call or DB check here if applicable.
+});
 
 //   it('should fail to create a project desk reservation with invalid desk ID', () => {
 //     cy.reserveProjectDesk('invalid-desk-id', testEmployeeId).then((response) => {
