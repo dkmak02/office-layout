@@ -10,7 +10,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 async function getDesksFloorDate(floor: string, date: string): Promise<Desk[]> {
   try {
   const res = await axios.get(
-    `${API_URL}/Desks?Floor=${floor}&PointInTime=${date}`,
+    `${API_URL}/Desks?floor=${floor}&pointInTime=${date}`,
     { withCredentials: true }
   );
   if (res.status !== 200) throw new Error("Error fetching desks");
