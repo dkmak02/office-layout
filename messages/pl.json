@@ -151,7 +151,10 @@
     "allReservations": "Wszystkie rezerwacje",
     "open": "Otwórz",
     "delete": "Usuń",
-    
+    "selectedDesks": "Wybrane biurka",
+    "selectPRODESK": "Proszę wybrać projekt i biurka",
+    "failedToAssignDesks": "Nie można przypisać biurek do projektu: {desks}. Biurka mają aktywne rezerwacje hotdesku.",
+    "successfullyAssignedDesks": "Pomyślnie przypisano biurka do projektu",
     "InvalidAvailabilityException": "Ustawienia dostępności pracownika nie pozwalają na tę rezerwację.",
     "InvalidHexColorFormat": "Podano nieprawidłowy format koloru.",
     "DeskNotFoundException": "Wybrane biurko nie zostało znalezione.",

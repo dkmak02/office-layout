@@ -151,7 +151,10 @@
     "allReservations": "All Reservations",
     "open": "Open",
     "delete": "Delete",
-    
+    "selectedDesks": "Selected Desks",
+    "selectPRODESK": "Please select a project and desks",
+    "failedToAssignDesks": "Could not assign desks to project: {desks}. Desks have active hotdesk reservations.",
+    "successfullyAssignedDesks": "Successfully assigned desks to the project",
     "InvalidAvailabilityException": "Employee availability settings don't allow this reservation.",
     "InvalidHexColorFormat": "Invalid color format provided.",
     "DeskNotFoundException": "The selected desk could not be found.",

@@ -1,14 +1,5 @@
 describe('Project Reservations', () => {
 
-
-//   beforeEach(() => {
-//     // Clean up any existing reservations before each test
-//     cy.getCurrentUser().then((response) => {
-//       expect(response.status).to.eq(200);
-//       // Add cleanup logic if needed
-//     });
-//   });
-
 beforeEach(() => {
   cy.visit('/office/floor-7');
  
@@ -38,6 +29,13 @@ it("Should click already taken project desk and verify UI response without DB ch
  
   // 5. Add assertions to verify UI response (optional example)
   cy.get('[data-testid="error-message"]').should('exist').contains('This desk already has a reservation for the selected time period.');
+  
+  cy.intercept('POST', 'https://localhost:8080/Desks?floor=Floor%207&pointInTime=2025-06-13T10:00:01').as('createReservation');
+  cy.wait('@createReservation').then((interception) => {
+    const body = interception.response?.body;
+    console.log(body);
+    //check if desk with name DSK-PROJ-T has reservation for the user USER-0-F
+  });
  
   // 6. (Optional) Assert that reservation did NOT persist to DB
   // You'd need an API call or DB check here if applicable.

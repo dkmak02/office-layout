@@ -6,17 +6,17 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 interface AssignDesksToProjectParams {
   floor: string;
   date: string;
-  projectId: string;
+  projectId: number;
   deskIds: number[];
 }
 
 const assignDesksToProject = async ({ projectId, deskIds, floor, date }: AssignDesksToProjectParams) => {
-  const response = await axios.post(
+  const response = await axios.patch(
     `${API_URL}/Desks/Project`,
     deskIds,
     {
       params: {
-        projectId: projectId
+        projectId: projectId === -1 ? null : projectId
       },
       withCredentials: true
     }
@@ -25,8 +25,8 @@ const assignDesksToProject = async ({ projectId, deskIds, floor, date }: AssignD
   if (response.status !== 200) {
     throw new Error("Failed to assign desks to project");
   }
-  
   return response.data;
+  
 };
 
 export const useAssignDesksToProject = () => {
