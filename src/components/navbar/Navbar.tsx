@@ -47,7 +47,11 @@ const Navbar = () => {
 
               return {
                 key: tab.key,
-                label: <Link href={hrefWithDate}>{t(tab.label)}</Link>,
+                label: (
+                  <Link href={hrefWithDate} data-testid={`nav-${tab.key}`}>
+                    {t(tab.label)}
+                  </Link>
+                ),
               };
             })}
           />
