@@ -23,6 +23,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       onClick={() => onSelect(project.code)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      data-testid={`project-card-${project.code}`}
       style={{
         margin: 8,
         padding: 5,
@@ -58,6 +59,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           style={{ minWidth: 0 }}
         >
           <div
+            data-testid={`project-color-${project.code}`}
             style={{
               width: 12,
               height: 12,
@@ -68,6 +70,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             }}
           />
           <span
+            data-testid={`project-name-${project.code}`}
             style={{
               fontWeight: 500,
               color: "#333",
@@ -82,6 +85,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
 
         <span
+          data-testid={`project-count-${project.code}`}
           style={{
             fontSize: 14,
             color: "#555",
