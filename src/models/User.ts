@@ -1,5 +1,6 @@
 import { Reservation } from "./Reservation";
 
+
 export type User = {
   id: number;
   name: string;

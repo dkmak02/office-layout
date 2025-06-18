@@ -174,5 +174,8 @@
     "ReservationNotFoundException": "The reservation could not be found.",
     "StartDateCannotBeAfterEndDateException": "Start date cannot be after the end date.",
     "StartDateCannotBeInThePastException": "Start date cannot be in the past."
+  },
+  "Printer": {
+    "printer": "Printer"
   }
 }

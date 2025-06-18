@@ -174,5 +174,8 @@
     "ReservationNotFoundException": "Rezerwacja nie została znaleziona.",
     "StartDateCannotBeAfterEndDateException": "Data rozpoczęcia nie może być późniejsza niż data zakończenia.",
     "StartDateCannotBeInThePastException": "Data rozpoczęcia nie może być z przeszłości."
+  },
+  "Printer": {
+    "printer": "Drukarka"
   }
 }

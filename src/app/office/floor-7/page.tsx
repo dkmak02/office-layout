@@ -1,6 +1,7 @@
 "use client";
 import GenerateDesks from "@/components/office-layout/GenerateDesks";
 import { useEmployeeSearchContext } from "@/util/providers/EmployeeSearchContext";
+import GeneratePrinters from "@/components/office-layout/GeneratePrinters";
 const Home = () => {
   const { selectedEmployees, selectedProjects } = useEmployeeSearchContext();
   return (
@@ -1152,6 +1153,7 @@ const Home = () => {
           className="separator"
         />
       </g>
+      <GeneratePrinters floor="Floor 7" />
       <GenerateDesks floor="Floor 7" />
     </svg>
   );

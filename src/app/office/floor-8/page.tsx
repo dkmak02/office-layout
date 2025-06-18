@@ -1,4 +1,5 @@
 import GenerateDesks from "@/components/office-layout/GenerateDesks";
+import GeneratePrinters from "@/components/office-layout/GeneratePrinters";
 const Home = () => {
   return (
     <svg
@@ -816,6 +817,7 @@ const Home = () => {
         />
       </g>
       <GenerateDesks floor="Floor 8" />
+      <GeneratePrinters floor="Floor 8" />
     </svg>
   );
 };
