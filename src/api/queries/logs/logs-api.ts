@@ -4,14 +4,13 @@ import { LogResponse } from "@/models/Log";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const fetchLogs = async (pageNumber: number, pageSize: number): Promise<LogResponse[]> => {
-  const config = { withCredentials: true };
+const fetchLogs = async (pageNumber: number, pageSize: number, month: string): Promise<LogResponse[]> => {
+  const config = { withCredentials: true, params: { date: month } };
   
   try {
-    const response = await axios.get(
-      `${API_URL}/Logs/${pageNumber}/${pageSize}`,
-      config
-    );
+    let url = `${API_URL}/Logs/${pageNumber}/${pageSize}`;
+    
+    const response = await axios.get(url, config);
     return response.data;
   } catch (error) {
     console.error("Error fetching logs:", error);
@@ -19,10 +18,10 @@ const fetchLogs = async (pageNumber: number, pageSize: number): Promise<LogRespo
   }
 };
 
-export const useLogs = (pageNumber: number, pageSize: number) => {
+export const useLogs = (pageNumber: number, pageSize: number, month: string) => {
   return useQuery({
-    queryKey: ["logs", pageNumber, pageSize],
-    queryFn: () => fetchLogs(pageNumber, pageSize),
+    queryKey: ["logs", pageNumber, pageSize, month],
+    queryFn: () => fetchLogs(pageNumber, pageSize, month),
     enabled: pageNumber > 0 && pageSize > 0,
   });
 }; 

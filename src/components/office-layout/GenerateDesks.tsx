@@ -114,7 +114,6 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
                 </div>
               </div>
             }
-            mouseEnterDelay={0.1}
             color="white"
           >
             <rect

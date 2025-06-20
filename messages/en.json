@@ -112,7 +112,8 @@
     "accessDenied": "Access Denied",
     "accessDeniedDescription": "You don't have permission to view logs. Only administrators can access this page.",
     "errorLoadingLogs": "Error Loading Logs",
-    "errorLoadingDescription": "Failed to load logs. Please try again."
+    "errorLoadingDescription": "Failed to load logs. Please try again.",
+    "selectMonth": "Select Month"
   },
   "ReservationModal": {
     "adminOnlyHotdesk": "Only administrators can convert desks to hotdesk. Moderators cannot perform this action.",

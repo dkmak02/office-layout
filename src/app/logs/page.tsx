@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Table, Pagination, Card, Tag, Typography, Alert, Spin, Space, Collapse } from "antd";
+import { Table, Pagination, Card, Tag, Typography, Alert, Spin, Space, Collapse, DatePicker } from "antd";
 import { useTranslations } from "next-intl";
 import { useUser } from "@/api/queries/auth/get-user";
 import { useLogs } from "@/api/queries/logs/logs-api";
@@ -16,8 +16,9 @@ const LogsPage: React.FC = () => {
   const { data: user, isLoading: userLoading } = useUser();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [selectedMonth, setSelectedMonth] = useState(dayjs().startOf('month').format('YYYYMM'));
 
-  const { data: logs, isLoading: logsLoading, error } = useLogs(currentPage, pageSize);
+  const { data: logs, isLoading: logsLoading, error } = useLogs(currentPage, pageSize, selectedMonth);
 
   // Check if user is admin only (not moderators)
   const isAuthorized = user?.isAdmin;
@@ -64,6 +65,19 @@ const LogsPage: React.FC = () => {
     if (size) {
       setPageSize(size);
     }
+  };
+
+  const handleMonthChange = (date: dayjs.Dayjs | null) => {
+    if (date) {
+      const month = date.format('YYYYMM');
+      setSelectedMonth(month);
+      setCurrentPage(1); // Reset to first page when changing month
+    }
+  };
+
+  const disabledDate = (current: dayjs.Dayjs) => {
+    // Disable dates after the current month
+    return current && current.isAfter(dayjs(), 'month');
   };
 
   const expandedRowRender = (record: LogResponse) => {
@@ -150,6 +164,21 @@ const LogsPage: React.FC = () => {
       )}
 
       <Card>
+        <div className="mb-4">
+          <Space direction="vertical" className="w-full">
+            <Text strong>{tLogs("selectMonth") || "Select Month"}:</Text>
+            <DatePicker
+              picker="month"
+              value={dayjs(selectedMonth, 'YYYYMM')}
+              onChange={handleMonthChange}
+              disabledDate={disabledDate}
+              format="YYYY-MM"
+              placeholder={tLogs("selectMonth") || "Select Month"}
+              style={{ width: 200 }}
+            />
+          </Space>
+        </div>
+
         <Table
           dataSource={logs}
           columns={columns}

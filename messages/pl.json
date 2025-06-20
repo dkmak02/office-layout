@@ -112,7 +112,8 @@
     "accessDenied": "Odmowa dostępu",
     "accessDeniedDescription": "Nie masz uprawnień do przeglądania logów. Tylko administratorzy mogą uzyskać dostęp do tej strony.",
     "errorLoadingLogs": "Błąd ładowania logów",
-    "errorLoadingDescription": "Nie udało się załadować logów. Spróbuj ponownie."
+    "errorLoadingDescription": "Nie udało się załadować logów. Spróbuj ponownie.",
+    "selectMonth": "Wybierz miesiąc"
   },
   "ReservationModal": {
     "adminOnlyHotdesk": "Tylko administratorzy mogą konwertować biurka na hotdesk. Moderatorzy nie mogą wykonać tej akcji.",
