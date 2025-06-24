@@ -145,18 +145,22 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     }));
     // Always include the current reservation's employee if there is one
     const currentReservationUserId = currentReservation?.userId;
-    if (currentReservationUserId && !availableEmployeesByDeskType.find(emp => emp.id === currentReservationUserId)) {
+    
+    
+    if (currentReservationUserId) {
       const currentEmployee = employees.find(emp => emp.id === currentReservationUserId);
       if (currentEmployee) {
+        //delete the current employee from the options
+        options = options.filter(option => option.value !== currentEmployee.id && option.value !== selectedEmployeeId);
         options.unshift({
-          label: `${currentEmployee.name} ${currentEmployee.surname} (Current)`,
+          label: `${currentEmployee.name} ${currentEmployee.surname} (${tModal("current")})`,
           value: currentEmployee.id,
         });
       }
     }
 
     // Also include selectedEmployeeId if it's different from current reservation and not in available list
-    if (selectedEmployeeId && 
+    else if (selectedEmployeeId && 
         selectedEmployeeId !== currentReservationUserId && 
         !availableEmployeesByDeskType.find(emp => emp.id === selectedEmployeeId)) {
       const selectedEmployee = employees.find(emp => emp.id === selectedEmployeeId);
@@ -555,7 +559,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       form.resetFields();
     } catch (error:any) {
       console.error("Error in submission:", error);
-      console.log(error.response?.data.messageCode);
+      
       // Use specific error message based on messageCode if available
       const messageCode = error.response?.data?.messageCode;
       if (messageCode && tModal(messageCode) !== messageCode) {
@@ -677,7 +681,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                 onClick={() => setShowAllReservations(true)}
                 style={{ marginLeft: "auto", marginRight: "20px" }}
               >
-                Show All
+                {tModal("showAll")}
               </Button>
             )}
           </div>

@@ -60,14 +60,14 @@ export const shouldUseHotdeskEndpoint = (
   currentUser: User | undefined
 ): boolean => {
   if (!currentUser || !reservation) return false;
-
-  // Admin and moderator can use general endpoint for any reservation
+  // console.log(reservation, currentUser);
+  // Admin and moderator can use general endpoint for a ny reservation
   if (currentUser.isAdmin || currentUser.isModerator) {
     return false;
   }
 
   // Regular employees must use hotdesk endpoint for their own hotdesk reservations
-  if (reservation.userId === currentUser.id && reservation.isHotdesk) {
+  if (reservation.isHotdesk) {
     return true;
   }
 

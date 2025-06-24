@@ -12,6 +12,7 @@ const getUser = async () => {
     if (response.status !== 200) {
       throw new Error("Error fetching user");
     }
+    console.log(response.data);
     return response.data as User;
   } catch (error) {
     console.error("Error fetching user:", error);

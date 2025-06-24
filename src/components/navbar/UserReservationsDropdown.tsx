@@ -32,7 +32,7 @@ const UserReservationsDropdown: React.FC<UserReservationsDropdownProps> = ({
   const handleDeleteReservation = (reservationId: number) => {
     const reservation = reservations.find(r => r.reservationID === reservationId);
     if (!reservation) return;
-    
+    console.log(reservation);
     // Determine if this is a hotdesk reservation based on endTime
     const isHotdesk = Boolean(reservation.endTime && 
       reservation.endTime.trim() !== "" && 
