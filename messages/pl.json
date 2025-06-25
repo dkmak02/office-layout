@@ -105,7 +105,7 @@
     "clientUsername": "Nazwa użytkownika",
     "status": "Status",
     "logCount": "Liczba logów",
-    "latestTimestamp": "Najnowszy znacznik czasu",
+    "latestTimestamp": "Data",
     "success": "Sukces",
     "failed": "Błąd",
     "notAvailable": "Brak",

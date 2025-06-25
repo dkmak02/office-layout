@@ -20,7 +20,6 @@ export const useUtilsByFloor = (floor: string) => {
         withCredentials: true,
         params: { Floor: floor }
       });
-      console.log("response", response.data);
       return response.data;
     },
     enabled: !!floor,

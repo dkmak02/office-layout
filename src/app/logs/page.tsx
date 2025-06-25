@@ -7,8 +7,7 @@ import { useLogs } from "@/api/queries/logs/logs-api";
 import { LogResponse, LogEntry } from "@/models/Log";
 import dayjs from "dayjs";
 
-const { Title, Text } = Typography;
-const { Panel } = Collapse;
+const {  Text } = Typography;
 
 const LogsPage: React.FC = () => {
   const t = useTranslations("NavbarMenu");
@@ -165,22 +164,40 @@ const LogsPage: React.FC = () => {
 
       <Card>
         <div className="mb-4">
-          <Space direction="vertical" className="w-full">
-            <Text strong>{tLogs("selectMonth") || "Select Month"}:</Text>
-            <DatePicker
-              picker="month"
-              value={dayjs(selectedMonth, 'YYYYMM')}
-              onChange={handleMonthChange}
-              disabledDate={disabledDate}
-              format="YYYY-MM"
-              placeholder={tLogs("selectMonth") || "Select Month"}
-              style={{ width: 200 }}
-            />
-          </Space>
+          <div className="flex justify-between items-center gap-4">
+            <Space direction="vertical" className="flex-shrink-0">
+              <Text strong>{tLogs("selectMonth") || "Select Month"}:</Text>
+              <DatePicker
+                picker="month"
+                value={dayjs(selectedMonth, 'YYYYMM')}
+                onChange={handleMonthChange}
+                disabledDate={disabledDate}
+                format="YYYY-MM"
+                placeholder={tLogs("selectMonth") || "Select Month"}
+                style={{ width: 200 }}
+              />
+            </Space>
+            
+            <div className="flex-shrink-0">
+              <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                total={logs?.totalCount}
+                onChange={handlePageChange}
+                onShowSizeChange={handlePageChange}
+                showSizeChanger
+                showTotal={(total, range) =>
+                  `${range[0]}-${range[1]} of ${total}`
+                }
+                pageSizeOptions={["10", "20", "50", "100"]}
+                size="small"
+              />
+            </div>
+          </div>
         </div>
 
         <Table
-          dataSource={logs}
+          dataSource={logs?.logInfos}
           columns={columns}
           loading={logsLoading}
           pagination={false}
@@ -191,22 +208,6 @@ const LogsPage: React.FC = () => {
           rowKey={(record, index) => index?.toString() || "0"}
           scroll={{ x: true }}
         />
-
-        <div className="flex justify-center mt-4">
-          <Pagination
-            current={currentPage}
-            pageSize={pageSize}
-            total={currentPage * pageSize + (logs && logs.length === pageSize ? pageSize : 0)}
-            onChange={handlePageChange}
-            onShowSizeChange={handlePageChange}
-            showSizeChanger
-            showQuickJumper
-            showTotal={(total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`
-            }
-            pageSizeOptions={["10", "20", "50", "100"]}
-          />
-        </div>
       </Card>
     </div>
   );

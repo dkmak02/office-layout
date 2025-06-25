@@ -105,7 +105,7 @@
     "clientUsername": "Client Username",
     "status": "Status",
     "logCount": "Log Count",
-    "latestTimestamp": "Latest Timestamp",
+    "latestTimestamp": "Date",
     "success": "Success",
     "failed": "Failed",
     "notAvailable": "N/A",

@@ -9,3 +9,7 @@ export interface LogResponse {
   logs: LogEntry[];
   isSuccess: boolean;
 } 
+export interface LogData {
+  logInfos: LogResponse[];
+  totalCount: number;
+}

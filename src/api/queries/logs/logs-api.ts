@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { LogResponse } from "@/models/Log";
+import { LogData } from "@/models/Log";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-const fetchLogs = async (pageNumber: number, pageSize: number, month: string): Promise<LogResponse[]> => {
+const fetchLogs = async (pageNumber: number, pageSize: number, month: string): Promise<LogData> => {
   const config = { withCredentials: true, params: { date: month } };
   
   try {

@@ -12,9 +12,6 @@ export default function OfficeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const handleSelectionChange = (selectedDesks: { id: number; name: string | null }[]) => {
-    console.log("Selected desks changed:", selectedDesks);
-  };
 
   return (
     <EmployeeSearchProvider>
