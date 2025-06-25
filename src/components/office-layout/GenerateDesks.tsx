@@ -85,7 +85,7 @@ const GenerateDesks: React.FC<GenerateDesksProps> = ({ floor }) => {
             opacity = desk.currentReservationID ? 1 : 0.7;
           } else {
             // Non-selected desks when filters are active
-            opacity = 0.5;
+            opacity = 0.1;
           }
         } else {
           // No filters active: opacity based on reservation status

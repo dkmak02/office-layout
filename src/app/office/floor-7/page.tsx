@@ -25,7 +25,7 @@ const Home = () => {
           <stop offset="100%" stopColor="#aba" />
         </linearGradient>
       </defs>
-      <g opacity={selectedEmployees.length > 0 || selectedProjects.length > 0 ? 0.5 : 1}>
+      <g opacity={selectedEmployees.length > 0 || selectedProjects.length > 0 ? 0.3 : 1}>
         <path
           d="M 25.935052,1.6686828 2.2283222,78.232398 200.44213,121.16914 296.55715,1.6686828 Z"
           id="wall01"

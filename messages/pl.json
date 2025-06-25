@@ -113,7 +113,21 @@
     "accessDeniedDescription": "Nie masz uprawnień do przeglądania logów. Tylko administratorzy mogą uzyskać dostęp do tej strony.",
     "errorLoadingLogs": "Błąd ładowania logów",
     "errorLoadingDescription": "Nie udało się załadować logów. Spróbuj ponownie.",
-    "selectMonth": "Wybierz miesiąc"
+    "selectMonth": "Wybierz miesiąc",
+    "totalRequests": "Łączna liczba żądań",
+    "successfulRequests": "Udane",
+    "failedRequests": "Nieudane",
+    "totalLogEntries": "Wpisy logów",
+    "refreshData": "Odśwież dane",
+    "refresh": "Odśwież",
+    "showingResults": "Pokazuję",
+    "of": "z",
+    "results": "wyników",
+    "pageSize": "Rozmiar strony",
+    "page": "Strona",
+    "items": "elementów",
+    "currentPage": "(bieżąca strona)",
+    "statisticsNote": "Statystyki pokazane są tylko dla bieżącej strony. Łączna liczba jest szacowana."
   },
   "ReservationModal": {
     "adminOnlyHotdesk": "Tylko administratorzy mogą konwertować biurka na hotdesk. Moderatorzy nie mogą wykonać tej akcji.",
