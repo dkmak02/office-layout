@@ -5,7 +5,10 @@ import { useTranslations } from "next-intl";
 import { useUser } from "@/api/queries/auth/get-user";
 import { useLogs } from "@/api/queries/logs/logs-api";
 import { LogResponse, LogEntry } from "@/models/Log";
+import plPl from "antd/locale/pl_PL";
+import enUS from "antd/locale/en_US";
 import dayjs from "dayjs";
+import { useLocale } from "next-intl";  
 
 const {  Text } = Typography;
 
@@ -16,7 +19,7 @@ const LogsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [selectedMonth, setSelectedMonth] = useState(dayjs().startOf('month').format('YYYYMM'));
-
+  const locale = useLocale();
   const { data: logs, isLoading: logsLoading, error } = useLogs(currentPage, pageSize, selectedMonth);
 
   // Check if user is admin only (not moderators)
@@ -172,9 +175,11 @@ const LogsPage: React.FC = () => {
                 value={dayjs(selectedMonth, 'YYYYMM')}
                 onChange={handleMonthChange}
                 disabledDate={disabledDate}
-                format="YYYY-MM"
+                mode="month"
                 placeholder={tLogs("selectMonth") || "Select Month"}
                 style={{ width: 200 }}
+                locale={locale === "pl" ? plPl.DatePicker : enUS.DatePicker}
+
               />
             </Space>
             

@@ -2,11 +2,15 @@
 
 import { DatePicker } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs, { Dayjs, locale } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import plPl from "antd/locale/pl_PL";
+import enUS from "antd/locale/en_US";
+import { useLocale } from "next-intl";
 
 const OfficeDatePicker = () => {
+  const locale = useLocale();
   const t = useTranslations("DaySwitcher");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,6 +41,7 @@ const OfficeDatePicker = () => {
         allowClear={false}
         format="YYYY-MM-DD"
         disabledDate={(current) => current < dayjs().startOf("day") || current > dayjs().add(21, "day").endOf("day")}
+        locale={locale === "pl" ? plPl.DatePicker : enUS.DatePicker}
       />
     </div>
   );

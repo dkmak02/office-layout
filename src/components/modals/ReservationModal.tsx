@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Select, DatePicker, Button, Space, Typography, Alert, Descriptions, List, Flex, message } from "antd";
 import { UserOutlined, CalendarOutlined, DesktopOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
+import dayjs, { locale } from "dayjs";
 import { useUser } from "@/api/queries/auth/get-user";
 import { Desk } from "@/models/Desk";
 import { Employee } from "@/models/Employee";
@@ -11,6 +11,11 @@ import { useCreateReservation } from "@/api/mutations/reservations/create-reserv
 import { useChangeDeskType, useChangeProject } from "@/api/mutations/project/change-desk-type";
 import { useDeleteReservation } from "@/api/mutations/reservations/delete-reservation";
 import { useTranslations } from "next-intl";
+import plPl from "antd/locale/pl_PL";
+import enUS from "antd/locale/en_US";
+import { useLocale } from "next-intl";
+import "dayjs/locale/pl";
+import "dayjs/locale/en";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -42,6 +47,9 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   floor,
   date
 }) => {
+
+  const locale = useLocale();
+  dayjs.locale(locale === "pl" ? "pl-PL" : "en-US");
   const { data: user } = useUser();
   const { data: projects } = useProjectInfo();
   const tModal = useTranslations("ReservationModal");
@@ -808,6 +816,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
                 onChange={handleDateChange}
                 disabledDate={isDateDisabled}
                 style={{ width: "100%" }}
+                locale={locale === "pl" ? plPl.DatePicker : enUS.DatePicker}
               />
             </div>
           )}
