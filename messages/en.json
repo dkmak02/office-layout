@@ -21,7 +21,8 @@
     "floor8": "Floor 8",
     "employees": "Employees",
     "projects": "Projects",
-    "logs": "Logs"
+    "logs": "Logs",
+    "noReservations": "No reservations found"
   },
   "DaySwitcher": {
     "chooseDate": "Choose day"
@@ -68,6 +69,8 @@
     "reservationNoEndTime": "No end time",
     "reservation": "Reservation",
     "deleteReservationButton": "Delete reservation",
+    "start": "Start",
+    "end": "End",
     "dsa": "DSA"
   },
   "EmployeesInfo": {
@@ -86,7 +89,9 @@
     "filterPermamentlyAssigned": "Filter by permanently assigned",
     "fileterHotdeskOveride": "Filter by hotdesk override",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "of": "of",
+    "items": "items"
   },
   "ProjectInfo": {
     "code": "Project code",
@@ -152,7 +157,7 @@
     "regularDeskViewOnly": "Regular Desk - View Only",
     "regularDeskViewOnlyDescription": "You can only view information about regular desks. Only admins can make reservations for regular desks.",
     "hotdeskUnavailable": "Hotdesk Unavailable",
-    "hotdeskUnavailableAvailability": "You cannot reserve hotdesks because your availability is set to 0%.",
+    "hotdeskUnavailableAvailability": "You cannot reserve a hotdesk because you have a permanent desk. If you are not assigned to any desk - contact your manager.",
     "hotdeskUnavailableIgnore": "Cannot assinn employee to hotdesk that should have desk.",
     "personAssigned": "Person Assigned:",
     "choosePerson": "Choose person",
